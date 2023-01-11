@@ -42,4 +42,58 @@
 #endif
 
 
+// **************************************************************************** KeyboardKey
+
+// Return true if the key is in the WATCHED_KEYS array
+bool KeyboardKey_IsValid(KeyboardKey key){
+    for (int i = 0; i < WATCHED_KEYS_N; i++){
+        if (key == WATCHED_KEYS[i]){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the keyboard key
+    const char* KeyboardKey_ToString(KeyboardKey key){
+        static const char* names[] = {
+            "Right", "Down",  "Left", "Up",
+            "D",     "S",     "A",    "W",
+            "Space", "Enter", "Tab",  "M",
+            "T",     "R",     "Plus", "Minus",
+            "Z",     "X"
+        };
+
+        for (int i = 0; i < WATCHED_KEYS_N; i++){
+            if (key == WATCHED_KEYS[i]){
+                return names[i];
+            }
+        }
+
+        return STR_INVALID;
+    }
+
+    // Print the code and name of the pressed keys in the terminal
+    void KeyboardKey_Test(void){
+        InitWindow(100, 100, "Test");
+        SetTargetFPS(60);
+
+        while (!WindowShouldClose()){
+            KeyboardKey key = GetKeyPressed();
+            if (key != KEY_NULL){
+                printf("%d\t%s\n", key, KeyboardKey_ToString(key));
+            }
+
+            BeginDrawing();
+            ClearBackground(BLACK);
+            EndDrawing();
+        }
+
+        CloseWindow();
+    }
+#endif
+
+
 
