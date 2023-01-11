@@ -1,0 +1,31 @@
+# =============================================================================
+# RODS
+# Build Script
+# by Andreas Socratous
+# Jan 2023
+# =============================================================================
+
+
+# WINDOWS, MACOS, LINUX
+PLATFORM="MACOS"
+
+
+# ============================================================================= MACOS PARAMS
+
+if [ $PLATFORM = "MACOS" ]; then
+    CC="clang"
+    SPECIAL="Arch/MacOS/Raylib/libraylib.a"
+    FLAGS="-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
+fi
+
+
+# ============================================================================= MACOS & LINUX
+
+if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
+    $CC $SPECIAL \
+    -Wall -Wextra -pedantic -O3 \
+    main.c -o rods \
+    $FLAGS
+fi
+
+
