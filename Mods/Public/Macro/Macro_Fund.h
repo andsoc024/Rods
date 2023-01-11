@@ -52,6 +52,16 @@
     printf("\n");
 
 
+// **************************************************************************** CHECK_INVALID
+
+// For use in ToString functions. If the isValid function returns false, return 
+// the invalid string, in long or short form
+#define CHECK_INVALID(isValid, gForm) \
+    if (!(isValid)){ \
+        return ((gForm) == SHORT_FORM) ? STR_INVALID_SHORT : STR_INVALID; \
+    }
+
+
 
 
 

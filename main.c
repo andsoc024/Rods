@@ -19,6 +19,7 @@
 #include <raylib.h>
 
 #include "Mods/Public/Public.h"
+#include "Mods/Fund/Fund.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"

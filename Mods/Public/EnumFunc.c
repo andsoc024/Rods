@@ -96,4 +96,23 @@ bool KeyboardKey_IsValid(KeyboardKey key){
 #endif
 
 
+// **************************************************************************** E_ZeroValMode
+
+// Return true if the value is a valid zero values mode
+bool ZeroValMode_IsValid(int mode){
+    return IS_IN_RANGE(mode, 0, ZEROVAL_MODES_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the zero values mode
+    const char* ZeroValMode_ToString(int mode){
+        static const char* names[] = {"None", "All", "Last"};
+
+        CHECK_INVALID(ZeroValMode_IsValid(mode), LONG_FORM);
+
+        return names[mode];
+    }
+#endif
+
+
 

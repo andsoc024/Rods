@@ -62,5 +62,22 @@ bool           KeyboardKey_IsValid(KeyboardKey key);
 #endif
 
 
+// **************************************************************************** E_ZeroValMode
+
+// Zero Values Mode. Determines which, if any, values of a memory block to be 
+// set to 0
+typedef enum E_ZeroValMode{
+    ZEROVAL_NONE,
+    ZEROVAL_ALL,
+    ZEROVAL_LAST
+}E_ZeroValMode;
+#define ZEROVAL_MODES_N                     (ZEROVAL_LAST + 1)
+
+bool            ZeroValMode_IsValid(int mode);
+#ifdef DEBUG_MODE
+    const char* ZeroValMode_ToString(int mode);
+#endif
+
+
 #endif // ENUM_GUARD
 
