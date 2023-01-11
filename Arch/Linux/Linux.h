@@ -30,6 +30,7 @@
 #define ARCH                                LIN
 #define APP_PLATFORM_LIN                    "Linux"
 
+#define UNUSED_LIN                          __attribute__((unused))
 
 
 

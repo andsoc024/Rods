@@ -43,6 +43,8 @@
     #include "../../Arch/Linux/Linux.h"
 #endif
 
+#define UNUSED                              ARCH_DEF(UNUSED)
+
 
 // ============================================================================ APP INFO
 

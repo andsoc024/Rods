@@ -30,6 +30,7 @@
 #define ARCH                                WIN
 #define APP_PLATFORM_WIN                    "Windows"
 
+#define UNUSED_WIN
 
 
 

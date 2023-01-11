@@ -1,38 +1,34 @@
 // ============================================================================
 // RODS
-// MacOS
+// Test
 // by Andreas Socratous
 // Jan 2023
 // ============================================================================
 
 
-#ifndef MACOS_GUARD
-#define MACOS_GUARD
-
-
 // ============================================================================ INFO
 /*
-    Constants specific for the MacOS platform.
+    Function for testing and debugging. Compiled and executed only when in 
+    DEBUG_MODE.
 */
 
 
 // ============================================================================ DEPENDENCIES
 
-// Included in Public.h when PLATFORM_MACOS is defined
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <raylib.h>
 
-
-// ============================================================================ CONSTANTS
-
-#define ARCH                                MAC
-#define APP_PLATFORM_MAC                    "MacOS"
-
-#define UNUSED_MAC                          __attribute__((unused))
+#include "Mods/Public/Public.h"
 
 
+// ============================================================================ TEST
 
-#endif // MACOS_GUARD
+// Function for testing and debugging
+int Test(UNUSED int argc, UNUSED char** argv){
+    printf("Testing...\n");
+
+    return 0;
+}
+
 
