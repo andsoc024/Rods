@@ -23,6 +23,7 @@ fi
 
 if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     $CC $SPECIAL \
+    Mods/Public/Public.c \
     -Wall -Wextra -pedantic -O3 \
     main.c -o rods \
     $FLAGS
