@@ -105,6 +105,17 @@
 #define WITH_NEW_LINE                       true
 #define WITHOUT_NEW_LINE                    false
 
+// For use in direction functions
+#define INCLUDE_NONE                        true
+#define INCLUDE_NOT_NONE                    false
+
+// Binary leg directions
+#define LEGDIR_NONE                         0
+#define LEGDIR_RIGHT                        (1 << 0)
+#define LEGDIR_DOWN                         (1 << 1)
+#define LEGDIR_LEFT                         (1 << 2)
+#define LEGDIR_UP                           (1 << 3)
+
 
 // ============================================================================ DEF STRUCTURES
 

@@ -29,27 +29,25 @@
 
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
-    
-    for (int i = 0; i < 100; i++){
-        int exp = Math_RandomInt(1, 7);
-        int limit = 5 * Math_PowI(10, exp);
-        float num = Math_RandomFloat(-limit, limit);
-        if (i == 0) {num = 0;}
-        printf("%.3f\t", num);
 
-        Bytes bytes = Bytes_FromFloat(num);
-        Bytes_Print(bytes, WITHOUT_NEW_LINE);
-        printf("\t");
+    InitWindow(100, 100, "Dir Test");
+    SetTargetFPS(60);
 
-        float num2 = Bytes_ToFloat(bytes);
-        printf("%.3f\t", num2);
-
-        if (!FEQ(num, num2)){
-            printf("ERROR!");
+    while (!WindowShouldClose()){
+        KeyboardKey key = GetKeyPressed();
+        E_Direction dir = Direction_FromKey(key);
+        if (dir != DIR_NONE){
+            E_Direction opp = Direction_Opposite(dir);
+            printf("%s %s\n", Direction_ToString(dir, SHORT_FORM), 
+                              Direction_ToString(opp, LONG_FORM));
         }
 
-        printf("\n");
+        BeginDrawing();
+        ClearBackground(COL_NULL);
+        EndDrawing();
     }
+
+    CloseWindow();
 
     return 0;
 }

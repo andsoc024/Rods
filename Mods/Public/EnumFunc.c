@@ -77,7 +77,7 @@ bool KeyboardKey_IsValid(KeyboardKey key){
 
     // Print the code and name of the pressed keys in the terminal
     void KeyboardKey_Test(void){
-        InitWindow(100, 100, "Test");
+        InitWindow(100, 100, "Keyboard Test");
         SetTargetFPS(60);
 
         while (!WindowShouldClose()){
@@ -114,5 +114,44 @@ bool ZeroValMode_IsValid(int mode){
     }
 #endif
 
+
+// **************************************************************************** E_Direction
+
+// Return true if the value is a valid direction, optionally including DIR_NONE
+bool Direction_IsValid(int dir, bool includeNone){
+    int startDir = includeNone ? DIR_NONE : DIR_RIGHT;
+    return IS_IN_RANGE(dir, startDir, DIR_UP);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the direction, in short or long form
+    const char* Direction_ToString(int dir, bool form){
+        const char* names[] = {"None", "Right", "Down", "Left", "Up"};
+        const char* shortNames[] = {"N", "R", "D", "L", "U"};
+
+        CHECK_INVALID(Direction_IsValid(dir, INCLUDE_NONE), form)
+
+        return (form == SHORT_FORM) ? shortNames[dir] : names[dir];
+    }
+#endif
+
+
+// **************************************************************************** E_Orientation
+
+// Return true if the value is a valid orientation value
+bool Orientation_IsValid(int orientation){
+    return IS_IN_RANGE(orientation, 0, ORIENTATIONS_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the orientation
+    const char* Orientation_ToString(int orientation){
+        const char* names[] = {"Horisontal", "Vertical"};
+
+        CHECK_INVALID(Orientation_IsValid(orientation), LONG_FORM)
+
+        return names[orientation];
+    }
+#endif
 
 

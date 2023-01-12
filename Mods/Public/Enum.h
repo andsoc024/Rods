@@ -79,5 +79,38 @@ bool            ZeroValMode_IsValid(int mode);
 #endif
 
 
+// **************************************************************************** E_Direction
+
+// Direction enumeration: None, Right, Down, Left, Up
+typedef enum E_Direction{
+    DIR_NONE,
+    DIR_RIGHT,
+    DIR_DOWN,
+    DIR_LEFT,
+    DIR_UP
+}E_Direction;
+#define DIRECTIONS_N                        (DIR_UP + 1)
+
+bool            Direction_IsValid(int dir, bool includeNone);
+#ifdef DEBUG_MODE
+    const char* Direction_ToString(int dir, bool form);
+#endif
+
+
+// **************************************************************************** E_Orientation
+
+// Orientation enumeration: Horisontal or Vertical
+typedef enum E_Orientation{
+    OR_HORISONTAL,
+    OR_VERTICAL
+}E_Orientation;
+#define ORIENTATIONS_N                      (OR_VERTICAL + 1)
+
+bool            Orientation_IsValid(int orientation);
+#ifdef DEBUG_MODE
+    const char* Orientation_ToString(int orientation);
+#endif
+
+
 #endif // ENUM_GUARD
 

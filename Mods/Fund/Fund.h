@@ -75,6 +75,19 @@ float           Bytes_ToFloat(Bytes bytes);
     void        Bytes_Print(Bytes bytes, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- Direction Functions
+
+E_Direction     Direction_Random(bool includeNone);
+E_Direction     Direction_Rotate(E_Direction dir, int times);
+E_Direction     Direction_Opposite(E_Direction dir);
+E_Direction     Direction_FromKey(KeyboardKey key);
+E_Direction     Direction_FromLegDir(int legDir);
+int             Direction_ToLegDir(E_Direction dir);
+bool            Direction_IsValidLegsValue(int legs);
+int             Direction_RotateLegs(int legs, int times);
+#ifdef DEBUG_MODE
+    void        Direction_PrintLegs(int legs, bool withNewLine);
+#endif
 
 
 #endif // FUND_GUARD
