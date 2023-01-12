@@ -162,6 +162,13 @@
     Math_FloatsAreEqual(v1, v2, MATH_FLOAT_PRECISION)
 
 
+// **************************************************************************** BYTES
+
+// Set a Bytes structure
+#define BYTES(gN, v1, v2, v3, v4) \
+    ((Bytes) {.n = (gN), .values = {(v1), (v2), (v3), (v4)}})
+
+
 
 
 

@@ -92,6 +92,7 @@
 
 // ============================================================================ STRUCTURES
 
+#include "Struct/Struct_Fund.h"
 
 
 // ============================================================================ FLAGS & INDICES
@@ -100,9 +101,15 @@
 #define SHORT_FORM                          true
 #define LONG_FORM                           false
 
+// For use in print functions
+#define WITH_NEW_LINE                       true
+#define WITHOUT_NEW_LINE                    false
+
 
 // ============================================================================ DEF STRUCTURES
 
+#define BYTES_NULL                          BYTES(0, 0, 0, 0, 0)
+#define BYTES_ZERO                          BYTES(4, 0, 0, 0, 0)
 
 
 // ============================================================================ GLOBALS

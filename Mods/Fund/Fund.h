@@ -64,6 +64,16 @@ float           Math_Sin(float angle);
 float           Math_Cos(float angle);
 float           Math_Tan(float angle);
 
+// ---------------------------------------------------------------------------- Bytes Functions
+
+bool            Bytes_IsValid(Bytes bytes);
+Bytes           Bytes_FromInt(int num, int nBytes);
+int             Bytes_ToInt(Bytes bytes);
+Bytes           Bytes_FromFloat(float num);
+float           Bytes_ToFloat(Bytes bytes);
+#ifdef DEBUG_MODE
+    void        Bytes_Print(Bytes bytes, bool withNewLine);
+#endif
 
 
 

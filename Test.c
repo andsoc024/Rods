@@ -30,16 +30,25 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
     
-    for (int i = -360; i <= 720; i += 15){
-        printf("%4d\t", i);
+    for (int i = 0; i < 100; i++){
+        int exp = Math_RandomInt(1, 7);
+        int limit = 5 * Math_PowI(10, exp);
+        float num = Math_RandomFloat(-limit, limit);
+        if (i == 0) {num = 0;}
+        printf("%.3f\t", num);
 
-        float radians = Math_DegToRad(i);
-        
-        float s = Math_Sin(radians);
-        float c = Math_Cos(radians);
-        printf("%.3f\t%.3f\t", s, c);
+        Bytes bytes = Bytes_FromFloat(num);
+        Bytes_Print(bytes, WITHOUT_NEW_LINE);
+        printf("\t");
 
-        printf("%.1f\n", Math_Hypotenuse(s, c));
+        float num2 = Bytes_ToFloat(bytes);
+        printf("%.3f\t", num2);
+
+        if (!FEQ(num, num2)){
+            printf("ERROR!");
+        }
+
+        printf("\n");
     }
 
     return 0;
