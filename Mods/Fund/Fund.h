@@ -89,6 +89,15 @@ int             Direction_RotateLegs(int legs, int times);
     void        Direction_PrintLegs(int legs, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- String Functions
+
+int             String_Length(const char* str);
+bool            String_IsEqual(const char* str1, const char* str2);
+char*           String_Copy(char* dst, const char* src);
+char*           String_Concat(char* dst, int nStrings, ...);
+char*           String_FromInt(char* dst, int num);
+char*           String_Pad(char* str, int minLength, char padChar);
+
 
 #endif // FUND_GUARD
 

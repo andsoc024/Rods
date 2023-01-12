@@ -1,4 +1,5 @@
 Mods/Fund/System.c
 Mods/Fund/Math.c
 Mods/Fund/Bytes.c
-Mods/Fund/Direction.c 
+Mods/Fund/Direction.c
+Mods/Fund/String.c 

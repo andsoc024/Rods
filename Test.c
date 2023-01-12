@@ -30,24 +30,25 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    InitWindow(100, 100, "Dir Test");
-    SetTargetFPS(60);
+    char* str1 = String_Copy(NULL, "John");
+    char* str2 = String_Copy(NULL, "X");
+    char* str3 = String_Copy(NULL, "Smith");
 
-    while (!WindowShouldClose()){
-        KeyboardKey key = GetKeyPressed();
-        E_Direction dir = Direction_FromKey(key);
-        if (dir != DIR_NONE){
-            E_Direction opp = Direction_Opposite(dir);
-            printf("%s %s\n", Direction_ToString(dir, SHORT_FORM), 
-                              Direction_ToString(opp, LONG_FORM));
-        }
+    str1 = String_Concat(str1, 6, str1, " ", NULL, str2, " ", str3);
+    printf("%s\n", str1);
 
-        BeginDrawing();
-        ClearBackground(COL_NULL);
-        EndDrawing();
+    char* str = NULL;
+    for (int i = 0; i < 100; i++){
+        int num = Math_RandomInt(-5000, 5000);
+        num = (i == 0) ? 0 : num;
+        printf("%5d\t", num);
+
+        str = String_FromInt(str, num);
+        str = String_Pad(str, 5, ' ');
+        printf("%s\n", str);
     }
 
-    CloseWindow();
+    Memory_FreeAll(4, &str, &str1, &str2, &str3);
 
     return 0;
 }
