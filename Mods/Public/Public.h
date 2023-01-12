@@ -75,6 +75,15 @@
 #define STR_LINE                            "----------------------------------------" \
                                             "----------------------------------------"
 
+// Math Constants
+#define MATH_PI                             3.14159f
+#define MATH_PI_HALF                        (MATH_PI * 0.5f)
+#define MATH_PI_THREE_HALVES                (MATH_PI * 1.5f)
+#define MATH_PI_DOUBLE                      (MATH_PI * 2.0f)
+#define MATH_PHI                            1.61803
+#define MATH_PHI_INVERSE                    (1.0f / MATH_PHI)
+#define MATH_FLOAT_PRECISION                0.001f
+
 
 // ============================================================================ COLORS
 

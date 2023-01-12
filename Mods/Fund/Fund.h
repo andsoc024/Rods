@@ -44,6 +44,28 @@ void            Memory_Set(void* ptr, int size, unsigned char value);
 void*           Memory_Free(void* ptr);
 void            Memory_FreeAll(int nObjects, ...);
 
+// ---------------------------------------------------------------------------- Math Functions
+
+int             Math_RandomInt(int minV, int maxV);
+float           Math_RandomFloat(float minV, float maxV);
+bool            Math_FloatsAreEqual(float num1, float num2, float precision);
+float           Math_Sqrt(float num);
+float           Math_RightTriangleSide(float side2, float hypotenuse);
+float           Math_Hypotenuse(float side1, float side2);
+int             Math_PowI(int base, int exp);
+float           Math_PowF(float base, int exp);
+int             Math_Factorial(int num);
+int             Math_Round(float num);
+float           Math_RadToDeg(float radians);
+float           Math_DegToRad(float degrees);
+float           Math_PrincipalAngle(float angle);
+int             Math_AngleQuarter(float angle);
+float           Math_Sin(float angle);
+float           Math_Cos(float angle);
+float           Math_Tan(float angle);
+
+
+
 
 #endif // FUND_GUARD
 

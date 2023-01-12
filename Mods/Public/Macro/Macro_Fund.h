@@ -33,6 +33,26 @@
 #define ARCH_DEF2(gConst, gArch) gConst ## _ ## gArch
 
 
+// **************************************************************************** MAKE_2D_ARR
+
+// Allocate memory for a 2D array of the given type and size
+#define MAKE_2D_ARR(gVar, gX, gY, gType, gZeroValMode) \
+    (gVar) = Memory_Allocate(NULL, sizeof(gType*) * (gX), ZEROVAL_NONE); \
+    for (int x = 0; x < (gX); x++){ \
+        (gVar)[x] = Memory_Allocate(NULL, sizeof(gType) * (gY), (gZeroValMode)); \
+    }
+
+
+// **************************************************************************** FREE_2D_ARR
+
+// Free the memory of the 2D array
+#define FREE_2D_ARR(gVar, gX) \
+    for (int x = 0; x < (gX); x++){ \
+        (gVar)[x] = Memory_Free((gVar)[x]); \
+    } \
+    (gVar) = Memory_Free(gVar);
+
+
 
 
 
@@ -133,6 +153,13 @@
         (v1) = (v2); \
         (v2) = swapTemp; \
     }
+
+
+// **************************************************************************** FEQ
+
+// Evaluates to true if the two floats are equal with the default precision
+#define FEQ(v1, v2) \
+    Math_FloatsAreEqual(v1, v2, MATH_FLOAT_PRECISION)
 
 
 
