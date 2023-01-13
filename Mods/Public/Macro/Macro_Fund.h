@@ -173,6 +173,82 @@
 
 
 
+// ---------------------------------------------------------------------------- Geometry Macros
+
+// **************************************************************************** POINT
+
+// Set a point
+#define POINT(gX, gY) \
+    ((Point) {.x = (gX), .y = (gY)})
+
+
+// **************************************************************************** VECTOR
+
+// Set a vector
+#define VECTOR(gX, gY) \
+    POINT(gX, gY)
+
+
+// **************************************************************************** SIZE
+
+// Set a size
+#define SIZE(gW, gH) \
+    ((Size) {.width = (gW), .height = (gH)})
+
+
+// **************************************************************************** SIZE_SQR
+
+// Set a square size
+#define SIZE_SQR(gSide) \
+    SIZE(gSide, gSide)
+
+
+// **************************************************************************** RECT
+
+// Set a rectangle
+#define RECT(gX, gY, gW, gH) \
+    ((Rect) {.x = (gX), .y = (gY), .width = (gW), .height = (gH)})
+
+
+// **************************************************************************** RORIGIN
+
+// The top left corner of the rectangle
+#define RORIGIN(gRect) \
+    Geo_RectOrigin(gRect)
+
+
+// **************************************************************************** RSIZE
+
+// The size of the rectangle
+#define RSIZE(gRect) \
+    Geo_RectSize(gRect)
+
+
+// **************************************************************************** TO_RECT
+
+// A rectangle with equal size and top left corner at (0, 0)
+#define TO_RECT(gSize) \
+    Geo_SizeToRect(gSize)
+
+
+// **************************************************************************** MIN_DIM
+
+// The minimum dimension (width or height) of the size or rectangle
+#define MIN_DIM(gObj) \
+    MIN((gObj).width, (gObj).height)
+
+
+// **************************************************************************** MAX_DIM
+
+// The maximum dimension (width or height) of the size or rectangle
+#define MAX_DIM(gObj) \
+    MAX((gObj).width, (gObj).height)
+
+
+
+
+
+
 // ---------------------------------------------------------------------------- Graphics Macros
 
 // **************************************************************************** COLOR

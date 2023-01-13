@@ -155,3 +155,27 @@ bool Orientation_IsValid(int orientation){
 #endif
 
 
+// **************************************************************************** E_RectPointType
+
+// Return true if the value is a valid rectangle point type
+bool RectPointType_IsValid(int pointType){
+    return IS_IN_RANGE(pointType, 0, RECT_POINT_TYPES_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the rectangle point type
+    const char* RectPointType_ToString(int pointType){
+        const char* names[] = {
+            "Top Left",    "Top Center",    "Top Right",
+            "Middle Left", "Center",        "Middle Right",
+            "Bottom Left", "Bottom Center", "Bottom Right"
+        };
+
+        CHECK_INVALID(RectPointType_IsValid(pointType), LONG_FORM)
+
+        return names[pointType];
+    }
+#endif
+
+
+

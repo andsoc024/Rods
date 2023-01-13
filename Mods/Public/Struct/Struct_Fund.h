@@ -35,6 +35,35 @@ typedef struct Bytes{
 }Bytes;
 
 
+// ---------------------------------------------------------------------------- Geometry Structures
+
+// **************************************************************************** Point
+
+// A point in the cartesian plane with float x, y coords. Typedef of Vector2
+typedef Vector2 Point;
+    // float x;
+    // float y;
+
+
+// **************************************************************************** Size
+
+// Size with float width and height
+typedef struct Size{
+    float width;
+    float height;
+}Size;
+
+
+// **************************************************************************** Rect
+
+// A rectangle with top left corner at (x,y) and float width and height. 
+// Typedef of Rectangle
+typedef Rectangle Rect;
+    // float x;
+    // float y;
+    // float width;
+    // float height;
+    
 
 
 #endif // STRUCT_FUND_GUARD

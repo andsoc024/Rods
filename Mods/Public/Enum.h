@@ -112,5 +112,21 @@ bool            Orientation_IsValid(int orientation);
 #endif
 
 
+// **************************************************************************** E_RectPointType
+
+// Rectangle Point Type
+typedef enum E_RectPointType{
+    RP_TOP_LEFT,    RP_TOP_CENTER,    RP_TOP_RIGHT,
+    RP_MIDDLE_LEFT, RP_CENTER,        RP_MIDDLE_RIGHT,
+    RP_BOTTOM_LEFT, RP_BOTTOM_CENTER, RP_BOTTOM_RIGHT
+}E_RectPointType;
+#define RECT_POINT_TYPES_N                  (RP_BOTTOM_RIGHT + 1)
+
+bool            RectPointType_IsValid(int pointType);
+#ifdef DEBUG_MODE
+    const char* RectPointType_ToString(int pointType);
+#endif
+
+
 #endif // ENUM_GUARD
 

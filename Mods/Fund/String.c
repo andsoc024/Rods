@@ -165,6 +165,8 @@ char* String_Pad(char* str, int minLength, char padChar){
 
     str = String_Concat(str, 2, padStr, str);
 
+    padStr = Memory_Free(padStr);
+
     return str;
 }
 

@@ -116,11 +116,20 @@
 #define LEGDIR_LEFT                         (1 << 2)
 #define LEGDIR_UP                           (1 << 3)
 
+// For use in geometry functions
+#define RESPECT_ASPECT_RATIO                true
+#define RESPECT_NOT_ASPECT_RATIO            false
+
 
 // ============================================================================ DEF STRUCTURES
 
 #define BYTES_NULL                          BYTES(0, 0, 0, 0, 0)
 #define BYTES_ZERO                          BYTES(4, 0, 0, 0, 0)
+
+#define POINT_NULL                          POINT(0, 0)
+#define VECTOR_NULL                         VECTOR(0, 0)
+#define SIZE_NULL                           SIZE(0, 0)
+#define RECT_NULL                           RECT(0, 0, 0, 0)
 
 
 // ============================================================================ GLOBALS
