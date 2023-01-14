@@ -37,7 +37,7 @@ void Rod_Set(Rod* rod, int legs){
 // **************************************************************************** Rod_HasLegToDir
 
 // Return true if the rod has a leg to the given direction
-bool Rod_HasLegToDir(Rod* rod, E_Direction dir){
+bool Rod_HasLegToDir(const Rod* rod, E_Direction dir){
     int legDir = Direction_ToLegDir(dir);
     return rod->legs & legDir;
 }
@@ -47,7 +47,7 @@ bool Rod_HasLegToDir(Rod* rod, E_Direction dir){
 
 // Return true if the rod is connected to the adjacent rod towards the given 
 // direction
-bool Rod_IsConnectedToRod(Rod* rod1, Rod* rod2, E_Direction dir){
+bool Rod_IsConnectedToRod(const Rod* rod1, const Rod* rod2, E_Direction dir){
     if (Rod_IsAnimating(rod1) || Rod_IsAnimating(rod2)){
         return false;
     }
@@ -62,7 +62,7 @@ bool Rod_IsConnectedToRod(Rod* rod1, Rod* rod2, E_Direction dir){
 // **************************************************************************** Rod_IsAnimating
 
 // Return true if the rod is animating
-bool Rod_IsAnimating(Rod* rod){
+bool Rod_IsAnimating(const Rod* rod){
     return rod->frame > 0;
 }
 
@@ -113,7 +113,7 @@ bool Rod_FinishAnim(Rod* rod){
 // **************************************************************************** Rod_Print
 
     // Single line print of the rod parameters. Optionally with new line
-    void Rod_Print(Rod* rod, bool withNewLine){
+    void Rod_Print(const Rod* rod, bool withNewLine){
         CHECK_NULL(rod, withNewLine)
 
         Direction_PrintLegs(rod->legs, WITHOUT_NEW_LINE);

@@ -31,14 +31,41 @@
 // ---------------------------------------------------------------------------- Rod Functions
 
 void            Rod_Set(Rod* rod, int legs);
-bool            Rod_HasLegToDir(Rod* rod, E_Direction dir);
-bool            Rod_IsConnectedToRod(Rod* rod1, Rod* rod2, E_Direction dir);
-bool            Rod_IsAnimating(Rod* rod);
+bool            Rod_HasLegToDir(const Rod* rod, E_Direction dir);
+bool            Rod_IsConnectedToRod(const Rod* rod1, const Rod* rod2, E_Direction dir);
+bool            Rod_IsAnimating(const Rod* rod);
 void            Rod_Rotate(Rod* rod, int times, bool withAnim);
 bool            Rod_Update(Rod* rod);
 bool            Rod_FinishAnim(Rod* rod);
 #ifdef DEBUG_MODE
-    void        Rod_Print(Rod* rod, bool withNewLine);
+    void        Rod_Print(const Rod* rod, bool withNewLine);
+#endif
+
+// ---------------------------------------------------------------------------- Rod Grid Functions
+
+RGrid*          RGrid_MakeEmpty(int nCols, int nRows);
+RGrid*          RGrid_Copy(RGrid* dst, const RGrid* src);
+RGrid*          RGrid_Free(RGrid* rGrid);
+void            RGrid_Clear(RGrid* rGrid);
+void            RGrid_CreateRandom(RGrid* rGrid);
+void            RGrid_SetSize(RGrid* rGrid, int nCols, int nRows);
+void            RGrid_Shuffle(RGrid* rGrid);
+void            RGrid_Electrify(RGrid* rGrid, GNode start);
+void            RGrid_Deelectrify(RGrid* rGrid);
+void            RGrid_Reelectrify(RGrid* rGrid);
+void            RGrid_RotateRod(RGrid* rGrid, GNode node);
+void            RGrid_Update(RGrid* rGrid);
+void            RGrid_FinishAnim(RGrid* rGrid);
+Grid            RGrid_GetSize(const RGrid* rGrid);
+GNode           RGrid_GetSource(const RGrid* rGrid);
+Rod*            RGrid_GetRod(const RGrid* rGrid, GNode node);
+void            RGrid_SetRod(RGrid* rGrid, GNode node, int legs);
+bool            RGrid_IsAnimating(const RGrid* rGrid);
+int             RGrid_GetTotal(const RGrid* rGrid);
+int             RGrid_GetNumElectrified(const Grid* rGrid);
+int             RGrid_GetNumUnelectrified(const RGrid* rGrid);
+#ifdef DEBUG_MODE
+    void        RGrid_Print(const RGrid* rGrid);
 #endif
 
 

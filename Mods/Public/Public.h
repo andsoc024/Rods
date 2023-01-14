@@ -100,6 +100,10 @@
 // Rod Constants
 #define ROD_ROT_FRAMES_N                    ((FPS * 1) / 3)
 
+#define RGRID_MIN_SIZE                      3
+#define RGRID_MAX_SIZE                      100
+#define RGRID_DEF_SIZE                      10
+
 
 // ============================================================================ COLORS
 
