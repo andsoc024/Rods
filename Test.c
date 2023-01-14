@@ -31,27 +31,17 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    RGrid* rGrid = RGrid_MakeEmpty(10, 10);
+    Records_MakeDefault();
 
-    RGrid_CreateRandom(rGrid);
-    RGrid_Print(rGrid);
-
-    RGrid_Reelectrify(rGrid);
-    RGrid_Print(rGrid);
-
-    RGrid_Shuffle(rGrid);
-    RGrid_Print(rGrid);
-
-    for (int i = 0; i < 4; i++){
-        RGrid_RotateRod(rGrid, RGrid_GetSource(rGrid));
-        RGrid_Print(rGrid);
-        while (RGrid_IsAnimating(rGrid)){
-            RGrid_Update(rGrid);
-        }
-        RGrid_Print(rGrid);
+    for (int i = 0; i < 100; i++){
+        Records_Set(Glo_Records, Time_FromInt(Math_RandomInt(0, TIME_MAX_SECS)), 
+                    Math_RandomInt(RGRID_MIN_SIZE, RGRID_MAX_SIZE), 
+                    Math_RandomInt(RGRID_MIN_SIZE, RGRID_MAX_SIZE));
     }
 
-    rGrid = RGrid_Free(rGrid);
+    Records_Print(Glo_Records);
+
+    Records_Free(Glo_Records);
 
     return 0;
 }

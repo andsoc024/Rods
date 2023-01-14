@@ -119,11 +119,18 @@ typedef struct Rod{
     unsigned char frame;
 }Rod;
 
+
 // **************************************************************************** RGrid
 
 // A grid of rods of which one is the source. The rods can be rotated until all 
 // are connected to the source
 typedef struct RGrid RGrid;
+
+
+// **************************************************************************** Records
+
+// Structure for storing the minimum record time for various grid sizes
+typedef struct Records Records;
 
 
 

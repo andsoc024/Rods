@@ -176,6 +176,8 @@
 // The window size
 extern Size Glo_WinSize;
 
+// Structure for holdeing the minimum record times
+extern Records* Glo_Records;
 
 
 

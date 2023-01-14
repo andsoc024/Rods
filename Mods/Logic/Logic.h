@@ -69,6 +69,20 @@ int             RGrid_GetNumUnelectrified(const RGrid* rGrid);
     void        RGrid_Print(const RGrid* rGrid);
 #endif
 
+// ---------------------------------------------------------------------------- Records Functions
+
+Records*        Records_Make(void);
+Records*        Records_Copy(Records* dst, const Records* src);
+Records*        Records_Free(Records* records);
+void            Records_Clear(Records* records);
+Time            Records_Get(const Records* records, int nCols, int nRows);
+void            Records_Set(Records* records, Time t, int nCols, int nRows);
+int             Records_N(const Records* records);
+void            Records_MakeDefault(void);
+void            Records_FreeDefault(void);
+#ifdef DEBUG_MODE
+    void        Records_Print(const Records* records);
+#endif
 
 
 #endif // LOGIC_GUARD

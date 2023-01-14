@@ -45,6 +45,8 @@ const int WATCHED_KEYS_N = sizeof(WATCHED_KEYS) / sizeof(WATCHED_KEYS[0]);
 // The window size
 Size Glo_WinSize = {0};
 
+// Structure for holdeing the minimum record times
+Records* Glo_Records = 0;
 
 
 
