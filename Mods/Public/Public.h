@@ -84,6 +84,9 @@
 #define MATH_PHI_INVERSE                    (1.0f / MATH_PHI)
 #define MATH_FLOAT_PRECISION                0.001f
 
+// Window Constants
+#define FPS                                 60
+
 // Time Constants
 #define TIME_MAX_HOURS                      8
 #define TIME_MAX_SECS                       (TIME_MAX_HOURS * 60 * 60 + 59 * 60 + 59)
@@ -153,6 +156,8 @@
 
 // ============================================================================ GLOBALS
 
+// The window size
+extern Size Glo_WinSize;
 
 
 

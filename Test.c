@@ -30,18 +30,24 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    Time t = TIME_NULL;
-    Time_Print(t, WITH_NEW_LINE);
+    Window_PrintAppInfo();
 
-    while (Time_IsSmaller(t, TIME_MAX)){
-        t = Time_Shift(t, 500);
-        Time_Print(t, WITH_NEW_LINE);
+    Window_Init();
+
+    while (!WindowShouldClose()){
+        if (IsWindowResized()){
+            Window_UpdateWinSize();
+            Window_PrintSize(WITHOUT_NEW_LINE);
+            printf(" ");
+            Geo_PrintSize(Glo_WinSize, WITH_NEW_LINE);
+        }
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+        EndDrawing();
     }
 
-    Time_Print(t, WITH_NEW_LINE);
-
-    printf("%s\n", Bool_ToString(Time_IsEqual(t, TIME_MAX), LONG_FORM));
-    printf("%s\n", Bool_ToString(Time_IsEqual(t, TIME_INVALID), LONG_FORM));
+    Window_Close();
 
     return 0;
 }

@@ -42,6 +42,8 @@ const int WATCHED_KEYS_N = sizeof(WATCHED_KEYS) / sizeof(WATCHED_KEYS[0]);
 
 // ============================================================================ GLOBALS
 
+// The window size
+Size Glo_WinSize = {0};
 
 
 

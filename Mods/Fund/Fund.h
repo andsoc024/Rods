@@ -201,6 +201,16 @@ char*           Time_ToString(char* dst, Time t);
     void        Time_Print(Time t, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- Window Functions
+
+void            Window_Init(void);
+Size            Window_GetSize(void);
+void            Window_UpdateWinSize(void);
+void            Window_Close(void);
+#ifdef DEBUG_MODE
+    void        Window_PrintSize(bool withNewLine);
+    void        Window_PrintAppInfo(void);
+#endif
 
 #endif // FUND_GUARD
 
