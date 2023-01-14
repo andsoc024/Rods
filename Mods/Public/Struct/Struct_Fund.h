@@ -87,6 +87,21 @@ typedef struct Grid{
 }Grid;
 
 
+// ---------------------------------------------------------------------------- Time Structures
+
+// **************************************************************************** Time
+
+// Time in hours, minutes, seconds
+typedef union Time{
+    struct{
+        char hours;
+        char minutes;
+        char seconds;
+    };
+
+    char values[3];
+}Time;
+
 
 
 #endif // STRUCT_FUND_GUARD

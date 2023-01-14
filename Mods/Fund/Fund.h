@@ -185,6 +185,22 @@ Size            Grid_FitSizeToGrid(Size size, Grid grid);
     void        Grid_Print(Grid grid, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- Time Functions
+
+Time            Time_Set(int hours, int minutes, int seconds);
+Time            Time_PutInValidRange(Time t);
+bool            Time_IsValid(Time t);
+bool            Time_IsEqual(Time t1, Time t2);
+bool            Time_IsSmaller(Time t1, Time t2);
+Time            Time_Increment(Time t);
+Time            Time_Shift(Time t, int dt);
+int             Time_ToInt(Time t);
+Time            Time_FromInt(int secs);
+char*           Time_ToString(char* dst, Time t);
+#ifdef DEBUG_MODE
+    void        Time_Print(Time t, bool withNewLine);
+#endif
+
 
 #endif // FUND_GUARD
 
