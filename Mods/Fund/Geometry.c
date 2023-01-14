@@ -368,30 +368,16 @@ bool Geo_SizeIsInRange(Size size, const Size* minSize, const Size* maxSize){
 
 // Ensure that the size is within the given limits. If a limit is NULL, it is 
 // ignored
-Size Geo_SizePutInRange(Size size, const Size* minSize, const Size* maxSize, bool respectAspectRatio){
-    if (respectAspectRatio){
-        if (minSize != NULL){
-            if (size.width < minSize->width || size.height < minSize->height){
-                size = Geo_FitSizeOnSize(size, *minSize);
-            }
-        }
+Size Geo_PutSizeInRange(Size size, const Size* minSize, const Size* maxSize){
+    
+    if (minSize != NULL){
+        size.width  = MAX(size.width, minSize->width);
+        size.height = MAX(size.height, minSize->height);
+    }
 
-        if (maxSize != NULL){
-            if (size.width > maxSize->width || size.height > maxSize->height){
-                size = Geo_FitSizeInSize(size, *maxSize, 0.0f);
-            }
-        }
-
-    }else{ // respectAspectRatio == false
-        if (minSize != NULL){
-            size.width  = MAX(size.width, minSize->width);
-            size.height = MAX(size.height, minSize->height);
-        }
-
-        if (maxSize != NULL){
-            size.width = MIN(size.width, maxSize->width);
-            size.height = MIN(size.height, maxSize->height);
-        }
+    if (maxSize != NULL){
+        size.width = MIN(size.width, maxSize->width);
+        size.height = MIN(size.height, maxSize->height);
     }
 
     return size;

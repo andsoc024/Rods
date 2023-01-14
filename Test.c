@@ -36,38 +36,35 @@ int Test(UNUSED int argc, UNUSED char** argv){
     InitWindow(winSize.width, winSize.height, "Test");
     SetTargetFPS(60);
 
-    const Size vScreen = SIZE(1000, 1000);
-    const float winMargin = 10.0f;
+    const Grid totalGrid = GRID0(30, 20);
+    const float vCellSize = 50.0f;
+    const Size vScreen = Grid_ToSize(totalGrid, vCellSize);
+
+    const float winMargin = 50.0f;
     Rect rScreen = Geo_ProjectSizeInSize(vScreen, winSize, winMargin);
+
     float scaleF = rScreen.width / vScreen.width;
     Point origin = RORIGIN(rScreen);
 
-    Rect defVRect = Geo_AlignRect(TO_RECT(SIZE(800, 600)), TO_RECT(vScreen), RP_CENTER);
-    Rect vRect = defVRect;
-    Point vCenters[RECT_POINT_TYPES_N];
-    for (int i = 0; i < RECT_POINT_TYPES_N; i++){
-        vCenters[i] = Geo_RectPoint(vRect, i);
-    }
-    const float vRadius = 15.0f;
-
-    Rect rRect = Geo_ProjectRect(vRect, scaleF, origin);
-
     Point mousePos = GetMousePosition();
-    const Size cursorSize = SIZE_SQR(50.0f);
-    Rect cursorRect = Geo_SetRectPS(mousePos, cursorSize, RP_CENTER);
+    const Size cursorRectSize = SIZE(400, 250);
+    Rect cursorRect = Geo_SetRectPS(mousePos, cursorRectSize, RP_CENTER);
 
-    const float reflMargin = -20.0f;
-    Rect reflRect = Geo_PutRectInRect(cursorRect, rRect, reflMargin);
+    Rect vCursorRect = Geo_UnprojectRect(cursorRect, scaleF, origin);
+    Grid grid = Grid_SectionFromRect(vCursorRect, vCellSize, totalGrid);
+    Rect vGridRect = Grid_ToRect(grid, vCellSize);
+    Rect gridRect = Geo_ProjectRect(vGridRect, scaleF, origin);
+
+    Point vMousePos = Geo_UnprojectPoint(mousePos, scaleF, origin);
+    GNode mouseNode = Grid_PointToNode(vMousePos, vCellSize);
+    Rect vMouseRect = Geo_SetRectPS(Grid_NodeToPoint(mouseNode, vCellSize), SIZE_SQR(vCellSize), RP_TOP_LEFT);
+    Rect mouseRect = Geo_ProjectRect(vMouseRect, scaleF, origin);
 
     const Color colBG = COLOR(0x23, 0x23, 0x23, 0xFF);
-    const Color colInactive = RED;
-    const Color colReady = ORANGE;
-    const Color colActive = GREEN;
-    const Color colCircle = PINK;
-    const Color colCursor = GRAY;
-    Color colRect = colInactive;
-
-    const float moveDist = 10.0f;
+    const Color colGrid = RED;
+    const Color colCursor = BLUE;
+    const Color colActive = YELLOW;
+    const Color colMouse = GREEN;
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
@@ -77,46 +74,37 @@ int Test(UNUSED int argc, UNUSED char** argv){
             origin = RORIGIN(rScreen);
         }
 
-        KeyboardKey key = GetKeyPressed();
-        switch (key){
-            case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
-                E_Direction dir = Direction_FromKey(key);
-                vRect = Geo_MoveRectToDir(vRect, dir, moveDist);
-                for (int i = 0; i < RECT_POINT_TYPES_N; i++){
-                    vCenters[i] = Geo_MovePointToDir(vCenters[i], dir, moveDist);
-                }
-                break;
-            }
-
-            case WKEY_SPACE:{
-                vRect = defVRect;
-                for (int i = 0; i < RECT_POINT_TYPES_N; i++){
-                    vCenters[i] = Geo_RectPoint(vRect, i);
-                }
-                break;
-            }
-
-            default: {break;}
-        }
-
-        rRect = Geo_ProjectRect(vRect, scaleF, origin);
-
         mousePos = GetMousePosition();
-        cursorRect = Geo_SetRectPS(mousePos, cursorSize, RP_CENTER);
+        vMousePos = Geo_UnprojectPoint(mousePos, scaleF, origin);
 
-        reflRect = Geo_PutRectInRect(cursorRect, rRect, reflMargin);
+        cursorRect = Geo_SetRectPS(mousePos, cursorRectSize, RP_CENTER);
+        vCursorRect = Geo_UnprojectRect(cursorRect, scaleF, origin);
 
-        colRect = Geo_PointIsInRect(mousePos, rRect) ? colActive :
-                  Geo_RectsOverlap(cursorRect, rRect) ? colReady : colInactive;
+        grid = Grid_SectionFromRect(vCursorRect, vCellSize, totalGrid);
+        vGridRect = Grid_ToRect(grid, vCellSize);
+        gridRect = Geo_ProjectRect(vGridRect, scaleF, origin);
+
+        mouseNode = Grid_PointToNode(vMousePos, vCellSize);
+        vMouseRect = Geo_SetRectPS(Grid_NodeToPoint(mouseNode, vCellSize), SIZE_SQR(vCellSize), RP_TOP_LEFT);
+        mouseRect = Geo_ProjectRect(vMouseRect, scaleF, origin);
 
         BeginDrawing();
         ClearBackground(colBG);
-        DrawRectangleRec(rRect, colRect);
-        for (int i = 0; i < RECT_POINT_TYPES_N; i++){
-            DrawCircleV(Geo_ProjectPoint(vCenters[i], scaleF, origin), vRadius * scaleF, colCircle);
+        DrawRectangleRec(gridRect, colActive);
+        if (Grid_NodeIsInGrid(mouseNode, totalGrid)){
+            DrawRectangleRec(mouseRect, colMouse);
         }
-        DrawRectangleRec(cursorRect, colCursor);
-        DrawRectangleRec(reflRect, colCursor);
+        DrawRectangleLines(cursorRect.x, cursorRect.y, cursorRect.width, cursorRect.height, colCursor);
+        for (int x = 0; x <= totalGrid.nCols; x++){
+            DrawLineV(Geo_ProjectPoint(Grid_NodeToPoint(GNODE(x, 0), vCellSize), scaleF, origin), 
+                                       Geo_ProjectPoint(Grid_NodeToPoint(GNODE(x, totalGrid.nRows), vCellSize), scaleF, origin), 
+                                       colGrid);
+        }
+        for (int y = 0; y <= totalGrid.nRows; y++){
+            DrawLineV(Geo_ProjectPoint(Grid_NodeToPoint(GNODE(0, y), vCellSize), scaleF, origin), 
+                                       Geo_ProjectPoint(Grid_NodeToPoint(GNODE(totalGrid.nCols, y), vCellSize), scaleF, origin), 
+                                       colGrid);
+        }
         EndDrawing();
     }
 

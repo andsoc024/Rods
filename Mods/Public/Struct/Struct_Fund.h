@@ -63,7 +63,30 @@ typedef Rectangle Rect;
     // float y;
     // float width;
     // float height;
-    
+
+
+// ---------------------------------------------------------------------------- Grid Structures
+
+// **************************************************************************** GNode
+
+// Grid node with integer x and y coords
+typedef struct GNode{
+    int x;
+    int y;
+}GNode;
+
+
+// **************************************************************************** Grid
+
+// A grid with top left corner at origin and size nCols (number of columns) x 
+// nRows (number of rows)
+typedef struct Grid{
+    int nCols;
+    int nRows;
+    GNode origin;
+}Grid;
+
+
 
 
 #endif // STRUCT_FUND_GUARD

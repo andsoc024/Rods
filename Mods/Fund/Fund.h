@@ -134,7 +134,7 @@ Point           Geo_UnprojectPoint(Point p, float scaleF, Point origin);
 Rect            Geo_ProjectRect(Rect rect, float scaleF, Point origin);
 Rect            Geo_UnprojectRect(Rect rect, float scaleF, Point origin);
 bool            Geo_SizeIsInRange(Size size, const Size* minSize, const Size* maxSize);
-Size            Geo_SizePutInRange(Size size, const Size* minSize, const Size* maxSize, bool respectAspectRatio);
+Size            Geo_PutSizeInRange(Size size, const Size* minSize, const Size* maxSize);
 float           Geo_PutMarginInLimits(float margin, Size cSize);
 Size            Geo_ApplySizeMargins(Size size, float margin);
 Rect            Geo_ApplyRectMargins(Rect rect, float margin);
@@ -148,6 +148,41 @@ Rect            Geo_PutRectInRect(Rect rect, Rect cRect, float margin);
     void        Geo_PrintVector(Vector2 vector, bool withNewLine);
     void        Geo_PrintSize(Size size, bool withNewLine);
     void        Geo_PrintRect(Rect rect, bool withNewLine);
+#endif
+
+// ---------------------------------------------------------------------------- Grid Functions
+
+Grid            Grid_SetBetweenNodes(GNode node1, GNode node2);
+bool            Grid_IsValid(Grid grid);
+int             Grid_N(Grid grid);
+GNode           Grid_RandomNode(Grid grid);
+GNode           Grid_LastNode(Grid grid);
+GNode           Grid_NextNode(GNode node, Grid grid);
+int             Grid_Limit(Grid grid, E_Direction dir);
+GNode           Grid_OppositeNode(GNode node);
+bool            Grid_NodesAreEqual(GNode node1, GNode node2);
+bool            Grid_NodeIsInRange(GNode node, int minX, int maxX, int minY, int maxY);
+bool            Grid_NodeIsInGrid(GNode node, Grid grid);
+GNode           Grid_PutNodeInRange(GNode node, int minX, int maxX, int minY, int maxY);
+GNode           Grid_PutNodeInGrid(GNode node, Grid grid);
+bool            Grid_Overlap(Grid grid1, Grid grid2);
+Grid            Grid_Section(Grid grid, Grid grid2);
+GNode           Grid_MoveNode(GNode node, int dx, int dy);
+GNode           Grid_MoveNodeToDir(GNode node, E_Direction dir, int distance);
+GNode           Grid_TranslateNode(GNode node, GNode vector);
+Size            Grid_CalcCellSize(Grid grid, Size gridSize);
+float           Grid_CalcSqrCellSize(Grid grid, Size gridSize);
+Point           Grid_NodeToPoint(GNode node, float cellSize);
+GNode           Grid_PointToNode(Point p, float cellSize);
+Size            Grid_ToSize(Grid grid, float cellSize);
+Grid            Grid_FromSize(Size size, float cellSize);
+Rect            Grid_ToRect(Grid grid, float cellSize);
+Grid            Grid_FromRect(Rect rect, float cellSize);
+Grid            Grid_SectionFromRect(Rect rect, float cellSize, Grid totalGrid);
+Size            Grid_FitSizeToGrid(Size size, Grid grid);
+#ifdef DEBUG_MODE
+    void        Grid_PrintNode(GNode node, bool withNewLine);
+    void        Grid_Print(Grid grid, bool withNewLine);
 #endif
 
 
