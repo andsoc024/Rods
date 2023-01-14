@@ -82,6 +82,18 @@
     }
 
 
+// **************************************************************************** CHECK_NULL
+
+// For use in print functions. If the object is NULL, print STR_NULL, 
+// optionally with new line, and return
+#define CHECK_NULL(gObj, withNewLine) \
+    if ((gObj) == NULL){ \
+        printf("%s", STR_NULL); \
+        if (withNewLine) {printf("\n");} \
+        return; \
+    }
+
+
 
 
 

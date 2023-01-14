@@ -104,5 +104,21 @@ typedef union Time{
 
 
 
+
+
+
+// ---------------------------------------------------------------------------- Logic Structures
+
+// **************************************************************************** Rod
+
+// The rod is the elementary unit of the game. It consists of 1-4 legs, with 
+// which it can connect to adjacent rods. It can be electrified or not
+typedef struct Rod{
+    unsigned char legs:4;
+    bool isElectrified:1;
+    unsigned char frame;
+}Rod;
+
+
 #endif // STRUCT_FUND_GUARD
 

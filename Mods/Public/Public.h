@@ -97,6 +97,9 @@
 #define TIME_INVALID_STR                    ((char[]) {TIME_INVALID_CHAR, TIME_INVALID_CHAR, TIME_SEP_CHAR, \
                                                        TIME_INVALID_CHAR, TIME_INVALID_CHAR, '\0'})
 
+// Rod Constants
+#define ROD_ROT_FRAMES_N                    ((FPS * 1) / 3)
+
 
 // ============================================================================ COLORS
 
@@ -134,6 +137,14 @@
 #define MINUTES                             1
 #define SECONDS                             2
 
+// For use in functions that involve animation
+#define WITH_ANIM                           true
+#define WITHOUT_ANIM                        false
+
+// Result of rod functions
+#define COMPLETED                           true
+#define NOT_COMPLETED                       false
+
 
 // ============================================================================ DEF STRUCTURES
 
@@ -152,6 +163,8 @@
 #define TIME_NULL                           TIME(0, 0, 0)
 #define TIME_INVALID                        TIME(INVALID, INVALID, INVALID)
 #define TIME_MAX                            TIME(TIME_MAX_HOURS, 59, 59)
+
+#define ROD_NULL                            ((Rod) {.legs = 0, .isElectrified = false, .frame = 0})
 
 
 // ============================================================================ GLOBALS

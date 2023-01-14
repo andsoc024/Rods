@@ -20,6 +20,7 @@
 
 #include "Mods/Public/Public.h"
 #include "Mods/Fund/Fund.h"
+#include "Mods/Logic/Logic.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"
