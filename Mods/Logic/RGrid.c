@@ -56,6 +56,7 @@ struct RGrid{
 // ============================================================================ PRIVATE FUNC DECL
 
 void            RGrid_AddToUpdatable(RGrid* rGrid, GNode node);
+bool            RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node);
 
 
 
@@ -203,21 +204,222 @@ void RGrid_SetSize(RGrid* rGrid, int nCols, int nRows){
 
     RGrid_Clear(rGrid);
 }
-void            RGrid_Shuffle(RGrid* rGrid);
-void            RGrid_Electrify(RGrid* rGrid, GNode start);
-void            RGrid_Deelectrify(RGrid* rGrid);
-void            RGrid_Reelectrify(RGrid* rGrid);
-void            RGrid_RotateRod(RGrid* rGrid, GNode node);
-void            RGrid_Update(RGrid* rGrid);
-void            RGrid_FinishAnim(RGrid* rGrid);
-Grid            RGrid_GetSize(const RGrid* rGrid);
-GNode           RGrid_GetSource(const RGrid* rGrid);
-Rod*            RGrid_GetRod(const RGrid* rGrid, GNode node);
-void            RGrid_SetRod(RGrid* rGrid, GNode node, int legs);
-bool            RGrid_IsAnimating(const RGrid* rGrid);
-int             RGrid_GetTotal(const RGrid* rGrid);
-int             RGrid_GetNumElectrified(const Grid* rGrid);
-int             RGrid_GetNumUnelectrified(const RGrid* rGrid);
+
+
+// **************************************************************************** RGrid_Shuffle
+
+// Rotate all the rods in the grid randomly 0-3 times
+void RGrid_Shuffle(RGrid* rGrid){
+    GNode temp = GNODE_NULL;
+    do{
+        Rod_Rotate(&RON(temp), Math_RandomInt(0, 3), WITHOUT_ANIM);
+        temp = Grid_NextNode(temp, rGrid->size);
+    }while (!Grid_NodesAreEqual(temp, GNODE_NULL));
+
+    RGrid_Reelectrify(rGrid);
+}
+
+
+// **************************************************************************** RGrid_Electrify
+
+// Electrify the rod, starting from the rod at start. If start is 
+// GNODE_INVALID, start at the source
+void RGrid_Electrify(RGrid* rGrid, GNode start){
+    // If start is invalid, start from the source
+    start = Grid_NodesAreEqual(start, GNODE_INVALID) ? rGrid->source : start;
+
+    // If start can not be electrified, do nothing
+    if (!RGrid_RodCanBeElectrified(rGrid, start)){
+        return;
+    }
+
+    // Make an array to hold the electrified rods
+    GNode* list = Memory_Allocate(NULL, sizeof(GNode) * rGrid->nTotal, ZEROVAL_NONE);
+    int n = 0;
+
+    // Electrify the start and add it to the list
+    if (!RON(start).isElectrified){
+        RON(start).isElectrified = true;
+        rGrid->nElectrified++;
+    }
+    list[0] = start;
+    n++;
+
+    // Repeat for all nodes in the list
+    for (int i = 0; i < n; i++){
+        GNode current = list[i];
+
+        // Check all 4 directions for rods that are connected to the current 
+        // rod
+        for (int dir = DIR_RIGHT; dir <= DIR_UP; dir++){
+            GNode next = Grid_MoveNodeToDir(current, dir, 1);
+            if (Grid_NodeIsInGrid(next, rGrid->size) && !RON(next).isElectrified){
+                if (Rod_IsConnectedToRod(&RON(current), &RON(next), dir)){
+                    RON(next).isElectrified = true;
+                    rGrid->nElectrified++;
+                    list[n] = next;
+                    n++;
+                }
+            }
+        }
+    }
+
+    // Clean up
+    list = Memory_Free(list);
+}
+
+
+// **************************************************************************** RGrid_Deelectrify
+
+// Set all the rods as not electrified
+void RGrid_Deelectrify(RGrid* rGrid){
+    GNode temp = GNODE_NULL;
+    do{
+        RON(temp).isElectrified = false;
+        temp = Grid_NextNode(temp, rGrid->size);
+    }while (!Grid_NodesAreEqual(temp, GNODE_NULL));
+
+    rGrid->nElectrified = 0;
+}
+
+
+// **************************************************************************** RGrid_Reelectrify
+
+// Deelectrify and reelectrify the rod grid
+void RGrid_Reelectrify(RGrid* rGrid){
+    RGrid_Deelectrify(rGrid);
+    RGrid_Electrify(rGrid, GNODE_INVALID);
+}
+
+
+// **************************************************************************** RGrid_RotateRod
+
+// Rotate the rod at the given node by 90°, clockwise, with animation
+void RGrid_RotateRod(RGrid* rGrid, GNode node){
+    Rod_Rotate(&RON(node), 1, WITH_ANIM);
+
+    if (RON(node).isElectrified){
+        RGrid_Reelectrify(rGrid);
+    }
+
+    RGrid_AddToUpdatable(rGrid, node);
+}
+
+
+// **************************************************************************** RGrid_Update
+
+// Update all the rods in the updatable list
+void RGrid_Update(RGrid* rGrid){
+    for (int i = 0; i < RGRID_UPDATABLE_N; i++){
+        if (rGrid->updatable[i].x == INVALID) {continue;}
+        if (Rod_Update(&RON(rGrid->updatable[i])) == COMPLETED){
+            RGrid_Electrify(rGrid, rGrid->updatable[i]);
+            rGrid->updatable[i] = GNODE_INVALID;
+        }
+    }
+}
+
+
+// **************************************************************************** RGrid_FinishAnim
+
+// Finish all eventual animations at the updatable list
+void RGrid_FinishAnim(RGrid* rGrid){
+    bool reelectrificationNeeded = false;
+    for (int i = 0; i < RGRID_UPDATABLE_N; i++){
+        if (rGrid->updatable[i].x != INVALID){
+            Rod_FinishAnim(&RON(rGrid->updatable[i]));
+            reelectrificationNeeded = true;
+            rGrid->updatable[i] = GNODE_INVALID;
+        }
+    }
+
+    if (reelectrificationNeeded){
+        RGrid_Reelectrify(rGrid);
+    }
+}
+
+
+// **************************************************************************** RGrid_GetSize
+
+// Return the rod grid size
+Grid RGrid_GetSize(const RGrid* rGrid){
+    return rGrid->size;
+}
+
+
+// **************************************************************************** RGrid_GetSource
+
+// Return the source of the rod grid
+GNode RGrid_GetSource(const RGrid* rGrid){
+    return rGrid->source;
+}
+
+
+// **************************************************************************** RGrid_GetRod
+
+// Return the rode at the given node. If the node is invalid, return NULL
+Rod* RGrid_GetRod(const RGrid* rGrid, GNode node){
+    if (!Grid_NodeIsInGrid(node, rGrid->size)){
+        return NULL;
+    }
+
+    return (Rod*) &RON(node);
+}
+
+
+// **************************************************************************** RGrid_GetRod_Fast
+
+// Return the rod at the given node, without validating the node
+Rod* RGrid_GetRod_Fast(const RGrid* rGrid, GNode node){
+    return (Rod*) &RON(node);
+}
+
+
+// **************************************************************************** RGrid_SetRod
+
+// Set the rod at the given node, with the given legs and as unelectrified and 
+// not rotating
+void RGrid_SetRod(RGrid* rGrid, GNode node, int legs){
+    Rod_Set(&RON(node), legs);
+}
+
+
+// **************************************************************************** RGrid_IsAnimating
+
+// Return true if any rod in the grid is animating
+bool RGrid_IsAnimating(const RGrid* rGrid){
+    for (int i = 0; i < RGRID_UPDATABLE_N; i++){
+        if (rGrid->updatable[i].x != INVALID){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+// **************************************************************************** RGrid_GetTotal
+
+// Return the total number of rods in the grid
+int RGrid_GetTotal(const RGrid* rGrid){
+    return rGrid->nTotal;
+}
+
+
+// **************************************************************************** RGrid_GetNumElectrified
+
+// Return the number of electrified rods in the grid
+int RGrid_GetNumElectrified(const RGrid* rGrid){
+    return rGrid->nElectrified;
+}
+
+
+// **************************************************************************** RGrid_GetNumUnelectrified
+
+// Return the number of unelectrified rods in the grid
+int RGrid_GetNumUnelectrified(const RGrid* rGrid){
+    return rGrid->nTotal - rGrid->nElectrified;
+}
 
 
 #ifdef DEBUG_MODE
@@ -288,6 +490,50 @@ int             RGrid_GetNumUnelectrified(const RGrid* rGrid);
 
 // ============================================================================ PRIVATE FUNC DEF
 
-// ****************************************************************************
-void            RGrid_AddToUpdatable(RGrid* rGrid, GNode node);
+// **************************************************************************** RGrid_AddToUpdatable
+
+// Add the node to the updatable list. If the position is already occupied, 
+// finish the current animation first
+void RGrid_AddToUpdatable(RGrid* rGrid, GNode node){
+    if (!Grid_NodeIsInGrid(node, rGrid->size)){
+        return;
+    }
+
+    int ind = rGrid->updIndex;
+
+    if (rGrid->updatable[ind].x != INVALID){
+        if (Rod_FinishAnim(&RON(rGrid->updatable[ind]))){
+            RGrid_Electrify(rGrid, rGrid->updatable[ind]);
+        }
+    }
+
+    rGrid->updatable[ind] = node;
+
+    rGrid->updIndex = (ind + 1) % RGRID_UPDATABLE_N;
+}
+
+
+// **************************************************************************** RGrid_RodCanBeElectrified
+
+// Return true if the rod can be electrified
+bool RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node){
+    if (!Grid_NodeIsInGrid(node, rGrid->size)){
+        return false;
+    }
+
+    if (Grid_NodesAreEqual(node, rGrid->source) && 
+        !Rod_IsAnimating(&RON(node))){
+        return true;
+    }
+
+    for (int dir = DIR_RIGHT; dir <= DIR_UP; dir++){
+        GNode next = Grid_MoveNodeToDir(node, dir, 1);
+        if (Grid_NodeIsInGrid(next, rGrid->size) && 
+            Rod_IsConnectedToRod(&RON(node), &RON(next), dir)){
+            return true;
+        }
+    }
+
+    return false;
+}
 
