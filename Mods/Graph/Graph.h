@@ -64,6 +64,26 @@ void            FRects_Draw(const FRects* fRects);
     void        FRects_Print(const FRects* fRects);
 #endif
 
+// ---------------------------------------------------------------------------- Virtual Graphics Functions
+
+VGraph*         VGraph_Make(Size vScreen, Rect cRect, float margin);
+VGraph*         VGraph_Free(VGraph* vg);
+void            VGraph_Resize(VGraph* vg, Rect cRect);
+Point           VGraph_ProjectPoint(Point p, const VGraph* vg);
+Point           VGraph_UnprojectPoint(Point p, const VGraph* vg);
+Rect            VGraph_ProjectRect(Rect rect, const VGraph* vg);
+Rect            VGraph_UnprojectRect(Rect rect, const VGraph* vg);
+float           VGraph_ProjectLength(float length, const VGraph* vg);
+float           VGraph_UnprojectLength(float length, const VGraph* vg);
+Size            VGraph_GetVScreen(const VGraph* vg);
+Rect            VGraph_GetRScreen(const VGraph* vg);
+float           VGraph_GetMargin(const VGraph* vg);
+float           VGraph_GetScaleF(const VGraph* vg);
+Point           VGraph_GetOrigin(const VGraph* vg);
+#ifdef DEBUG_MODE
+    void        VGraph_Print(const VGraph* vg);
+#endif
+
 // ---------------------------------------------------------------------------- Font Functions
 
 void            Font_LoadDefault(void);

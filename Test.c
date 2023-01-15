@@ -36,91 +36,39 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    MCol_MakeDefault();
+    const Size vScreen = SIZE_SQR(1000);
+    const Point vCenter = POINT(500, 500);
+    const float vRadius = 500;
 
-    const float txtrSize = 300.0f;
+    VGraph* vg = VGraph_Make(vScreen, TO_RECT(Glo_WinSize), 25.0f);
 
-    Texture2D txtrs[0x10];
-    for (int legs = 0x0; legs < 0x10; legs++){
-        Image im = GenImageColor(txtrSize, txtrSize, COL_NULL);
-        Shape_DrawRodInImage(&im, legs, WHITE);
-        txtrs[legs] = LoadTextureFromImage(im);
-        UnloadImage(im);
-        im = (Image) {0};
-    }
-
-    Image im = GenImageColor(txtrSize, txtrSize, COL_NULL);
-    Shape_DrawSelBoxInImage(&im, WHITE);
-    Texture2D txtrSelBox = LoadTextureFromImage(im);
-    UnloadImage(im);
-    im = (Image) {0};
+    PRINT_LINE
+    VGraph_Print(vg);
+    PRINT_LINE
 
 
-    Point pos = POINT((Glo_WinSize.width - txtrSize)  * 0.5f, 
-                      (Glo_WinSize.height - txtrSize) * 0.5f);
-    
-    int legs = 0;
-    bool isSource = false;
-    bool isElectrified = false;
     bool isSelected = false;
-
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            pos = POINT((Glo_WinSize.width - txtrSize)  * 0.5f, 
-                        (Glo_WinSize.height - txtrSize) * 0.5f);
+            VGraph_Resize(vg, TO_RECT(Glo_WinSize));
+            PRINT_LINE 
+            VGraph_Print(vg);
+            PRINT_LINE
         }
 
-        MCol_Update(Glo_MCol);
-
-        KeyboardKey key = GetKeyPressed();
-        switch (key){
-            case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
-                int legDir = Direction_ToLegDir(Direction_FromKey(key));
-                if (legs & legDir){
-                    legs ^= legDir;
-                }else{
-                    legs |= legDir;
-                }
-                break;
-            }
-
-            case WKEY_ENTER:{
-                TOGGLE(isSource)
-                break;
-            }
-
-            case WKEY_SPACE:{
-                TOGGLE(isElectrified)
-                break;
-            }
-
-            case WKEY_S:{
-                TOGGLE(isSelected)
-                break;
-            }
-
-            default: {break;}
-        }
+        Point mousePos = GetMousePosition();
+        mousePos = VGraph_UnprojectPoint(mousePos, vg);
+        isSelected = (Geo_PointsDistance(mousePos, vCenter) <= vRadius);
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        DrawTexture(txtrs[legs], pos.x, pos.y, isElectrified ? MCol(Glo_MCol) : COL_ROD);
-        if (isSource){
-            Shape_DrawSource(pos, txtrSize, isElectrified ? MCol(Glo_MCol) : COL_ROD);
-        }
-        if (isSelected){
-            DrawTexture(txtrSelBox, pos.x, pos.y, COL_SELBOX);
-        }
+        DrawCircleV(VGraph_ProjectPoint(vCenter, vg), VGraph_ProjectLength(vRadius, vg), 
+                    isSelected ? COL_ELECTRIC_2 : COL_ROD);
         EndDrawing();
     }
 
-    MCol_FreeDefault();
-
-    for (int legs = 0x0; legs < 0x10; legs++){
-        UnloadTexture(txtrs[legs]);
-    }
-    UnloadTexture(txtrSelBox);
+    vg = VGraph_Free(vg);
 
     Window_Close();
 
