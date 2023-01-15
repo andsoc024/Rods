@@ -26,6 +26,7 @@ if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     Mods/Public/Public.c \
     $(<Mods/Fund/Fund) \
     $(<Mods/Logic/Logic) \
+    $(<Mods/Graph/Graph) \
     -Wall -Wextra -pedantic -O3 \
     main.c -o rods \
     $FLAGS

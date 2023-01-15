@@ -21,6 +21,7 @@
 #include "Mods/Public/Public.h"
 #include "Mods/Fund/Fund.h"
 #include "Mods/Logic/Logic.h"
+#include "Mods/Graph/Graph.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"

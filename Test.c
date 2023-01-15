@@ -24,6 +24,7 @@
 #include "Mods/Public/Public.h"
 #include "Mods/Fund/Fund.h"
 #include "Mods/Logic/Logic.h"
+#include "Mods/Graph/Graph.h"
 
 
 // ============================================================================ TEST
@@ -31,17 +32,43 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    Records_MakeDefault();
+    Window_Init();
 
-    for (int i = 0; i < 100; i++){
-        Records_Set(Glo_Records, Time_FromInt(Math_RandomInt(0, TIME_MAX_SECS)), 
-                    Math_RandomInt(RGRID_MIN_SIZE, RGRID_MAX_SIZE), 
-                    Math_RandomInt(RGRID_MIN_SIZE, RGRID_MAX_SIZE));
+    const Grid grid = GRID0(25, 15);
+    Size tileSize = Grid_CalcCellSize(grid, Glo_WinSize);
+
+    Color** colors = NULL;
+    MAKE_2D_ARR(colors, grid.nCols, grid.nRows, Color, ZEROVAL_ALL)
+
+    for (int y = 0; y < grid.nRows; y++){
+        Color baseColor = Color_Random(0x33, 0xEE);
+        for (int x = 0; x < grid.nCols; x++){
+            colors[x][y] = Color_ChangeBrightness(baseColor, x - grid.nCols / 2);
+        }
     }
 
-    Records_Print(Glo_Records);
+    while (!WindowShouldClose()){
+        if (IsWindowResized()){
+            Window_UpdateWinSize();
+            tileSize = Grid_CalcCellSize(grid, Glo_WinSize);
+        }
 
-    Records_Free(Glo_Records);
+        BeginDrawing();
+        ClearBackground(COL_BG);
+        Point cursor = POINT_NULL;
+        for (int y = 0; y < grid.nCols; y++){
+            for (int x = 0; x < grid.nCols; x++){
+                DrawRectangleRec(RECT(cursor.x, cursor.y, tileSize.width, tileSize.height), colors[x][y]);
+                cursor.x += tileSize.width;
+            }
+            cursor.x = 0;
+            cursor.y += tileSize.height;
+        }
+        EndDrawing();
+    }
+
+    FREE_2D_ARR(colors, grid.nCols)
+    CloseWindow();
 
     return 0;
 }
