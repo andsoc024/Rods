@@ -108,6 +108,9 @@
 #define FONT_DEF_SIZE                       300.0f
 #define FONT_SPACING                        1.0f
 
+// Shape Constants
+#define RRECT_DEF_ROUNDNESS                 0.27f
+
 
 // ============================================================================ COLORS
 

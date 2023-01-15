@@ -74,6 +74,20 @@ Point           Font_CalcTextPos(const char* txt, float fontSize, Point pos, E_R
 float           Font_FitTextInSize(const char* txt, Size cSize);
 void            Font_DrawText(const char* txt, float fontSize, Point pos, Color color);
 
+// ---------------------------------------------------------------------------- Shape Functions
+
+void            Shape_DrawOutlinedCircle(Point center, float radius, float thickness, Color fillColor, 
+                                         Color outlineColor);
+void            Shape_DrawOutlinedEllipse(Rect cRect, float thickness, Color fillColor, Color outlineColor);
+void            Shape_DrawOutlinedRect(Rect rect, float thickness, Color fillColor, Color outlineColor);
+void            Shape_DrawOutlinedRoundedRect(Rect rect, float roundness, float thickness, Color fillColor, 
+                                              Color outlineColor);
+void            Shape_DrawRectOutline(Rect rect, float thickness, Color color);
+void            Shape_DrawCircleInImage(Image* im, Point center, float radius, Color color);
+void            Shape_DrawRodInImage(Image* im, int legs, Color color);
+void            Shape_DrawSource(Point pos, float tileSize, Color color);
+void            Shape_DrawSelBoxInImage(Image* im, Color color);
+
 
 
 

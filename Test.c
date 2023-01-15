@@ -36,37 +36,67 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    Rect rect = Geo_AlignRect(RECT(0, 0, 500, 300), TO_RECT(Glo_WinSize), RP_CENTER);
-    Size minSize = SIZE(100, 100);
-    Size maxSize = Geo_ApplySizeMargins(Glo_WinSize, 10.0f);
+    MCol_MakeDefault();
 
-    Font_LoadDefault();
+    const float txtrSize = 300.0f;
 
-    const char* txt = "Testing...";
-    float fontSize = Font_FitTextInSize(txt, RSIZE(rect));
-    Point pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
+    Texture2D txtrs[0x10];
+    for (int legs = 0x0; legs < 0x10; legs++){
+        Image im = GenImageColor(txtrSize, txtrSize, COL_NULL);
+        Shape_DrawRodInImage(&im, legs, WHITE);
+        txtrs[legs] = LoadTextureFromImage(im);
+        UnloadImage(im);
+        im = (Image) {0};
+    }
+
+    Image im = GenImageColor(txtrSize, txtrSize, COL_NULL);
+    Shape_DrawSelBoxInImage(&im, WHITE);
+    Texture2D txtrSelBox = LoadTextureFromImage(im);
+    UnloadImage(im);
+    im = (Image) {0};
+
+
+    Point pos = POINT((Glo_WinSize.width - txtrSize)  * 0.5f, 
+                      (Glo_WinSize.height - txtrSize) * 0.5f);
+    
+    int legs = 0;
+    bool isSource = false;
+    bool isElectrified = false;
+    bool isSelected = false;
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            maxSize = Glo_WinSize;
-            rect = Geo_ResizeRect(rect, Geo_PutSizeInRange(RSIZE(rect), &minSize, &maxSize), RP_CENTER);
-            rect = Geo_AlignRect(rect, TO_RECT(Glo_WinSize), RP_CENTER);
-            fontSize = Font_FitTextInSize(txt, RSIZE(rect));
-            pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
+            pos = POINT((Glo_WinSize.width - txtrSize)  * 0.5f, 
+                        (Glo_WinSize.height - txtrSize) * 0.5f);
         }
+
+        MCol_Update(Glo_MCol);
 
         KeyboardKey key = GetKeyPressed();
         switch (key){
             case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
-                E_Direction dir = Direction_FromKey(key);
-                Vector2 d = Geo_MovePointToDir(VECTOR_NULL, dir, 10.0f);
-                d.y *= (-1.0f);
-                Size newSize = SIZE(rect.width + d.x, rect.height + d.y);
-                newSize = Geo_PutSizeInRange(newSize, &minSize, &maxSize);
-                rect = Geo_ResizeRect(rect, newSize, RP_CENTER);
-                fontSize = Font_FitTextInSize(txt, RSIZE(rect));
-                pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
+                int legDir = Direction_ToLegDir(Direction_FromKey(key));
+                if (legs & legDir){
+                    legs ^= legDir;
+                }else{
+                    legs |= legDir;
+                }
+                break;
+            }
+
+            case WKEY_ENTER:{
+                TOGGLE(isSource)
+                break;
+            }
+
+            case WKEY_SPACE:{
+                TOGGLE(isElectrified)
+                break;
+            }
+
+            case WKEY_S:{
+                TOGGLE(isSelected)
                 break;
             }
 
@@ -75,12 +105,23 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        Font_DrawText(txt, fontSize, pos, COL_UI_FG_SECONDARY);
-        DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, RED);
+        DrawTexture(txtrs[legs], pos.x, pos.y, isElectrified ? MCol(Glo_MCol) : COL_ROD);
+        if (isSource){
+            Shape_DrawSource(pos, txtrSize, isElectrified ? MCol(Glo_MCol) : COL_ROD);
+        }
+        if (isSelected){
+            DrawTexture(txtrSelBox, pos.x, pos.y, COL_SELBOX);
+        }
         EndDrawing();
-    } 
+    }
 
-    Font_UnloadDefault();
+    MCol_FreeDefault();
+
+    for (int legs = 0x0; legs < 0x10; legs++){
+        UnloadTexture(txtrs[legs]);
+    }
+    UnloadTexture(txtrSelBox);
+
     Window_Close();
 
     return 0;
