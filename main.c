@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <raylib.h>
 
+#include "Mods/Assets/Assets.h"
+
 #include "Mods/Public/Public.h"
 #include "Mods/Fund/Fund.h"
 #include "Mods/Logic/Logic.h"

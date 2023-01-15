@@ -104,6 +104,10 @@
 #define RGRID_MAX_SIZE                      100
 #define RGRID_DEF_SIZE                      10
 
+// Font Constants
+#define FONT_DEF_SIZE                       300.0f
+#define FONT_SPACING                        1.0f
+
 
 // ============================================================================ COLORS
 
@@ -181,6 +185,9 @@ extern Records* Glo_Records;
 
 // The default Magic Color
 extern MagicColor* Glo_MCol;
+
+// The default custom font
+extern Font Glo_Font;
 
 
 #endif // PUBLIC_GUARD

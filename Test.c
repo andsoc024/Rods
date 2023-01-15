@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <raylib.h>
 
+#include "Mods/Assets/Assets.h"
+
 #include "Mods/Public/Public.h"
 #include "Mods/Fund/Fund.h"
 #include "Mods/Logic/Logic.h"
@@ -34,25 +36,51 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    FRects* fRects = FRects_Make();
+    Rect rect = Geo_AlignRect(RECT(0, 0, 500, 300), TO_RECT(Glo_WinSize), RP_CENTER);
+    Size minSize = SIZE(100, 100);
+    Size maxSize = Geo_ApplySizeMargins(Glo_WinSize, 10.0f);
 
-    FRects_Print(fRects);
+    Font_LoadDefault();
+
+    const char* txt = "Testing...";
+    float fontSize = Font_FitTextInSize(txt, RSIZE(rect));
+    Point pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            FRects_Resize(fRects);
+            maxSize = Glo_WinSize;
+            rect = Geo_ResizeRect(rect, Geo_PutSizeInRange(RSIZE(rect), &minSize, &maxSize), RP_CENTER);
+            rect = Geo_AlignRect(rect, TO_RECT(Glo_WinSize), RP_CENTER);
+            fontSize = Font_FitTextInSize(txt, RSIZE(rect));
+            pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
         }
 
-        FRects_Update(fRects);
+        KeyboardKey key = GetKeyPressed();
+        switch (key){
+            case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
+                E_Direction dir = Direction_FromKey(key);
+                Vector2 d = Geo_MovePointToDir(VECTOR_NULL, dir, 10.0f);
+                d.y *= (-1.0f);
+                Size newSize = SIZE(rect.width + d.x, rect.height + d.y);
+                newSize = Geo_PutSizeInRange(newSize, &minSize, &maxSize);
+                rect = Geo_ResizeRect(rect, newSize, RP_CENTER);
+                fontSize = Font_FitTextInSize(txt, RSIZE(rect));
+                pos = Font_CalcTextPos(txt, fontSize, Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), RP_CENTER);
+                break;
+            }
+
+            default: {break;}
+        }
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        FRects_Draw(fRects);
+        Font_DrawText(txt, fontSize, pos, COL_UI_FG_SECONDARY);
+        DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, RED);
         EndDrawing();
-    }
+    } 
 
-    fRects = FRects_Free(fRects);
+    Font_UnloadDefault();
     Window_Close();
 
     return 0;

@@ -70,7 +70,7 @@ void            FRect_Reset(FRect* fRect);
 void            FRect_PlaceRandomX(FRect* fRect);
 void            FRect_Update(FRect* fRect);
 #ifdef DEBUG_MODE
-    void        FRect_Print(FRect* fRect, bool withNewLine);
+    void        FRect_Print(const FRect* fRect, bool withNewLine);
 #endif
 
 
@@ -138,7 +138,7 @@ void FRects_Update(FRects* fRects){
 // **************************************************************************** FRects_Draw
 
 // Draw all the flying rectangles in the collection
-void FRects_Draw(FRects* fRects){
+void FRects_Draw(const FRects* fRects){
     for (int i = 0; i < fRects->n; i++){
         DrawRectangleRec(fRects->rects[i].rect, fRects->rects[i].color);
     }
@@ -149,7 +149,7 @@ void FRects_Draw(FRects* fRects){
 // **************************************************************************** FRects_Print
 
     // Multiline print of the flying rectangles collection
-    void FRects_Print(FRects* fRects){
+    void FRects_Print(const FRects* fRects){
         CHECK_NULL(fRects, WITH_NEW_LINE)
 
         printf("Flying Rectangles (%d):\n", fRects->n);
@@ -225,7 +225,7 @@ void FRect_Update(FRect* fRect){
 
     // Single line print of the parameters of the flying rectangle. Optionally 
     // with new line
-    void FRect_Print(FRect* fRect, bool withNewLine){
+    void FRect_Print(const FRect* fRect, bool withNewLine){
         CHECK_NULL(fRect, withNewLine)
 
         Geo_PrintRect(fRect->rect, WITHOUT_NEW_LINE);

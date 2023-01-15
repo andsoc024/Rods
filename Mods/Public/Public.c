@@ -51,5 +51,7 @@ Records* Glo_Records = 0;
 // The default magic color
 MagicColor* Glo_MCol = 0;
 
+// The dafault custom font
+Font Glo_Font = {0};
 
 

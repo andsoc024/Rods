@@ -234,7 +234,7 @@ void MCol_Reset(MagicColor* mcol){
 // **************************************************************************** MCol
 
 // Return the current color of the spectrum
-Color MCol(MagicColor* mcol){
+Color MCol(const MagicColor* mcol){
     return mcol->spectrum[mcol->index];
 }
 
@@ -260,9 +260,9 @@ void MCol_FreeDefault(void){
 // **************************************************************************** MCol_Print
 
     // Multiline print of the parameters of the Magic Color
-    void MCol_Print(MagicColor* mcol){
+    void MCol_Print(const MagicColor* mcol){
         CHECK_NULL(mcol, WITH_NEW_LINE)
-        
+
         printf("Spectrum: ");
         
         const int COLORS_PER_ROW_N = 3;

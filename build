@@ -23,6 +23,7 @@ fi
 
 if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     $CC $SPECIAL \
+    $(<Mods/Assets/Assets) \
     Mods/Public/Public.c \
     $(<Mods/Fund/Fund) \
     $(<Mods/Logic/Logic) \

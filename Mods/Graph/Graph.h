@@ -46,11 +46,11 @@ MagicColor*     MCol_Make(Color color1, Color color2);
 MagicColor*     MCol_Free(MagicColor* mcol);
 void            MCol_Update(MagicColor* mcol);
 void            MCol_Reset(MagicColor* mcol);
-Color           MCol(MagicColor* mcol);
+Color           MCol(const MagicColor* mcol);
 void            MCol_MakeDefault(void);
 void            MCol_FreeDefault(void);
 #ifdef DEBUG_MODE
-    void        MCol_Print(MagicColor* mcol);
+    void        MCol_Print(const MagicColor* mcol);
 #endif
 
 // ---------------------------------------------------------------------------- Flying Rectangles Functions
@@ -59,10 +59,22 @@ FRects*         FRects_Make(void);
 FRects*         FRects_Free(FRects* fRects);
 void            FRects_Resize(FRects* fRects);
 void            FRects_Update(FRects* fRects);
-void            FRects_Draw(FRects* fRects);
+void            FRects_Draw(const FRects* fRects);
 #ifdef DEBUG_MODE
-    void        FRects_Print(FRects* fRects);
+    void        FRects_Print(const FRects* fRects);
 #endif
+
+// ---------------------------------------------------------------------------- Font Functions
+
+void            Font_LoadDefault(void);
+void            Font_UnloadDefault(void);
+Size            Font_CalcTextSize(const char* txt, float fontSize);
+Rect            Font_CalcTextRect(const char* txt, float fontSize, Point pos, E_RectPointType pointType);
+Point           Font_CalcTextPos(const char* txt, float fontSize, Point pos, E_RectPointType pointType);
+float           Font_FitTextInSize(const char* txt, Size cSize);
+void            Font_DrawText(const char* txt, float fontSize, Point pos, Color color);
+
+
 
 
 #endif // GRAPH_GUARD
