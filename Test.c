@@ -34,28 +34,26 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    Point center = Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER);
-    float radius = MIN_DIM(Glo_WinSize) * 0.45f;
+    FRects* fRects = FRects_Make();
 
-    MCol_MakeDefault();
+    FRects_Print(fRects);
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            center = Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER);
-            radius = MIN_DIM(Glo_WinSize) * 0.45f;
+            FRects_Resize(fRects);
         }
 
-        MCol_Update(Glo_MCol);
+        FRects_Update(fRects);
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        DrawCircleV(center, radius, MCol(Glo_MCol));
+        FRects_Draw(fRects);
         EndDrawing();
     }
 
-    MCol_FreeDefault();
-    CloseWindow();
+    fRects = FRects_Free(fRects);
+    Window_Close();
 
     return 0;
 }

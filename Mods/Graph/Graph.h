@@ -53,8 +53,16 @@ void            MCol_FreeDefault(void);
     void        MCol_Print(MagicColor* mcol);
 #endif
 
+// ---------------------------------------------------------------------------- Flying Rectangles Functions
 
-
+FRects*         FRects_Make(void);
+FRects*         FRects_Free(FRects* fRects);
+void            FRects_Resize(FRects* fRects);
+void            FRects_Update(FRects* fRects);
+void            FRects_Draw(FRects* fRects);
+#ifdef DEBUG_MODE
+    void        FRects_Print(FRects* fRects);
+#endif
 
 
 #endif // GRAPH_GUARD

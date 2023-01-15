@@ -147,6 +147,12 @@ typedef struct Records Records;
 typedef struct MagicColor MagicColor;
 
 
+// **************************************************************************** FRects
+
+// Flying rectangles are the semitransparent rectangles that move from left to 
+// right, at different speeds, in the background. FRects is a collection of 
+// flying rectangles.
+typedef struct FRects FRects;
 
 
 

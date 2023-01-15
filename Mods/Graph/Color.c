@@ -261,6 +261,8 @@ void MCol_FreeDefault(void){
 
     // Multiline print of the parameters of the Magic Color
     void MCol_Print(MagicColor* mcol){
+        CHECK_NULL(mcol, WITH_NEW_LINE)
+        
         printf("Spectrum: ");
         
         const int COLORS_PER_ROW_N = 3;
