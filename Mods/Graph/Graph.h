@@ -40,6 +40,18 @@ Color           Color_SetAlpha(Color color, unsigned char alpha);
     void        Color_Print(Color color, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- Magic Color Functions
+
+MagicColor*     MCol_Make(Color color1, Color color2);
+MagicColor*     MCol_Free(MagicColor* mcol);
+void            MCol_Update(MagicColor* mcol);
+void            MCol_Reset(MagicColor* mcol);
+Color           MCol(MagicColor* mcol);
+void            MCol_MakeDefault(void);
+void            MCol_FreeDefault(void);
+#ifdef DEBUG_MODE
+    void        MCol_Print(MagicColor* mcol);
+#endif
 
 
 

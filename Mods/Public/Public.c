@@ -48,5 +48,8 @@ Size Glo_WinSize = {0};
 // Structure for holdeing the minimum record times
 Records* Glo_Records = 0;
 
+// The default magic color
+MagicColor* Glo_MCol = 0;
+
 
 

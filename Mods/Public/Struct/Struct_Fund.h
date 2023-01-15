@@ -134,5 +134,21 @@ typedef struct Records Records;
 
 
 
+
+
+
+// ---------------------------------------------------------------------------- Graphics Structures
+
+// **************************************************************************** MagicColor
+
+// The magic colors changes gradually from the first to the last color in its 
+// spectrum. Then back to the first and then it pauses. It repeats with set 
+// period.
+typedef struct MagicColor MagicColor;
+
+
+
+
+
 #endif // STRUCT_FUND_GUARD
 

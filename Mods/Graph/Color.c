@@ -25,6 +25,10 @@
 
 // ============================================================================ PRIVATE CONSTANTS
 
+#define MCOL_SPECTRUM_N                     ((FPS * 4) / 5)
+#define MCOL_PAUSE_N                        ((FPS * 7) / 5)
+#define COL_MCOL_DEF_1                      COL_ELECTRIC_1
+#define COL_MCOL_DEF_2                      COL_ELECTRIC_2
 
 
 // ============================================================================ PRIVATE STRUCTURES
@@ -41,6 +45,20 @@ typedef union ColVal{
 
 
 // ============================================================================ OPAQUE STRUCTURES
+
+// **************************************************************************** MagicColor
+
+// The magic colors changes gradually from the first to the last color in its 
+// spectrum. Then back to the first and then it pauses. It repeats with set 
+// period.
+struct MagicColor{
+    Color spectrum[MCOL_SPECTRUM_N];
+
+    int index;
+    int increment;
+
+    int pauseCount;
+};
 
 
 
@@ -124,5 +142,143 @@ Color Color_SetAlpha(Color color, unsigned char alpha){
         if (withNewLine) {printf("\n");}
     }
 #endif
+
+
+
+
+
+
+// ---------------------------------------------------------------------------- Magic Color Functions
+
+// **************************************************************************** MCol_Make
+
+// Make a magic color with color1 and color2 as the first and last color in its 
+// spectrum
+MagicColor* MCol_Make(Color color1, Color color2){
+    MagicColor* mcol = Memory_Allocate(NULL, sizeof(MagicColor), ZEROVAL_ALL);
+
+    for (int i = 0; i < MCOL_SPECTRUM_N; i++){
+        mcol->spectrum[i] = Color_Blend(color1, MCOL_SPECTRUM_N - 1 - i, color2, i);
+    }
+
+    return mcol;
+}
+
+
+// **************************************************************************** MCol_Free
+
+// Free the memory of the magic color. Return NULL
+MagicColor* MCol_Free(MagicColor* mcol){
+    return Memory_Free(mcol);
+}
+
+
+// **************************************************************************** MCol_Update
+
+// Update the magic color
+void MCol_Update(MagicColor* mcol){
+    // The magic color can be in one of three states:
+    // 1) Paused (increment == 0)
+    // 2) Ascending (increment == 1)
+    // 3) Descending (increment == -1)
+
+    mcol->index += mcol->increment;
+
+    switch (mcol->increment){
+        // Paused -> Ascending
+        case 0:{
+            mcol->pauseCount++;
+            if (mcol->pauseCount >= MCOL_PAUSE_N){
+                mcol->pauseCount = 0;
+                mcol->increment = 1;
+                break;
+            }
+            break;
+        }
+
+        // Ascending -> Descending
+        case 1:{
+            if (mcol->index >= MCOL_SPECTRUM_N){
+                mcol->index = MCOL_SPECTRUM_N - 1;
+                mcol->increment = -1;
+            }
+            break;
+        }
+
+        // Descending -> Paused
+        case -1:{
+            if (mcol->index < 0){
+                mcol->index = 0;
+                mcol->increment = 0;
+                mcol->pauseCount = 0;
+            }
+            break;
+        }
+
+        default: {break;}
+    }
+}
+
+
+// **************************************************************************** MCol_Reset
+
+// Reset the magic color by setting it in the paused state, at the first color 
+// of the spectrum
+void MCol_Reset(MagicColor* mcol){
+    mcol->index = 0;
+    mcol->increment = 0;
+    mcol->pauseCount = 0;
+}
+
+
+// **************************************************************************** MCol
+
+// Return the current color of the spectrum
+Color MCol(MagicColor* mcol){
+    return mcol->spectrum[mcol->index];
+}
+
+
+// **************************************************************************** MCol_MakeDefault
+
+// Make the default Magic Color at Glo_MCol
+void MCol_MakeDefault(void){
+    MCol_FreeDefault();
+    Glo_MCol = MCol_Make(COL_MCOL_DEF_1, COL_MCOL_DEF_2);
+}
+
+
+// **************************************************************************** MCol_FreeDefault
+
+// Free the memory of the default magic color at Glo_MCol
+void MCol_FreeDefault(void){
+    Glo_MCol = MCol_Free(Glo_MCol);
+}
+
+
+#ifdef DEBUG_MODE
+// **************************************************************************** MCol_Print
+
+    // Multiline print of the parameters of the Magic Color
+    void MCol_Print(MagicColor* mcol){
+        printf("Spectrum: ");
+        
+        const int COLORS_PER_ROW_N = 3;
+        for (int i = 0; i < MCOL_SPECTRUM_N; i++){
+            if (i > 0 && i % COLORS_PER_ROW_N == 0){
+                printf("\n          ");
+            }
+            Color_Print(mcol->spectrum[i], WITHOUT_NEW_LINE);
+            printf("   ");
+        }
+        printf("\n");
+
+        printf("Index:       %d\n", mcol->index);
+        printf("Increment:   %d\n", mcol->increment);
+        printf("Pause Count: %d\n", mcol->pauseCount);
+    }
+#endif
+
+
 
 

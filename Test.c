@@ -34,40 +34,27 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    const Grid grid = GRID0(25, 15);
-    Size tileSize = Grid_CalcCellSize(grid, Glo_WinSize);
+    Point center = Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER);
+    float radius = MIN_DIM(Glo_WinSize) * 0.45f;
 
-    Color** colors = NULL;
-    MAKE_2D_ARR(colors, grid.nCols, grid.nRows, Color, ZEROVAL_ALL)
-
-    for (int y = 0; y < grid.nRows; y++){
-        Color baseColor = Color_Random(0x33, 0xEE);
-        for (int x = 0; x < grid.nCols; x++){
-            colors[x][y] = Color_ChangeBrightness(baseColor, x - grid.nCols / 2);
-        }
-    }
+    MCol_MakeDefault();
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            tileSize = Grid_CalcCellSize(grid, Glo_WinSize);
+            center = Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER);
+            radius = MIN_DIM(Glo_WinSize) * 0.45f;
         }
+
+        MCol_Update(Glo_MCol);
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        Point cursor = POINT_NULL;
-        for (int y = 0; y < grid.nCols; y++){
-            for (int x = 0; x < grid.nCols; x++){
-                DrawRectangleRec(RECT(cursor.x, cursor.y, tileSize.width, tileSize.height), colors[x][y]);
-                cursor.x += tileSize.width;
-            }
-            cursor.x = 0;
-            cursor.y += tileSize.height;
-        }
+        DrawCircleV(center, radius, MCol(Glo_MCol));
         EndDrawing();
     }
 
-    FREE_2D_ARR(colors, grid.nCols)
+    MCol_FreeDefault();
     CloseWindow();
 
     return 0;

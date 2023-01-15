@@ -179,6 +179,8 @@ extern Size Glo_WinSize;
 // Structure for holdeing the minimum record times
 extern Records* Glo_Records;
 
+// The default Magic Color
+extern MagicColor* Glo_MCol;
 
 
 #endif // PUBLIC_GUARD
