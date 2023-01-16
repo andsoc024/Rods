@@ -180,6 +180,14 @@ typedef struct Textures{
 }Textures;
 
 
+// **************************************************************************** RodModel
+
+// Structure that contains precalculated values for drawing the rod textures
+typedef struct RodModel RodModel;
+
+
+
+
 
 #endif // STRUCT_FUND_GUARD
 

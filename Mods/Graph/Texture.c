@@ -23,7 +23,23 @@
 
 #include "../Public/Public.h"
 #include "../Fund/Fund.h"
+#include "../Logic/Logic.h"
 #include "Graph.h"
+
+
+// ============================================================================ OPAQUE STRUCTURES
+
+// **************************************************************************** RodModel
+struct RodModel{
+    float tileSize;
+    float scaleF;
+
+    struct{
+        float angle;
+        Vector2 unitShift;
+        Vector2 shift;
+    }frames[ROD_ROT_FRAMES_N];
+};
 
 
 // ============================================================================ PRIVATE FUNC DECL
@@ -38,6 +54,8 @@ Texture2D       Texture_LoadSelBox(void);
 
 
 // ============================================================================ FUNC DEF
+
+// ---------------------------------------------------------------------------- Texture Functions
 
 // **************************************************************************** Texture_LoadAll
 
@@ -100,6 +118,163 @@ void Texture_UnloadAll(void){
         printf("\n");
 
         printf("Selection Box Texture: %d x %d\n", Glo_Textures.selBox.width, Glo_Textures.selBox.height);
+    }
+#endif
+
+
+
+
+
+
+// ---------------------------------------------------------------------------- Rod Graphics Functions
+
+// **************************************************************************** RGraph_MakeRodModel
+
+// Make a rod model and initialize it for the given tile size
+RodModel* RGraph_MakeRodModel(float tileSize){
+    RodModel* rodModel = Memory_Allocate(NULL, sizeof(RodModel), ZEROVAL_ALL);
+
+    const float RAD_INCR = MATH_PI_HALF / (float) (ROD_ROT_FRAMES_N - 1);
+
+    float radians = 0.0f;
+    for (int i = 0; i < ROD_ROT_FRAMES_N; i++){
+        rodModel->frames[i].angle = Math_RadToDeg(radians);
+
+        float a = Math_Sqrt(2.0f) * Math_Sin(radians * 0.5f);
+        float b = (MATH_PI - 2.0f * radians) * 0.25f;
+
+        rodModel->frames[i].unitShift.x =  a * Math_Cos(b);
+        rodModel->frames[i].unitShift.y = -a * Math_Sin(b);
+
+        radians -= RAD_INCR;
+    }
+
+    RGraph_ResizeRodModel(rodModel, tileSize);
+
+    return rodModel;
+}
+
+
+// **************************************************************************** RGraph_FreeRodModel
+
+// Free the memory of the rod model. Return NULL
+RodModel* RGraph_FreeRodModel(RodModel* rodModel){
+    return Memory_Free(rodModel);
+}
+
+
+// **************************************************************************** RGraph_ResizeRodModel
+
+// Resize the rod model to the given tile size
+void RGraph_ResizeRodModel(RodModel* rodModel, float tileSize){
+    tileSize = ABS(tileSize);
+
+    rodModel->tileSize = tileSize;
+    rodModel->scaleF = tileSize / ROD_DEF_TEXTURE_SIZE;
+
+    for (int i = 0; i < ROD_ROT_FRAMES_N; i++){
+        rodModel->frames[i].shift = Geo_ScalePoint(rodModel->frames[i].unitShift, tileSize);
+    }
+}
+
+
+// **************************************************************************** RGraph_GetTileSize
+
+// Get the tile size
+float RGraph_GetTileSize(const RodModel* rodModel){
+    return rodModel->tileSize;
+}
+
+
+// **************************************************************************** RGraph_GetScaleF
+
+// Get the scale factor
+float RGraph_GetScaleF(const RodModel* rodModel){
+    return rodModel->scaleF;
+}
+
+
+// **************************************************************************** RGraph_GetAngle
+
+// Get the rotation angle of the frame in degrees
+float RGraph_GetAngle(const RodModel* rodModel, int frame){
+    frame = PUT_IN_RANGE(frame, 0, ROD_ROT_FRAMES_N - 1);
+    return rodModel->frames[frame].angle;
+}
+
+
+// **************************************************************************** RGraph_GetShift
+
+// Get the shift vector for the given rotation frame
+Vector2 RGraph_GetShift(const RodModel* rodModel, int frame){
+    frame = PUT_IN_RANGE(frame, 0, ROD_ROT_FRAMES_N - 1);
+    return rodModel->frames[frame].shift;
+}
+
+
+// **************************************************************************** RGraph_ResizeRodModel
+
+// Draw the rod using the appropriate texture in Glo_Textures and the 
+// precalculated values in rodModel
+void RGraph_DrawRod(const Rod* rod, Point pos, const RodModel* rodModel){
+    DrawTextureEx(Glo_Textures.rods[rod->legs],                                 // Texture
+                  Geo_TranslatePoint(pos, rodModel->frames[rod->frame].shift),  // Position
+                  rodModel->frames[rod->frame].angle,                           // Rotation
+                  rodModel->scaleF,                                             // Scale
+                  rod->isElectrified ? MCol(Glo_MCol) : COL_ROD);               // Color
+}
+
+
+// **************************************************************************** RGraph_DrawGrid
+
+// Draw the visible part of the rod grid, with top left corner at pos
+void RGraph_DrawRGrid(const RGrid* rGrid, Grid visible, Point pos, const RodModel* rodModel){
+    Point cursor = pos;
+    for (int y = visible.origin.x; y < visible.origin.y + visible.nRows; y++){
+        for (int x = visible.origin.x; x < visible.origin.x + visible.nCols; x++){
+            Rod* rod = RGrid_GetRod(rGrid, GNODE(x, y));
+            RGraph_DrawRod(rod, cursor, rodModel);
+            
+            cursor.x += rodModel->tileSize;
+        }
+
+        cursor.x = pos.x;
+        cursor.y += rodModel->tileSize;
+    }
+
+    GNode source = RGrid_GetSource(rGrid);
+    if (Grid_NodeIsInGrid(source, visible)){
+        Point sourcePos = Geo_MovePoint(pos, (float) (source.x - visible.origin.x) * rodModel->tileSize, 
+                                             (float) (source.y - visible.origin.y) * rodModel->tileSize);
+        Shape_DrawSource(sourcePos, rodModel->tileSize, MCol(Glo_MCol));
+    }
+}
+
+
+// **************************************************************************** RGraph_DrawSelBox
+
+// Draw the selection box at the given position
+void RGraph_DrawSelBox(Point pos, const RodModel* rodModel){
+    DrawTextureEx(Glo_Textures.selBox, pos, 0.0f, rodModel->scaleF, COL_SELBOX);
+}
+
+
+#ifdef DEBUG_MODE
+// **************************************************************************** RGraph_PrintRodModel
+
+    // Multiline print of the parameters of the rod model
+    void RGraph_PrintRodModel(RodModel* rodModel){
+        CHECK_NULL(rodModel, WITH_NEW_LINE)
+
+        printf("Tile Size: %.3f\n", rodModel->tileSize);
+        printf("Scale Factor: %.3f\n", rodModel->scaleF);
+
+        printf("Rotation Frames (%d):\n", ROD_ROT_FRAMES_N);
+        for (int i = 0; i < ROD_ROT_FRAMES_N; i++){
+            printf("   %d) Angle: %.3f | ", i, rodModel->frames[i].angle);
+            printf("Unit Shift: "); Geo_PrintVector(rodModel->frames[i].unitShift, WITHOUT_NEW_LINE);
+            printf(" | Shift: "); Geo_PrintVector(rodModel->frames[i].shift, WITH_NEW_LINE);
+        }
     }
 #endif
 

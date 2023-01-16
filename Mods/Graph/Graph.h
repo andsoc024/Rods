@@ -153,6 +153,21 @@ void            Texture_UnloadAll(void);
     void        Texture_PrintAll(void);
 #endif
 
+// ---------------------------------------------------------------------------- Rod Graphics Functions
+
+RodModel*       RGraph_MakeRodModel(float tileSize);
+RodModel*       RGraph_FreeRodModel(RodModel* rodModel);
+void            RGraph_ResizeRodModel(RodModel* rodModel, float tileSize);
+float           RGraph_GetTileSize(const RodModel* rodModel);
+float           RGraph_GetScaleF(const RodModel* rodModel);
+float           RGraph_GetAngle(const RodModel* rodModel, int frame);
+Vector2         RGraph_GetShift(const RodModel* rodModel, int frame);
+void            RGraph_DrawRod(const Rod* rod, Point pos, const RodModel* rodModel);
+void            RGraph_DrawRGrid(const RGrid* rGrid, Grid visible, Point pos, const RodModel* rodModel);
+void            RGraph_DrawSelBox(Point pos, const RodModel* rodModel);
+#ifdef DEBUG_MODE
+    void        RGraph_PrintRodModel(RodModel* rodModel);
+#endif
 
 
 #endif // GRAPH_GUARD
