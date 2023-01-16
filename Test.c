@@ -28,6 +28,7 @@
 #include "Mods/Logic/Logic.h"
 #include "Mods/Graph/Graph.h"
 #include "Mods/Store/Store.h"
+#include "Mods/Store/File_Internal.h"
 
 
 // ============================================================================ TEST
@@ -36,7 +37,18 @@
 int Test(UNUSED int argc, UNUSED char** argv){
 
     Glo_FilePath = Path_GetDataFile();
-    printf("%s\n", Glo_FilePath);
+
+
+    FILE* file = fopen(Glo_FilePath, "w");
+    File_WriteSep(file);
+    fclose(file);
+
+    file = fopen(Glo_FilePath, "r");
+    printf("%s\n", Bool_ToString(File_ReadSep(file), LONG_FORM));
+    printf("%s\n", Bool_ToString(File_ReadSep(file), LONG_FORM));
+    fclose(file);
+
+
     Glo_FilePath = Memory_Free(Glo_FilePath);
 
     return 0;
