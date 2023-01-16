@@ -54,4 +54,7 @@ MagicColor* Glo_MCol = 0;
 // The dafault custom font
 Font Glo_Font = {0};
 
+// Structure for storing the icon, rod and selection box textures
+Textures Glo_Textures = {0};
+
 

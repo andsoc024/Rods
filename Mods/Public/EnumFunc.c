@@ -178,4 +178,26 @@ bool RectPointType_IsValid(int pointType){
 #endif
 
 
+// **************************************************************************** E_IconID
+
+// Return true if the value is a valid icon id
+bool IconID_IsValid(int id){
+    return IS_IN_RANGE(id, 0, ICONS_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the icon
+    const char* IconID_ToString(int id){
+        static const char* names[] = {
+            "Right Arrow", "Down Arrow", "Left Arrow", "Up Arrow",
+            "Back",        "Help",       "Info",       "Medal",
+            "Music",       "Restart",    "Zoom In",    "Zoom Out"
+        };
+
+        CHECK_INVALID(IconID_IsValid(id), LONG_FORM);
+
+        return names[id];
+    }
+#endif
+
 

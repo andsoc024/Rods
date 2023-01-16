@@ -145,6 +145,13 @@ void            Shape_DrawRodInImage(Image* im, int legs, Color color);
 void            Shape_DrawSource(Point pos, float tileSize, Color color);
 void            Shape_DrawSelBoxInImage(Image* im, Color color);
 
+// ---------------------------------------------------------------------------- Texture Functions
+
+void            Texture_LoadAll(void);
+void            Texture_UnloadAll(void);
+#ifdef DEBUG_MODE
+    void        Texture_PrintAll(void);
+#endif
 
 
 

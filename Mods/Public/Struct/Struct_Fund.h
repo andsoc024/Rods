@@ -170,6 +170,14 @@ typedef struct SGraph SGraph;
 typedef struct FRects FRects;
 
 
+// **************************************************************************** Textures
+
+// Structure for storing the icon, rod and selection box textures
+typedef struct Textures{
+    Texture2D icons[ICONS_N];
+    Texture2D rods[0x10];
+    Texture2D selBox;
+}Textures;
 
 
 

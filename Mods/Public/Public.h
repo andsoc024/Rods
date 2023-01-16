@@ -104,12 +104,19 @@
 #define RGRID_MAX_SIZE                      100
 #define RGRID_DEF_SIZE                      10
 
+#define ROD_DEF_TEXTURE_SIZE                300.0f
+#define ROD_MIN_TEXTURE_SIZE                40.0f
+#define ROD_MAX_TEXTURE_SIZE                350.0f
+
 // Font Constants
 #define FONT_DEF_SIZE                       300.0f
 #define FONT_SPACING                        1.0f
 
 // Shape Constants
 #define RRECT_DEF_ROUNDNESS                 0.27f
+
+// Icon Constants
+#define ICON_DEF_TEXTURE_SIZE               200.0f
 
 
 // ============================================================================ COLORS
@@ -191,6 +198,9 @@ extern MagicColor* Glo_MCol;
 
 // The default custom font
 extern Font Glo_Font;
+
+// Structure for storing the icon, rod and selection box textures
+extern Textures Glo_Textures;
 
 
 #endif // PUBLIC_GUARD

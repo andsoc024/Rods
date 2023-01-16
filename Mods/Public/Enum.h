@@ -128,5 +128,21 @@ bool            RectPointType_IsValid(int pointType);
 #endif
 
 
+// **************************************************************************** E_IconID
+
+// Unique ID for each icon
+typedef enum E_IconID{
+    ICON_ARROW_RIGHT, ICON_ARROW_DOWN, ICON_ARROW_LEFT, ICON_ARROW_UP,
+    ICON_BACK,        ICON_HELP,       ICON_INFO,       ICON_MEDAL,
+    ICON_MUSIC,       ICON_RESTART,    ICON_ZOOM_IN,    ICON_ZOOM_OUT
+}E_IconID;
+#define ICONS_N                             (ICON_ZOOM_OUT + 1)
+
+bool            IconID_IsValid(int id);
+#ifdef DEBUG_MODE
+    const char* IconID_ToString(int id);
+#endif
+
+
 #endif // ENUM_GUARD
 
