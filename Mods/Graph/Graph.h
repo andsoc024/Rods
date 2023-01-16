@@ -84,6 +84,43 @@ Point           VGraph_GetOrigin(const VGraph* vg);
     void        VGraph_Print(const VGraph* vg);
 #endif
 
+// ---------------------------------------------------------------------------- Scroll Graphics Functions
+
+SGraph*         SGraph_Make(Size vScreen, Rect view, float margin, Size minScreen, Size maxScreen);
+SGraph*         SGraph_MakeFromGrid(Grid grid, float cellSize, Rect view, float margin, 
+                                    float minCellSize, float maxCellSize);
+SGraph*         SGraph_Copy(SGraph* dst, const SGraph* src);
+SGraph*         SGraph_Free(SGraph* sg);
+void            SGraph_SetDefault(SGraph* sg);
+void            SGraph_SetView(SGraph* sg, Rect view);
+void            SGraph_SetViewport(SGraph* sg, Rect viewport);
+void            SGraph_MoveViewport(SGraph* sg, float dx, float dy);
+void            SGraph_MoveViewportToDir(SGraph* sg, E_Direction dir, float distance);
+void            SGraph_TranslateViewport(SGraph* sg, Vector2 vector);
+void            SGraph_PlaceViewport(SGraph* sg, Point pos, E_RectPointType pointType);
+void            SGraph_ResizeViewport(SGraph* sg, Size newSize, E_RectPointType pointType);
+void            SGraph_SetVScreen(SGraph* sg, Size vScreen);
+void            SGraph_Zoom(SGraph* sg, float zoom);
+void            SGraph_SetMinScreen(SGraph* sg, Size minScreen);
+void            SGraph_SetMaxScreen(SGraph* sg, Size maxScreen);
+Point           SGraph_ProjectPoint(Point p, const SGraph* sg);
+Point           SGraph_UnprojectPoint(Point p, const SGraph* sg);
+Rect            SGraph_ProjectRect(Rect rect, const SGraph* sg);
+Rect            SGraph_UnprojectRect(Rect rect, const SGraph* sg);
+float           SGraph_CalcViewportPosRatio(const SGraph* sg, E_Orientation orientation);
+float           SGraph_CalcViewportSizeRatio(const SGraph* sg, E_Orientation orientation);
+void            SGraph_SetViewportPosFromRatio(SGraph* sg, float posRatio, E_Orientation orientation);
+Size            SGraph_GetVScreen(const SGraph* sg);
+Rect            SGraph_GetViewport(const SGraph* sg);
+Point           SGraph_GetViewOrigin(const SGraph* sg);
+float           SGraph_GetMargin(const SGraph* sg);
+Size            SGraph_GetMinScreen(const SGraph* sg);
+Size            SGraph_GetMaxScreen(const SGraph* sg);
+Point           SGraph_GetOrigin(const SGraph* sg);
+#ifdef DEBUG_MODE
+    void        SGraph_Print(const SGraph* sg);
+#endif
+
 // ---------------------------------------------------------------------------- Font Functions
 
 void            Font_LoadDefault(void);

@@ -154,6 +154,14 @@ typedef struct MagicColor MagicColor;
 typedef struct VGraph VGraph;
 
 
+// **************************************************************************** SGraph
+
+// Scroll Graphics transforms points by translating, so that only the part of 
+// a virtual screen that is inside its viewport is visible in the view in the 
+// screen. The viewport and view have always the same size
+typedef struct SGraph SGraph;
+
+
 // **************************************************************************** FRects
 
 // Flying rectangles are the semitransparent rectangles that move from left to 

@@ -1,5 +1,6 @@
 Mods/Graph/Color.c
 Mods/Graph/FRect.c
 Mods/Graph/VGraph.c
+Mods/Graph/SGraph.c
 Mods/Graph/Font.c
 Mods/Graph/Shape.c 
