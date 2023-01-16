@@ -39,79 +39,66 @@ int Test(UNUSED int argc, UNUSED char** argv){
     MCol_MakeDefault();
 
     Texture_LoadAll();
-    
-    RodModel* rodModel = RGraph_MakeRodModel(ROD_DEF_TEXTURE_SIZE);
-    PRINT_LINE
-    RGraph_PrintRodModel(rodModel);
-    PRINT_LINE 
 
-    float tileSize = ROD_DEF_TEXTURE_SIZE;
+    RGrid* rGrid = RGrid_MakeEmpty(100, 100);
+    RGrid_CreateRandom(rGrid);
+    RGrid_Shuffle(rGrid);
 
-    Rod rod = ROD_NULL;
-    Rod_Set(&rod, LEGDIR_UP | LEGDIR_RIGHT);
+    SGraph* sg = SGraph_MakeFromGrid(RGrid_GetSize(rGrid), ROD_DEF_TEXTURE_SIZE, TO_RECT(Glo_WinSize), 
+                                     SGRAPH_DEF_MARGIN, ROD_MIN_TEXTURE_SIZE, ROD_MAX_TEXTURE_SIZE);
 
+    float tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
 
-    bool isSelected = false;
+    RodModel* rodModel = RGraph_MakeRodModel(tileSize);
+
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
+            SGraph_SetView(sg, TO_RECT(Glo_WinSize));
+            tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
+            RGraph_ResizeRodModel(rodModel, tileSize);
         }
 
         MCol_Update(Glo_MCol);
-        Rod_Update(&rod);
+        RGrid_Update(rGrid);
 
         KeyboardKey key = GetKeyPressed();
         switch (key){
             case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
-                int legDir = Direction_ToLegDir(Direction_FromKey(key));
-                if (rod.legs & legDir){
-                    rod.legs ^= legDir;
-                }else{
-                    rod.legs |= legDir;
-                }
+                SGraph_MoveViewportToDir(sg, Direction_FromKey(key), MIN_DIM(Glo_WinSize) * 0.07f);
                 break;
             }
 
             case WKEY_PLUS: case WKEY_MINUS:{
-                float zoom = (key == WKEY_PLUS) ? 1.1f : 1.0f / 1.1f;
-                tileSize *= zoom;
-                tileSize = PUT_IN_RANGE(tileSize, ROD_MIN_TEXTURE_SIZE, ROD_MAX_TEXTURE_SIZE);
+                SGraph_Zoom(sg, (key == WKEY_PLUS) ? 1.1f : 1.0f / 1.1f);
+                tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
                 RGraph_ResizeRodModel(rodModel, tileSize);
-                break;
-            }
-
-            case WKEY_TAB:{
-                TOGGLE(isSelected)
-                break;
-            }
-
-            case WKEY_SPACE:{
-                Rod_Rotate(&rod, 1, WITH_ANIM);
-                break;
-            }
-
-            case WKEY_ENTER:{
-                TOGGLE(rod.isElectrified)
                 break;
             }
 
             default: {break;}
         }
 
-        Point pos = POINT((Glo_WinSize.width - tileSize)  * 0.5f, 
-                          (Glo_WinSize.height - tileSize) * 0.5f);
+        Point mousePos = GetMousePosition();
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            mousePos = SGraph_UnprojectPoint(mousePos, sg);
+            GNode node = Grid_PointToNode(mousePos, tileSize);
+            RGrid_RotateRod(rGrid, node);
+        }
+
+        Grid visible = Grid_SectionFromRect(SGraph_GetViewport(sg), tileSize, RGrid_GetSize(rGrid));
+        Point origin = SGraph_ProjectPoint(Grid_NodeToPoint(visible.origin, tileSize), sg);
 
         BeginDrawing();
         ClearBackground(COL_BG);
-        RGraph_DrawRod(&rod, pos, rodModel);
-        if (isSelected){
-            RGraph_DrawSelBox(pos, rodModel);
-        }
+        RGraph_DrawRGrid(rGrid, visible, origin, rodModel);
         EndDrawing();
     }
 
     MCol_FreeDefault();
     Texture_UnloadAll();
+    rGrid = RGrid_Free(rGrid);
+    sg = SGraph_Free(sg);
     rodModel = RGraph_FreeRodModel(rodModel);
 
     Window_Close();

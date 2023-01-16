@@ -296,6 +296,10 @@ void RGrid_Reelectrify(RGrid* rGrid){
 
 // Rotate the rod at the given node by 90°, clockwise, with animation
 void RGrid_RotateRod(RGrid* rGrid, GNode node){
+    if (!Grid_NodeIsInGrid(node, rGrid->size)){
+        return;
+    }
+
     Rod_Rotate(&RON(node), 1, WITH_ANIM);
 
     if (RON(node).isElectrified){
@@ -499,6 +503,12 @@ void RGrid_AddToUpdatable(RGrid* rGrid, GNode node){
         return;
     }
 
+    for (int i = 0; i < RGRID_UPDATABLE_N; i++){
+        if (Grid_NodesAreEqual(node, rGrid->updatable[i])){
+            return;
+        }
+    }
+
     int ind = rGrid->updIndex;
 
     if (rGrid->updatable[ind].x != INVALID){
@@ -529,6 +539,7 @@ bool RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node){
     for (int dir = DIR_RIGHT; dir <= DIR_UP; dir++){
         GNode next = Grid_MoveNodeToDir(node, dir, 1);
         if (Grid_NodeIsInGrid(next, rGrid->size) && 
+            RON(next).isElectrified &&
             Rod_IsConnectedToRod(&RON(node), &RON(next), dir)){
             return true;
         }

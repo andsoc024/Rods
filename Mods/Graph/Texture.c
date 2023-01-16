@@ -167,8 +167,6 @@ RodModel* RGraph_FreeRodModel(RodModel* rodModel){
 
 // Resize the rod model to the given tile size
 void RGraph_ResizeRodModel(RodModel* rodModel, float tileSize){
-    tileSize = ABS(tileSize);
-
     rodModel->tileSize = tileSize;
     rodModel->scaleF = tileSize / ROD_DEF_TEXTURE_SIZE;
 
@@ -230,7 +228,7 @@ void RGraph_DrawRod(const Rod* rod, Point pos, const RodModel* rodModel){
 // Draw the visible part of the rod grid, with top left corner at pos
 void RGraph_DrawRGrid(const RGrid* rGrid, Grid visible, Point pos, const RodModel* rodModel){
     Point cursor = pos;
-    for (int y = visible.origin.x; y < visible.origin.y + visible.nRows; y++){
+    for (int y = visible.origin.y; y < visible.origin.y + visible.nRows; y++){
         for (int x = visible.origin.x; x < visible.origin.x + visible.nCols; x++){
             Rod* rod = RGrid_GetRod(rGrid, GNODE(x, y));
             RGraph_DrawRod(rod, cursor, rodModel);

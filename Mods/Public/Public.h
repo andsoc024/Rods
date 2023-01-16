@@ -105,7 +105,7 @@
 #define RGRID_DEF_SIZE                      10
 
 #define ROD_DEF_TEXTURE_SIZE                300.0f
-#define ROD_MIN_TEXTURE_SIZE                40.0f
+#define ROD_MIN_TEXTURE_SIZE                20.0f
 #define ROD_MAX_TEXTURE_SIZE                350.0f
 
 // Font Constants
@@ -114,6 +114,9 @@
 
 // Shape Constants
 #define RRECT_DEF_ROUNDNESS                 0.27f
+
+// Scroll Graphics Constants
+#define SGRAPH_DEF_MARGIN                   30.0f
 
 // Icon Constants
 #define ICON_DEF_TEXTURE_SIZE               200.0f
