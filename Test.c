@@ -36,70 +36,82 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    MCol_MakeDefault();
+    Font_LoadDefault();
 
-    Texture_LoadAll();
+    Time t = TIME_NULL;
 
-    RGrid* rGrid = RGrid_MakeEmpty(100, 100);
-    RGrid_CreateRandom(rGrid);
-    RGrid_Shuffle(rGrid);
+    Rect rect = Geo_AlignRect(TO_RECT(SIZE(300, 50)), TO_RECT(Glo_WinSize), RP_CENTER);
 
-    SGraph* sg = SGraph_MakeFromGrid(RGrid_GetSize(rGrid), ROD_DEF_TEXTURE_SIZE, TO_RECT(Glo_WinSize), 
-                                     SGRAPH_DEF_MARGIN, ROD_MIN_TEXTURE_SIZE, ROD_MAX_TEXTURE_SIZE);
+    Size minSize = SIZE(70, 40);
+    const float winMargin = 30.0f;
+    Size maxSize = Geo_ApplySizeMargins(Glo_WinSize, winMargin);
 
-    float tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
-
-    RodModel* rodModel = RGraph_MakeRodModel(tileSize);
+    TimDisp* td = TimDisp_Make(RSIZE(rect), RP_CENTER);
 
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
-            SGraph_SetView(sg, TO_RECT(Glo_WinSize));
-            tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
-            RGraph_ResizeRodModel(rodModel, tileSize);
+            maxSize = Geo_ApplySizeMargins(Glo_WinSize, winMargin);
+            Size rectSize = RSIZE(rect);
+            rectSize = Geo_PutSizeInRange(rectSize, &minSize, &maxSize);
+            rect = Geo_SetRectPS(Geo_RectPoint(TO_RECT(Glo_WinSize), RP_CENTER), rectSize, RP_CENTER);
+            TimDisp_Resize(td, RSIZE(rect));
         }
-
-        MCol_Update(Glo_MCol);
-        RGrid_Update(rGrid);
 
         KeyboardKey key = GetKeyPressed();
         switch (key){
             case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
-                SGraph_MoveViewportToDir(sg, Direction_FromKey(key), MIN_DIM(Glo_WinSize) * 0.07f);
+                Vector2 d = Geo_MovePointToDir(VECTOR_NULL, Direction_FromKey(key), 10.0f);
+                Size rectSize = RSIZE(rect);
+                rectSize.width += d.x;
+                rectSize.height += d.y;
+                rectSize = Geo_PutSizeInRange(rectSize, &minSize, &maxSize);
+                rect = Geo_ResizeRect(rect, rectSize, RP_CENTER);
+                TimDisp_Resize(td, RSIZE(rect));
                 break;
             }
 
-            case WKEY_PLUS: case WKEY_MINUS:{
-                SGraph_Zoom(sg, (key == WKEY_PLUS) ? 1.1f : 1.0f / 1.1f);
-                tileSize = Grid_CalcSqrCellSize(RGrid_GetSize(rGrid), SGraph_GetVScreen(sg));
-                RGraph_ResizeRodModel(rodModel, tileSize);
+            case WKEY_D:{
+                t = Time_Shift(t, 500);
+                break;
+            }
+
+            case WKEY_A:{
+                t = Time_Shift(t, -500);
+                break;
+            }
+
+            case WKEY_W:{
+                t = Time_Increment(t);
+                break;
+            }
+
+            case WKEY_S:{
+                t = Time_Shift(t, -1);
+                break;
+            }
+
+            case WKEY_SPACE:{
+                if (Time_IsValid(t)){
+                    t = TIME_INVALID;
+                }else{
+                    t = TIME_NULL;
+                }
                 break;
             }
 
             default: {break;}
         }
 
-        Point mousePos = GetMousePosition();
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-            mousePos = SGraph_UnprojectPoint(mousePos, sg);
-            GNode node = Grid_PointToNode(mousePos, tileSize);
-            RGrid_RotateRod(rGrid, node);
-        }
-
-        Grid visible = Grid_SectionFromRect(SGraph_GetViewport(sg), tileSize, RGrid_GetSize(rGrid));
-        Point origin = SGraph_ProjectPoint(Grid_NodeToPoint(visible.origin, tileSize), sg);
-
         BeginDrawing();
         ClearBackground(COL_BG);
-        RGraph_DrawRGrid(rGrid, visible, origin, rodModel);
+        TimDisp_DrawTime(t, RORIGIN(rect), td, COL_UI_FG_PRIMARY);
+        Shape_DrawRectOutline(rect, 3, RED);
         EndDrawing();
     }
 
-    MCol_FreeDefault();
-    Texture_UnloadAll();
-    rGrid = RGrid_Free(rGrid);
-    sg = SGraph_Free(sg);
-    rodModel = RGraph_FreeRodModel(rodModel);
+    Font_UnloadDefault();
+    td = TimDisp_Free(td);
 
     Window_Close();
 

@@ -30,6 +30,8 @@
 // ============================================================================ OPAQUE STRUCTURES
 
 // **************************************************************************** RodModel
+
+// Structure that contains precalculated values for drawing the rod textures
 struct RodModel{
     float tileSize;
     float scaleF;

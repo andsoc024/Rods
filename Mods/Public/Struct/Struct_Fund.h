@@ -186,6 +186,11 @@ typedef struct Textures{
 typedef struct RodModel RodModel;
 
 
+// **************************************************************************** TimDisp
+
+// Precalculated values for drawing the time in the form [HH:]MM:SS
+typedef struct TimDisp TimDisp;
+
 
 
 

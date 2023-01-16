@@ -169,6 +169,17 @@ void            RGraph_DrawSelBox(Point pos, const RodModel* rodModel);
     void        RGraph_PrintRodModel(RodModel* rodModel);
 #endif
 
+// ---------------------------------------------------------------------------- Timer Display Functions
+
+TimDisp*        TimDisp_Make(Size cSize, E_RectPointType alignment);
+TimDisp*        TimDisp_Free(TimDisp* td);
+void            TimDisp_Resize(TimDisp* td, Size cSize);
+void            TimDisp_SetAlignment(TimDisp* td, E_RectPointType alignment);
+void            TimDisp_DrawTime(Time t, Point pos, TimDisp* td, Color color);
+#ifdef DEBUG_MODE
+    void        TimDisp_Print(TimDisp* td);
+#endif
+
 
 #endif // GRAPH_GUARD
 
