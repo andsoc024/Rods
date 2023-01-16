@@ -14,7 +14,7 @@ PLATFORM="MACOS"
 
 if [ $PLATFORM = "MACOS" ]; then
     CC="clang"
-    SPECIAL="Arch/MacOS/Raylib/libraylib.a"
+    SPECIAL="Arch/MacOS/Raylib/libraylib.a Arch/MacOS/Source/MacOS.c Arch/MacOS/Source/HomeDir.m"
     FLAGS="-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
 fi
 
@@ -28,6 +28,7 @@ if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     $(<Mods/Fund/Fund) \
     $(<Mods/Logic/Logic) \
     $(<Mods/Graph/Graph) \
+    $(<Mods/Store/Store) \
     -Wall -Wextra -pedantic -O3 \
     main.c -o rods \
     $FLAGS

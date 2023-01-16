@@ -12,8 +12,8 @@
 
 // ============================================================================ INFO
 /*
-    Math, geometry, grid and time structures, as well as logic and graphics 
-    structures.
+    Math, geometry, grid and time structures, as well as logic, graphics as 
+    well as storage structures.
 */
 
 

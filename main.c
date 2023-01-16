@@ -24,6 +24,7 @@
 #include "Mods/Fund/Fund.h"
 #include "Mods/Logic/Logic.h"
 #include "Mods/Graph/Graph.h"
+#include "Mods/Store/Store.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"

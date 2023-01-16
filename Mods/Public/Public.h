@@ -74,6 +74,7 @@
 #define STR_INVALID_SHORT                   "-"
 #define STR_LINE                            "----------------------------------------" \
                                             "----------------------------------------"
+#define STR_DEF_LENGTH                      200
 
 // Math Constants
 #define MATH_PI                             3.14159f
@@ -204,6 +205,9 @@ extern Font Glo_Font;
 
 // Structure for storing the icon, rod and selection box textures
 extern Textures Glo_Textures;
+
+// The data file path
+extern char* Glo_FilePath;
 
 
 #endif // PUBLIC_GUARD

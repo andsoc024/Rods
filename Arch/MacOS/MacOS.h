@@ -52,6 +52,11 @@
 #define WKEY_Z_MAC                          KEY_Z
 #define WKEY_X_MAC                          KEY_X
 
+// Paths
+#define PATH_SUPPORT_DIR_NAME_MAC           "Library/Application Support"
+#define PATH_APP_DIR_NAME_MAC               "ZRods"
+#define PATH_SEP_MAC                        "/"
+
 
 #endif // MACOS_GUARD
 

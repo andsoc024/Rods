@@ -57,4 +57,6 @@ Font Glo_Font = {0};
 // Structure for storing the icon, rod and selection box textures
 Textures Glo_Textures = {0};
 
+// The data File Path
+char* Glo_FilePath = 0;
 
