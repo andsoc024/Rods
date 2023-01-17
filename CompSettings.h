@@ -30,6 +30,7 @@
 
 #define DEBUG_MODE
 
+//#define MEMORY_TRACK
 
 
 #endif // COMP_GUARD

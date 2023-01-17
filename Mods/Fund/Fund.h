@@ -43,6 +43,9 @@ void            Memory_Write(void* dst, const void* src, int size);
 void            Memory_Set(void* ptr, int size, unsigned char value);
 void*           Memory_Free(void* ptr);
 void            Memory_FreeAll(int nObjects, ...);
+#ifdef MEMORY_TRACK
+    void        Memory_Print(void);
+#endif
 
 // ---------------------------------------------------------------------------- Math Functions
 

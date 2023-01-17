@@ -61,6 +61,7 @@ GNode           RGrid_GetSource(const RGrid* rGrid);
 Rod*            RGrid_GetRod(const RGrid* rGrid, GNode node);
 Rod*            RGrid_GetRod_Fast(const RGrid* rGrid, GNode node);
 void            RGrid_SetRod(RGrid* rGrid, GNode node, int legs);
+void            RGrid_SetSource(RGrid* rGrid, GNode source);
 bool            RGrid_IsAnimating(const RGrid* rGrid);
 int             RGrid_GetTotal(const RGrid* rGrid);
 int             RGrid_GetNumElectrified(const RGrid* rGrid);

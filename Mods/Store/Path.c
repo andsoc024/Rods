@@ -53,17 +53,17 @@ bool            Path_MakeDirForPlatform(const char* path);
 // folder of the operating system. Create the app folder if it does not exist
 char* Path_GetDataFile(void){
     char* path = Path_GetHomeDir(NULL);
-
+    
     path = Path_AddComponent(path, PATH_SUPPORT_DIR_NAME);
-
     path = Path_AddComponent(path, PATH_APP_DIR_NAME);
+    
     bool res = Path_MakeDir(path);
     if (res == false){
         return Memory_Free(path);
     }
-
+    
     path = Path_AddComponent(path, PATH_DATA_FILE_NAME);
-
+    
     return path;
 }
 

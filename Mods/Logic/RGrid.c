@@ -388,6 +388,16 @@ void RGrid_SetRod(RGrid* rGrid, GNode node, int legs){
 }
 
 
+// **************************************************************************** RGrid_SetSource
+
+// Set the source of the rod grid
+void RGrid_SetSource(RGrid* rGrid, GNode source){
+    if (Grid_NodeIsInGrid(source, rGrid->size)){
+        rGrid->source = source;
+    }
+}
+
+
 // **************************************************************************** RGrid_IsAnimating
 
 // Return true if any rod in the grid is animating

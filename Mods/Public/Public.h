@@ -209,6 +209,13 @@ extern Textures Glo_Textures;
 // The data file path
 extern char* Glo_FilePath;
 
+// Counters for memory tracking
+#ifdef MEMORY_TRACK
+    extern int Glo_AllocCount;
+    extern int Glo_FreeCount;
+#endif
+
+
 
 #endif // PUBLIC_GUARD
 

@@ -60,3 +60,9 @@ Textures Glo_Textures = {0};
 // The data File Path
 char* Glo_FilePath = 0;
 
+
+// Counters for memory tracking
+#ifdef MEMORY_TRACK
+    int Glo_AllocCount = 0;
+    int Glo_FreeCount = 0;
+#endif

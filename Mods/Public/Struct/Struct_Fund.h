@@ -194,5 +194,23 @@ typedef struct TimDisp TimDisp;
 
 
 
+
+
+// ---------------------------------------------------------------------------- Store Structures
+
+// **************************************************************************** PData
+
+// Persistent data loaded from the data file
+typedef struct PData{
+    char* version;
+    Records* records;
+    RGrid* rGrid;
+    SGraph* sg;
+    Time time;
+    bool sound;
+}PData;
+
+
+
 #endif // STRUCT_FUND_GUARD
 

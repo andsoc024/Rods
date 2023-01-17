@@ -43,6 +43,7 @@ char* Path_GetHomeDir(char* dst){
     Path_GetHomeDirForPlatform(temp);
 
     dst = String_Copy(dst, temp);
+
     temp = Memory_Free(temp);
     
     return dst;

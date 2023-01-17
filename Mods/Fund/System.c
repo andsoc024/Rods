@@ -59,6 +59,9 @@ void* Memory_Allocate(void* ptr, int size, E_ZeroValMode zeroValMode){
     Err_Assert(size > 0, "Invalid memory size");
 
     if (ptr == NULL){
+        #ifdef MEMORY_TRACK
+            Glo_AllocCount++;
+        #endif
         ptr = malloc(size);
     }else{
         ptr = realloc(ptr, size);
@@ -122,6 +125,9 @@ void Memory_Set(void* ptr, int size, unsigned char value){
 // Free the memory at the given pointer. Return NULL
 void* Memory_Free(void* ptr){
     if (ptr != NULL){
+        #ifdef MEMORY_TRACK
+            Glo_FreeCount++;
+        #endif
         free(ptr);
     }
 
@@ -147,5 +153,19 @@ void Memory_FreeAll(int nObjects, ...){
     va_end(argPtr);
 }
 
+
+#ifdef MEMORY_TRACK
+// **************************************************************************** Memory_Print
+
+    // Print the total number of memory allocations and deallocations
+    void Memory_Print(void){
+        PRINT_LINE
+        printf("MEMORY REPORT:\n");
+        PRINT_LINE
+        printf("Allocations:   %d\n", Glo_AllocCount);
+        printf("Deallocations: %d\n", Glo_FreeCount);
+        PRINT_LINE
+    }
+#endif
 
 
