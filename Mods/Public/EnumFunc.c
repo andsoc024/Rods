@@ -201,3 +201,138 @@ bool IconID_IsValid(int id){
 #endif
 
 
+// **************************************************************************** E_EventID
+
+// Return true if the value is a valid event id
+bool EventID_IsValid(int id){
+    return IS_IN_RANGE(id, 0, EVENTS_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the event id
+    const char* EventID_ToString(int id){
+        static const char* names[] = {
+            "None",                      "Mouse Move",                 "Mouse Drag", 
+            "Left Mouse Button Pressed", "Left Mouse Button Released", "Mouse Wheel Moved",
+            "Key Pressed",               "Key Released",               "Button Pressed",
+            "Button Released",           "Scrollbar Changed",          "Update Scrollbar",
+            "Switch Changed",            "Update Switch",              "Numberbox Changed",
+            "Gadget Expanded",           "Gadget Collapsed",           "Show Page",
+            "Hide Page",                 "Victory",                    "Make New Grid"
+        }; 
+
+        CHECK_INVALID(EventID_IsValid(id), LONG_FORM)
+
+        return names[id]; 
+    }
+#endif
+
+
+// **************************************************************************** E_PageID
+
+// Return true if the value is a valid page id
+bool PageID_IsValid(int id){
+    return IS_IN_RANGE(id, 0, PAGES_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the page
+    const char* PageID_ToString(int id){
+        static const char* names[] = {
+            "Main Page",      "Game Page",      "Setup Page",
+            "Help Page",      "Info Page",
+            "Generic Page 1", "Generic Page 2", "Generic Page 3",
+            "Generic Page 4", "Generic Page 5", "Generic Page 6"
+        };
+
+        CHECK_INVALID(PageID_IsValid(id), LONG_FORM)
+
+        return names[id];
+    }
+#endif
+
+
+// **************************************************************************** E_GadgetID
+
+// Return true if the value is a valid gadget id
+bool GadgetID_IsValid(int id){
+    return IS_IN_RANGE(id - GDG_NONE, 0, GADGETS_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    const char* GadgetID_ToString(int id){
+        static const char* names[] = {
+            "None",
+            "Board",                    "Toolbar",                    "Horisontal Scrollbar",
+            "Left Scrollbar Button",    "Right Scrollbar Button",     "Vertical Scrollbar",
+            "Up Scrollbar Button",      "Down Scrollbar Button",      "Timer",
+            "Rods Left Label",          "Back Button",                "Restart Button",
+            "Zoom In Button",           "Zoom Out Button",            "Help Button",
+            "Info Button",              "Music Icon",                 "Sound Switch",
+            "Title",                    "Play Button",                "Columns Number Box",
+            "Up Button of Cols NumBox", "Down Button of Cols NumBox", "Rows Number Box",
+            "Up Button of Rows NumBox", "Down Button of Rows NumBox", "New Record Label",
+            "Time Label in Setup",      "Current Time in Setup",      "Record Label in Setup",
+            "Record Time in Setup",     "Help Table",                 "Title Label in Info",
+            "Author Label in Info", 
+            "Generic Gadget 1",         "Generic Gadget 2",           "Generic Gadget 3",
+            "Generic Gadget 4",         "Generic Gadget 5",           "Generic Gadget 6",
+            "Generic Gadget 7",         "Generic Gadget 8",           "Generic Gadget 9",
+            "Generic Gadget 10",        "Generic Gadget 11",          "Generic Gadget 12"         
+        };
+
+        CHECK_INVALID(GadgetID_IsValid(id), LONG_FORM)
+
+        return names[id - GDG_NONE];
+    }
+#endif
+
+
+// **************************************************************************** E_GuiID
+
+// Return true if the value is a valid GUI id
+bool GuiID_IsValid(int id){
+    return IS_IN_RANGE(id, 0, GUI_OBJECTS_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the GUI object (page or gadget)
+    const char* GuiID_ToString(int id){
+        if (PageID_IsValid(id)){
+            return PageID_ToString(id);
+        }
+
+        if (GadgetID_IsValid(id)){
+            return GadgetID_ToString(id);
+        }
+
+        return STR_INVALID;
+    }
+#endif
+
+
+// **************************************************************************** E_GadgetType
+
+// Return true if the value is a valid gadget type
+bool GadgetType_IsValid(int type){
+    return IS_IN_RANGE(type, 0, GADGET_TYPES_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the gadget type
+    const char* GadgetType_ToString(int type){
+        static const char* names[] = {
+            "Generic",    "Board",     "Label",
+            "Button",     "Scrollbar", "Switch",
+            "Number Box", "Timer",     "Icon",
+            "Table"
+        };
+
+        CHECK_INVALID(GadgetType_IsValid(type), LONG_FORM)
+
+        return names[type];
+    }
+#endif
+
+
+

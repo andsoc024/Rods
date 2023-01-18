@@ -28,7 +28,7 @@
 
 // ============================================================================ MACROS
 
-#include "Macro/Macro_Fund.h"
+#include "Macro.h"
 
 
 // ============================================================================ PLATFORM
@@ -131,6 +131,7 @@
 // ============================================================================ STRUCTURES
 
 #include "Struct/Struct_Fund.h"
+#include "Struct/Struct_GUI.h"
 
 
 // ============================================================================ FLAGS & INDICES
@@ -187,6 +188,8 @@
 #define TIME_MAX                            TIME(TIME_MAX_HOURS, 59, 59)
 
 #define ROD_NULL                            ((Rod) {.legs = 0, .isElectrified = false, .frame = 0})
+
+#define EVENT_NULL                          ((Event) {.id = EVENT_NONE, .source = GDG_NONE, .target = GDG_NONE, .data = {0}})
 
 
 // ============================================================================ GLOBALS

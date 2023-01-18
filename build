@@ -29,6 +29,7 @@ if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     $(<Mods/Logic/Logic) \
     $(<Mods/Graph/Graph) \
     $(<Mods/Store/Store) \
+    $(<Mods/GUI/GUI) \
     -Wall -Wextra -pedantic -O3 \
     main.c -o rods \
     $FLAGS

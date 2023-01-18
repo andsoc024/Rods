@@ -144,5 +144,114 @@ bool            IconID_IsValid(int id);
 #endif
 
 
+// **************************************************************************** E_EventID
+
+// Unique ID for each GUI event
+typedef enum E_EventID{
+    EVENT_NONE,            EVENT_MOUSE_MOVE,        EVENT_MOUSE_DRAG, 
+    EVENT_MOUSE_PRESSED,   EVENT_MOUSE_RELEASED,    EVENT_MOUSE_WHEEL,
+    EVENT_KEY_PRESSED,     EVENT_KEY_RELEASED,      EVENT_BUTTON_PRESSED,
+    EVENT_BUTTON_RELEASED, EVENT_SCROLLBAR_CHANGED, EVENT_UPDATE_SCROLLBAR,
+    EVENT_SWITCH_CHANGED,  EVENT_UPDATE_SWITCH,     EVENT_NUMBOX_CHANGED,
+    EVENT_GADGET_EXPANDED, EVENT_GADGET_COLLAPSED,  EVENT_SHOW_PAGE,
+    EVENT_HIDE_PAGE,       EVENT_VICTORY,           EVENT_MAKE_NEW_GRID
+}E_EventID;
+#define EVENTS_N                            (EVENT_MAKE_NEW_GRID + 1)
+
+bool            EventID_IsValid(int id);
+#ifdef DEBUG_MODE
+    const char* EventID_ToString(int id);
+#endif
+
+
+// **************************************************************************** E_PageID
+
+// Unique ID for each Page
+typedef enum E_PageID{
+    PAGE_MAIN,      PAGE_GAME,      PAGE_SETUP,
+    PAGE_HELP,      PAGE_INFO,
+    #ifdef DEBUG_MODE
+    PAGE_GENERIC_1, PAGE_GENERIC_2, PAGE_GENERIC_3,
+    PAGE_GENERIC_4, PAGE_GENERIC_5, PAGE_GENERIC_6
+    #endif
+}E_PageID;
+#ifdef DEBUG_MODE
+    #define PAGES_N                         (PAGE_GENERIC_6 + 1)
+#else
+    #define PAGES_N                         (PAGE_INFO + 1)
+#endif
+
+bool            PageID_IsValid(int id);
+#ifdef DEBUG_MODE
+    const char* PageID_ToString(int id);
+#endif
+
+
+// **************************************************************************** E_GadgetID
+
+// Unique ID for each Gadget
+typedef enum E_GadgetID{
+    GDG_NONE = PAGES_N,
+    GDG_BOARD,              GDG_TOOLBAR,              GDG_SCROLLBAR_HOR,
+    GDG_SBAR_LEFT_BTN,      GDG_SBAR_RIGHT_BTN,       GDG_SCROLLBAR_VER,
+    GDG_SBAR_UP_BTN,        GDG_SBAR_DOWN_BTN,        GDG_TIMER,
+    GDG_LBL_RODS_LEFT,      GDG_BTN_BACK,             GDG_BTN_RESTART,
+    GDG_BTN_ZOOM_IN,        GDG_BTN_ZOOM_OUT,         GDG_BTN_HELP,
+    GDG_BTN_INFO,           GDG_ICON_MUSIC,           GDG_SWITCH_SOUND,
+    GDG_TITLE,              GDG_BTN_PLAY,             GDG_NUMBOX_COLS,
+    GDG_NUMBOX_COLS_BTN_UP, GDG_NUMBOX_COLS_BTN_DOWN, GDG_NUMBOX_ROWS,
+    GDG_NUMBOX_ROWS_BTN_UP, GDG_NUMBOX_ROWS_BTN_DOWN, GDG_SETUP_LBL_NEW_RECORD,
+    GDG_SETUP_LBL_TIME,     GDG_SETUP_TIME_CURRENT,   GDG_SETUP_LBL_RECORD,
+    GDG_SETUP_TIME_RECORD,  GDG_HELP_TABLE,           GDG_INFO_LBL_TITLE,
+    GDG_INFO_LBL_AUTHOR, 
+    #ifdef DEBUG_MODE
+    GDG_GENERIC_1,          GDG_GENERIC_2,            GDG_GENERIC_3,
+    GDG_GENERIC_4,          GDG_GENERIC_5,            GDG_GENERIC_6,
+    GDG_GENERIC_7,          GDG_GENERIC_8,            GDG_GENERIC_9,
+    GDG_GENERIC_10,         GDG_GENERIC_11,           GDG_GENERIC_12
+    #endif
+}E_GadgetID;
+#ifdef DEBUG_MODE
+    #define GADGETS_N                       (GDG_GENERIC_12 - GDG_NONE + 1)
+#else
+    #define GADGETS_N                       (GDG_INFO_LBL_AUTHOR - GDG_NONE + 1)
+#endif
+
+bool            GadgetID_IsValid(int id);
+#ifdef DEBUG_MODE
+    const char* GadgetID_ToString(int id);
+#endif
+
+
+// **************************************************************************** E_GuiID
+
+// Unique ID for each Page or Gadget
+typedef int E_GuiID;
+
+#define GUI_OBJECTS_N                       (PAGES_N + GADGETS_N)
+
+bool            GuiID_IsValid(int id);
+#ifdef DEBUG_MODE
+    const char* GuiID_ToString(int id);
+#endif
+
+
+// **************************************************************************** E_GadgetType
+
+// The kinds of gadgets
+typedef enum E_GadgetType{
+    GT_GENERIC, GT_BOARD,     GT_LABEL,
+    GT_BUTTON,  GT_SCROLLBAR, GT_SWITCH,
+    GT_NUMBOX,  GT_TIMER,     GT_ICON,
+    GT_TABLE
+}E_GadgetType;
+#define GADGET_TYPES_N                      (GT_TABLE + 1)
+
+bool            GadgetType_IsValid(int type);
+#ifdef DEBUG_MODE
+    const char* GadgetType_ToString(int type);
+#endif
+
+
 #endif // ENUM_GUARD
 

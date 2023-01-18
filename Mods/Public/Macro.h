@@ -1,13 +1,13 @@
 // ============================================================================
 // RODS
-// Macros (Fundamental) Header
+// Macros Header
 // by Andreas Socratous
 // Jan 2023
 // ============================================================================ 
 
 
-#ifndef MACRO_FUND_GUARD
-#define MACRO_FUND_GUARD
+#ifndef MACRO_GUARD
+#define MACRO_GUARD
 
 
 // ============================================================================ INFO
@@ -313,5 +313,5 @@
 
 
 
-#endif // MACRO_FUND_GUARD
+#endif // MACRO_GUARD
 
