@@ -171,6 +171,10 @@
 #define COMPLETED                           true
 #define NOT_COMPLETED                       false
 
+// For use with gadget functions
+#define IS_SELECTABLE                       true
+#define IS_NOT_SELECTABLE                   false
+
 
 // ============================================================================ DEF STRUCTURES
 

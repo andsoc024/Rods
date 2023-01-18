@@ -84,6 +84,36 @@ typedef struct Event{
 typedef struct EventQueue EventQueue;
 
 
+// **************************************************************************** Gadget
+
+// A gadget is the elementary unit of the GUI
+typedef struct Gadget{
+    E_GadgetID id;
+    E_GadgetType type;
+
+    Rect cRect;
+
+    bool isSelected;
+    bool isSelectable;
+    bool isPressed;
+    bool isCollapsed;
+
+    struct Gadget** subGadgets;
+    int nSubGadgets;
+
+    void (*PrepareToFree)(struct Gadget* gadget);
+    void (*Resize)(struct Gadget* gadget);
+    void (*ResizeAfterSubgadgets)(struct Gadget* gadget);
+    void (*ReactToEvent)(struct Gadget* gadget, Event event, EventQueue* queue);
+    void (*Update)(struct Gadget* gadget, EventQueue* queue);
+    void (*Draw)(struct Gadget* gadget, Vector2 shift);
+    #ifdef DEBUG_MODE
+        void (*PrintData)(struct Gadget* gadget);
+    #endif
+
+    void* data;
+}Gadget;
+
 
 
 

@@ -71,6 +71,21 @@ void            Queue_SetUserInput(EventQueue* queue, Event event);
 
 Event           Event_GetUserInput(void);
 
+// ---------------------------------------------------------------------------- Gadget Functions
+
+Gadget*         Gadget_Make(E_GadgetID id, E_GadgetType type, bool isSelectable, int nSubGadgets);
+Gadget*         Gadget_Free(Gadget* gadget);
+void            Gadget_Resize(Gadget* gadget);
+void            Gadget_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue);
+void            Gadget_Update(Gadget* gadget, EventQueue* queue);
+void            Gadget_Draw(Gadget* gadget, Vector2 shift);
+bool            Gadget_SelectNext(Gadget* gadget);
+void            Gadget_Deselect(Gadget* gadget);
+#ifdef DEBUG_MODE
+    void        Gadget_Print(Gadget* gadget);
+#endif
+
+
 
 #endif // GUI_GUARD
 
