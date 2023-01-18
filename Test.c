@@ -36,43 +36,20 @@
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    EventQueue* queue = Queue_Make();
+    Window_Init();
 
-    Event event = Event_SetAsUpdateScrollbar(GDG_BOARD, GDG_SCROLLBAR_HOR, 0.1f, 0.3f);
-    Queue_AddEvent(queue, event);
-
-    event = Event_SetAsSwitchChanged(GDG_SWITCH_SOUND, true);
-    Queue_AddEvent(queue, event);
-
-    event = Event_SetAsMousePressed(POINT(300, 100));
-    Queue_SetUserInput(queue, event);
-
-    Queue_Print(queue);
-
-    PRINT_LINE3
-
-    while ((event = Queue_GetNext(queue)).id != EVENT_NONE){
-        Event_Print(event, WITH_NEW_LINE);
-    }
-
-    PRINT_LINE3
-
-    Queue_Print(queue);
-
-    PRINT_LINE3
-
-    while ((event = Queue_GetNext(queue)).id != EVENT_NONE){
-        Event_Print(event, WITH_NEW_LINE);
-        if (event.target == GDG_SCROLLBAR_HOR){
-            Queue_RemoveForTarget(queue, GDG_SCROLLBAR_HOR);
+    while (!WindowShouldClose()){
+        Event event = Event_GetUserInput();
+        if (event.id != EVENT_NONE){
+            Event_Print(event, WITH_NEW_LINE);
         }
+
+        BeginDrawing();
+        ClearBackground(COL_BG);
+        EndDrawing();
     }
 
-    PRINT_LINE3
-
-    Queue_Print(queue);
-
-    queue = Queue_Free(queue);
+    Window_Close();
 
     return 0;
 }

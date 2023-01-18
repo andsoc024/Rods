@@ -67,6 +67,9 @@ void            Queue_SetUserInput(EventQueue* queue, Event event);
     void        Queue_Print(EventQueue* queue);
 #endif
 
+// ---------------------------------------------------------------------------- Input Functions
+
+Event           Event_GetUserInput(void);
 
 
 #endif // GUI_GUARD

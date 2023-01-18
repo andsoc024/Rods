@@ -122,6 +122,9 @@
 // Icon Constants
 #define ICON_DEF_TEXTURE_SIZE               200.0f
 
+// GUI Constants
+#define TURBO_COUNT                         ((FPS * 1) / 1)
+
 
 // ============================================================================ COLORS
 
