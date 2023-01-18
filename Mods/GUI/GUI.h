@@ -54,6 +54,19 @@ Event           Event_SetAsVictory(E_GuiID source);
     void        Event_Print(Event event, bool withNewLine);
 #endif
 
+// ---------------------------------------------------------------------------- Event Queue Functions
+
+EventQueue*     Queue_Make(void);
+EventQueue*     Queue_Free(EventQueue* queue);
+void            Queue_Clear(EventQueue* queue);
+Event           Queue_GetNext(EventQueue* queue);
+void            Queue_AddEvent(EventQueue* queue, Event event);
+void            Queue_RemoveForTarget(EventQueue* queue, E_GuiID target);
+void            Queue_SetUserInput(EventQueue* queue, Event event);
+#ifdef DEBUG_MODE
+    void        Queue_Print(EventQueue* queue);
+#endif
+
 
 
 #endif // GUI_GUARD

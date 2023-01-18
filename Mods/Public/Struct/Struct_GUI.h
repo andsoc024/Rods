@@ -26,7 +26,7 @@
 
 // ============================================================================ STRUCTURES
 
-// ---------------------------------------------------------------------------- Event
+// **************************************************************************** Event
 
 // A mouse, keyboard or other GUI event
 typedef struct Event{
@@ -74,6 +74,14 @@ typedef struct Event{
     }data;
 }Event;
 
+
+// **************************************************************************** EventQueue
+
+// Structure that stores events. Events are stored in two lists: a current and 
+// a next list. In each cycle the events in the current list are processed. New 
+// events are added in the next list. Events from mouse and keyboard are stored 
+// seperately for immediate processing
+typedef struct EventQueue EventQueue;
 
 
 

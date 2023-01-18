@@ -216,6 +216,12 @@ Event Event_SetAsVictory(E_GuiID source){
 
     // Single line print of the event. Optionally with new line
     void Event_Print(Event event, bool withNewLine){
+        if (event.id == EVENT_NONE){
+            printf("%s", STR_NONE);
+            if (withNewLine) {printf("\n");}
+            return;
+        }
+
         printf("%s | ", EventID_ToString(event.id));
         printf("SRC: %s | ", GuiID_ToString(event.source));
         printf("TRG: %s", GuiID_ToString(event.target));
@@ -286,6 +292,8 @@ Event Event_SetAsVictory(E_GuiID source){
         }
 
         if (withNewLine) {printf("\n");}
+
+        #undef PRINT_DATA_SEP
     }
 
 #endif
