@@ -43,6 +43,19 @@ int             Label_GetAlignment(const Gadget* label);
 int             Label_GetFontSize(const Gadget* label);
 Point           Label_GetTextPos(const Gadget* label);
 
+// ---------------------------------------------------------------------------- Icon Label Functions
+
+Gadget*         IconLabel_Make(E_GadgetID id, E_IconID icon, Color color, E_RectPointType alignment);
+void            IconLabel_SetIcon(Gadget* iconLabel, E_IconID icon);
+void            IconLabel_SetColor(Gadget* iconLabel, Color color);
+void            IconLabel_SetSize(Gadget* iconLabel, float size);
+void            IconLabel_SetAlignment(Gadget* iconLabel, E_RectPointType alignment);
+int             IconLabel_GetIconID(const Gadget* iconLabel);
+Color           IconLabel_GetColor(const Gadget* iconLabel);
+float           IconLabel_GetScaleF(const Gadget* iconLabel);
+float           IconLabel_GetSize(const Gadget* iconLabel);
+int             IconLabel_GetAlignment(const Gadget* iconLabel);
+
 
 
 

@@ -42,7 +42,7 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    Font_LoadDefault();
+    Texture_LoadAll();
 
     Router* router = Router_Make();
     Router_AddPage(router, TestPage1_Make());
@@ -52,7 +52,7 @@ int Test(UNUSED int argc, UNUSED char** argv){
     Router_Loop(router);
 
     router = Router_Free(router);
-    Font_UnloadDefault();
+    Texture_UnloadAll();
     Window_Close();
     
     return 0;
@@ -73,7 +73,7 @@ void TButton_Draw(const Gadget* gadget, Vector2 shift);
 Page* TestPage1_Make(void){
     Page* page = Page_Make(PAGE_GENERIC_1);
 
-    Gadget* label = Label_Make(GDG_GENERIC_1, "Testing...", COL_ROD, RP_CENTER);
+    Gadget* label = IconLabel_Make(GDG_GENERIC_1, ICON_MEDAL, COL_UI_FG_PRIMARY, RP_CENTER);
     Page_AddGadget(page, label);
 
     PRINT_LINE3
@@ -115,11 +115,11 @@ void TestPage1_ReactToEvent(Page* page, Event event, EventQueue* queue){
         case EVENT_BUTTON_RELEASED:{
             switch (event.source){
                 case GDG_GENERIC_2:{
-                    if (Label_IsMagic(page->gadgets[0])){
-                        Label_SetColor(page->gadgets[0], Color_Random(0x33, 0xEE));
-                    }else{
-                        Label_SetColorAsMagic(page->gadgets[0]);
+                    IconLabel_SetIcon(page->gadgets[0], (IconLabel_GetIconID(page->gadgets[0]) + 1) % ICONS_N);
+                    if (IconLabel_GetSize(page->gadgets[0]) > 200.0f){
+                        IconLabel_SetSize(page->gadgets[0], 200.0f);
                     }
+                    IconLabel_SetColor(page->gadgets[0], RED);
                     break;
                 }
 

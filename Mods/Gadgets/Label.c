@@ -31,6 +31,8 @@
 
 // ============================================================================ PRIVATE MACROS
 
+// **************************************************************************** LDATA
+
 // Pointer to the label's data object
 #define LDATA \
     ((LabelData*) (label->data))
@@ -43,6 +45,9 @@
 
 // ============================================================================ PRIVATE STRUCTURES
 
+// **************************************************************************** LabelData
+
+// The data object of the label
 typedef struct LabelData{
     char* txt;
     float fontSize;
@@ -128,6 +133,7 @@ void Label_SetColor(Gadget* label, Color color){
 // Change the text of the label
 void Label_SetText(Gadget* label, const char* txt){
     LDATA->txt = String_Copy(LDATA->txt, txt);
+    Gadget_Resize(label);
 }
 
 
