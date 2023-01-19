@@ -33,82 +33,267 @@
 
 // ============================================================================ TEST
 
+Page* TestPage1_Make(void);
+Page* TestPage2_Make(void);
+
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
-    Gadget* gadget1  = Gadget_Make(GDG_GENERIC_1,  GT_GENERIC, IS_SELECTABLE,     3);
-    Gadget* gadget2  = Gadget_Make(GDG_GENERIC_2,  GT_GENERIC, IS_NOT_SELECTABLE, 0);
-    Gadget* gadget3  = Gadget_Make(GDG_GENERIC_3,  GT_GENERIC, IS_SELECTABLE,     0);
-    Gadget* gadget4  = Gadget_Make(GDG_GENERIC_4,  GT_GENERIC, IS_SELECTABLE,     2);
+    Window_Init();
 
-    Gadget* gadget5  = Gadget_Make(GDG_GENERIC_5,  GT_GENERIC, IS_SELECTABLE,     0);
-    Gadget* gadget6  = Gadget_Make(GDG_GENERIC_6,  GT_GENERIC, IS_NOT_SELECTABLE, 0);
-    Gadget* gadget7  = Gadget_Make(GDG_GENERIC_7,  GT_GENERIC, IS_SELECTABLE,     2);
-    Gadget* gadget8  = Gadget_Make(GDG_GENERIC_8,  GT_GENERIC, IS_NOT_SELECTABLE, 0);
-    Gadget* gadget9  = Gadget_Make(GDG_GENERIC_9,  GT_GENERIC, IS_SELECTABLE,     0);
+    Page** pages = Memory_Allocate(NULL, sizeof(Page) * PAGES_N, ZEROVAL_ALL);
+    pages[PAGE_GENERIC_1] = TestPage1_Make();
+    pages[PAGE_GENERIC_2] = TestPage2_Make();
 
-    Gadget* gadget10 = Gadget_Make(GDG_GENERIC_10, GT_GENERIC, IS_SELECTABLE,     0);
-    Gadget* gadget11 = Gadget_Make(GDG_GENERIC_11, GT_GENERIC, IS_SELECTABLE,     1);
-
-    Gadget* gadget12 = Gadget_Make(GDG_GENERIC_12, GT_GENERIC, IS_SELECTABLE,     0);
-
-    gadget1->subGadgets[0]  = gadget5;
-    gadget1->subGadgets[1]  = gadget6;
-    gadget1->subGadgets[2]  = gadget7;
-
-    gadget4->subGadgets[0]  = gadget8;
-    gadget4->subGadgets[1]  = gadget9;
-
-    gadget7->subGadgets[0]  = gadget10;
-    gadget7->subGadgets[1]  = gadget11;
-
-    gadget11->subGadgets[0] = gadget12;
-
-    Gadget* mainGadgets[] = {gadget1, gadget2, gadget3, gadget4};
-    int nMain = sizeof(mainGadgets) / sizeof(mainGadgets[0]);
-    Gadget* allGadgets[] = {gadget1, gadget2, gadget3, gadget4,  gadget5,  gadget6,
-                            gadget7, gadget8, gadget9, gadget10, gadget11, gadget12};
-    int nAll = sizeof(allGadgets) / sizeof(allGadgets[0]);
-    
-    for (int i = 0; i < 20; i++){
-        int selIndex = 0;
-        for (int j = 0; j < nMain; j++){
-            if (mainGadgets[j]->isSelected){
-                selIndex = j;
-                break;
-            }
-        }
-
-        for (int j = selIndex; j < nMain; j++){
-            if (Gadget_SelectNext(mainGadgets[j])){
-                break;
-            }
-        }
-
-        for (int j = 0; j < nAll; j++){
-            if (allGadgets[j]->isSelected){
-                printf("%s\n", GadgetID_ToString(allGadgets[j]->id));
-            }
-        }
-        PRINT_LINE3
-    }
-
-    for (int i = 0; i < nMain; i++){
-        Gadget_Deselect(mainGadgets[i]);
-    }
-    for (int j = 0; j < nAll; j++){
-        if (allGadgets[j]->isSelected){
-            printf("%s\n", GadgetID_ToString(allGadgets[j]->id));
-        }
-    }
+    PRINT_LINE3
+    Page_Print(pages[PAGE_GENERIC_1]);
+    PRINT_LINE3
+    Gadget_Print(pages[PAGE_GENERIC_1]->gadgets[0]);
     PRINT_LINE3
 
-    for (int i = 0; i < nMain; i++){
-        Gadget_Free(allGadgets[i]);
+    EventQueue* queue = Queue_Make();
+
+    Page_Show(pages[PAGE_GENERIC_1], WITH_ANIM);
+
+    while (!WindowShouldClose()){
+        if (IsWindowResized()){
+            Window_UpdateWinSize();
+            for (int i = 0; i < PAGES_N; i++){
+                Page_Resize(pages[i]);
+            }
+        }
+
+        Event event;
+        Queue_SetUserInput(queue, Event_GetUserInput());
+        while ((event = Queue_GetNext(queue)).id != EVENT_NONE){
+            switch (event.id){
+                case EVENT_SHOW_PAGE:{
+                    Page_Show(pages[event.data.page.id], event.data.page.withAnim);
+                    break;
+                }
+
+                case EVENT_HIDE_PAGE:{
+                    Page_Hide(pages[event.data.page.id], event.data.page.withAnim);
+                    break;
+                }
+
+                default: {break;}
+            }
+
+            for (int i = PAGES_N; i >= 0; i--){
+                if (pages[i] != NULL && pages[i]->isShown){
+                    Page_ReactToEvent(pages[i], event, queue);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < PAGES_N; i++){
+            Page_Update(pages[i], queue);
+        }
+
+        BeginDrawing();
+        ClearBackground(COL_BG);
+        for (int i = 0; i < PAGES_N; i++){
+            Page_Draw(pages[i]);
+        }
+        EndDrawing();
     }
+
+    for (int i = 0; i < PAGES_N; i++){
+        pages[i] = Page_Free(pages[i]);
+    }
+    queue = Queue_Free(queue);
+    pages = Memory_Free(pages);
 
     return 0;
 }
 
+void TestPage1_Resize(Page* page);
+void TestPage1_ReactToEvent(Page* page, Event event, EventQueue* queue);
+
+void TestPage2_Resize(Page* page);
+void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue);
+
+typedef struct CircleData{
+    Point center;
+    float radius;
+    Color color;
+}CircleData;
+Gadget* Circle_Make(E_GadgetID id, Color color);
+void Circle_Resize(Gadget* gadget);
+void Circle_Draw(Gadget* gadget, Vector2 shift);
+
+Gadget* TButton_Make(E_GadgetID id);
+void TButton_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue);
+void TButton_Draw(Gadget* gadget, Vector2 shift);
+
+
+Page* TestPage1_Make(void){
+    Page* page = Page_Make(PAGE_GENERIC_1);
+
+    Gadget* circle = Circle_Make(GDG_GENERIC_1, Color_Random(0x33, 0xEE));
+    Page_AddGadget(page, circle);
+
+    Gadget* butt1 = TButton_Make(GDG_GENERIC_2);
+    Page_AddGadget(page, butt1);
+
+    Gadget* butt2 = TButton_Make(GDG_GENERIC_3);
+    Page_AddGadget(page, butt2);
+
+
+    page->Resize       = TestPage1_Resize;
+    page->ReactToEvent = TestPage1_ReactToEvent;
+
+    Page_Resize(page);
+
+    return page;
+}
+
+void TestPage1_Resize(Page* page){
+    const Size vScreen = SIZE(450, 700);
+    const Rect circleRect = RECT(75, 50, 300, 300);
+    const Rect butt1Rect = RECT(50, 400, 350, 100);
+    const Rect butt2Rect = RECT(50, 550, 350, 100);
+
+    VGraph* vg = VGraph_Make(vScreen, TO_RECT(Glo_WinSize), 10.0f);
+
+    page->gadgets[0]->cRect = VGraph_ProjectRect(circleRect, vg);
+    page->gadgets[1]->cRect = VGraph_ProjectRect(butt1Rect, vg);
+    page->gadgets[2]->cRect = VGraph_ProjectRect(butt2Rect, vg);
+
+    vg = VGraph_Free(vg);
+}
+
+void TestPage1_ReactToEvent(Page* page, Event event, EventQueue* queue){
+    switch (event.id){
+        case EVENT_BUTTON_RELEASED:{
+            switch (event.source){
+                case GDG_GENERIC_2:{
+                    ((CircleData*) page->gadgets[0]->data)->color = Color_Random(0x33, 0xEE);
+                    break;
+                }
+
+                case GDG_GENERIC_3:{
+                    Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_GENERIC_2, WITH_ANIM));
+                    Queue_AddEvent(queue, Event_SetAsHidePage(page->id, PAGE_GENERIC_1, WITH_ANIM));
+                    break;
+                }
+
+                default: {break;}
+            }
+        }
+
+        default: {break;}
+    }
+}
+
+
+
+Page* TestPage2_Make(void){
+    Page* page = Page_Make(PAGE_GENERIC_2);
+
+    Gadget* butt = TButton_Make(GDG_GENERIC_4);
+    Page_AddGadget(page, butt);
+
+    page->Resize       = TestPage2_Resize;
+    page->ReactToEvent = TestPage2_ReactToEvent;
+
+    Page_Resize(page);
+
+    return page;
+}
+
+void TestPage2_Resize(Page* page){
+    const Size vScreen = SIZE(100, 100);
+    const Rect buttRect = RECT(20, 20, 60, 60);
+
+    VGraph* vg = VGraph_Make(vScreen, TO_RECT(Glo_WinSize), 10.0f);
+
+    page->gadgets[0]->cRect = VGraph_ProjectRect(buttRect, vg);
+
+    vg = VGraph_Free(vg);
+}
+
+void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue){
+    if (event.id == EVENT_BUTTON_RELEASED && event.source == GDG_GENERIC_4){
+        Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_GENERIC_1, WITHOUT_ANIM));
+        Queue_AddEvent(queue, Event_SetAsHidePage(page->id, PAGE_GENERIC_2, WITHOUT_ANIM));
+    }
+}
+
+
+Gadget* Circle_Make(E_GadgetID id, Color color){
+    Gadget* circle = Gadget_Make(id, GT_GENERIC, IS_NOT_SELECTABLE, 0);
+
+    circle->Resize = Circle_Resize;
+    circle->Draw = Circle_Draw;
+
+    CircleData* data = Memory_Allocate(NULL, sizeof(CircleData), ZEROVAL_ALL);
+    data->color = color;
+    circle->data = data;
+
+    return circle;
+}
+
+void Circle_Resize(Gadget* gadget){
+    ((CircleData*) gadget->data)->center = Geo_RectPoint(gadget->cRect, RP_CENTER);
+    ((CircleData*) gadget->data)->radius = MIN_DIM(gadget->cRect) * 0.5f;
+}
+
+void Circle_Draw(Gadget* gadget, Vector2 shift){
+    DrawCircleV(Geo_TranslatePoint(((CircleData*) gadget->data)->center, shift), 
+                ((CircleData*) gadget->data)->radius, ((CircleData*) gadget->data)->color);
+}
+
+
+Gadget* TButton_Make(E_GadgetID id){
+    Gadget* butt = Gadget_Make(id, GT_GENERIC, IS_SELECTABLE, 0);
+
+    butt->ReactToEvent = TButton_ReactToEvent;
+    butt->Draw = TButton_Draw;
+
+    return butt;
+}
+
+void TButton_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue){
+    switch (event.id){
+        case EVENT_MOUSE_MOVE:{
+            gadget->isSelected = Geo_PointIsInRect(event.data.mouse.pos, gadget->cRect);
+            break;
+        }
+
+        case EVENT_MOUSE_DRAG:{
+            if (!Geo_PointIsInRect(event.data.mouse.pos, gadget->cRect)){
+                gadget->isPressed = false;
+            }
+            break;
+        }
+
+        case EVENT_MOUSE_PRESSED:{
+            if (Geo_PointIsInRect(event.data.mouse.pos, gadget->cRect)){
+                gadget->isPressed = true;
+                Queue_AddEvent(queue, Event_SetAsButtonPressed(gadget->id));
+            }
+            break;
+        }
+
+        case EVENT_MOUSE_RELEASED:{
+            if (gadget->isPressed){
+                gadget->isPressed = false;
+                Queue_AddEvent(queue, Event_SetAsButtonReleased(gadget->id));
+            }
+            break;
+        }
+
+        default: {break;}
+    }
+}
+
+void TButton_Draw(Gadget* gadget, Vector2 shift){
+    Color color = gadget->isPressed ? COL_UI_BG_PRIMARY : 
+                  gadget->isSelected ? COL_UI_FG_EMPH : COL_UI_FG_PRIMARY;
+    Shape_DrawOutlinedRect(Geo_TranslateRect(gadget->cRect, shift), 5.0f, COL_UI_BG_PRIMARY, color);
+}
 
 

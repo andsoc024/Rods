@@ -1,4 +1,5 @@
 Mods/GUI/Event.c
 Mods/GUI/Queue.c
 Mods/GUI/Input.c
-Mods/GUI/Gadget.c 
+Mods/GUI/Gadget.c
+Mods/GUI/Page.c 

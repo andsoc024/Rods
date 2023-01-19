@@ -85,6 +85,25 @@ void            Gadget_Deselect(Gadget* gadget);
     void        Gadget_Print(Gadget* gadget);
 #endif
 
+// ---------------------------------------------------------------------------- Page Functions
+
+Page*           Page_Make(E_PageID id);
+Page*           Page_Free(Page* page);
+bool            Page_AddGadget(Page* page, Gadget* gadget);
+void            Page_Resize(Page* page);
+void            Page_ReactToEvent(Page* page, Event event, EventQueue* queue);
+void            Page_Update(Page* page, EventQueue* queue);
+void            Page_Draw(Page* page);
+void            Page_SelectNextGadget(Page* page);
+void            Page_DeselectAllGadgets(Page* page);
+void            Page_Show(Page* page, bool withAnim);
+void            Page_Hide(Page* page, bool withAnim);
+bool            Page_IsAnimating(Page* page);
+void            Page_FinishTransitionAnim(Page* page);
+#ifdef DEBUG_MODE
+    void        Page_Print(Page* page);
+#endif
+
 
 
 #endif // GUI_GUARD

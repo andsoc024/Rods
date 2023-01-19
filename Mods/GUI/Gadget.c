@@ -61,6 +61,8 @@ Gadget* Gadget_Free(Gadget* gadget){
     }
     gadget->subGadgets = Memory_Free(gadget->subGadgets);
 
+    gadget->data = Memory_Free(gadget->data);
+
     return Memory_Free(gadget);
 }
 
@@ -89,6 +91,10 @@ void Gadget_Resize(Gadget* gadget){
 void Gadget_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue){
     if (gadget->ReactToEvent != NULL){
         gadget->ReactToEvent(gadget, event, queue);
+    }
+
+    if (event.target == (int) gadget->id){
+        Queue_RemoveForTarget(queue, gadget->id);
     }
 
     for (int i = 0; i < gadget->nSubGadgets; i++){

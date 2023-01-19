@@ -124,6 +124,7 @@
 
 // GUI Constants
 #define TURBO_COUNT                         ((FPS * 1) / 1)
+#define PAGE_GADGETS_N                      10
 
 
 // ============================================================================ COLORS

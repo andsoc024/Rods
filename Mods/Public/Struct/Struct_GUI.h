@@ -115,6 +115,34 @@ typedef struct Gadget{
 }Gadget;
 
 
+// **************************************************************************** Page
+
+// A page is the second unit of the GUI. It can contain one or more gadgets. 
+// Pages are controlled by the router
+typedef struct Page{
+    E_PageID id;
+
+    bool isShown;
+
+    Vector2 shift;
+    float shiftIncr;
+
+    Gadget* gadgets[PAGE_GADGETS_N];
+    int nGadgets;
+
+    void (*PrepareToFree)(struct Page* page);
+    void (*Resize)(struct Page* page);
+    void (*ResizeAfterGadgets)(struct Page* page);
+    void (*ReactToEvent)(struct Page* page, Event event, EventQueue* queue);
+    void (*Update) (struct Page* page, EventQueue* queue);
+    void (*Draw)(struct Page* page);
+    #ifdef DEBUG_MODE
+        void (*PrintData)(struct Page* page);
+    #endif
+
+    void* data;
+}Page;
+
 
 
 #endif // STRUCT_GUI_GUARD
