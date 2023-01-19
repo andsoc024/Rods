@@ -106,9 +106,9 @@ typedef struct Gadget{
     void (*ResizeAfterSubgadgets)(struct Gadget* gadget);
     void (*ReactToEvent)(struct Gadget* gadget, Event event, EventQueue* queue);
     void (*Update)(struct Gadget* gadget, EventQueue* queue);
-    void (*Draw)(struct Gadget* gadget, Vector2 shift);
+    void (*Draw)(const struct Gadget* gadget, Vector2 shift);
     #ifdef DEBUG_MODE
-        void (*PrintData)(struct Gadget* gadget);
+        void (*PrintData)(const struct Gadget* gadget);
     #endif
 
     void* data;
@@ -135,9 +135,9 @@ typedef struct Page{
     void (*ResizeAfterGadgets)(struct Page* page);
     void (*ReactToEvent)(struct Page* page, Event event, EventQueue* queue);
     void (*Update) (struct Page* page, EventQueue* queue);
-    void (*Draw)(struct Page* page);
+    void (*Draw)(const struct Page* page);
     #ifdef DEBUG_MODE
-        void (*PrintData)(struct Page* page);
+        void (*PrintData)(const struct Page* page);
     #endif
 
     void* data;

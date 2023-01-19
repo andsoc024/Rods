@@ -78,11 +78,11 @@ Gadget*         Gadget_Free(Gadget* gadget);
 void            Gadget_Resize(Gadget* gadget);
 void            Gadget_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue);
 void            Gadget_Update(Gadget* gadget, EventQueue* queue);
-void            Gadget_Draw(Gadget* gadget, Vector2 shift);
+void            Gadget_Draw(const Gadget* gadget, Vector2 shift);
 bool            Gadget_SelectNext(Gadget* gadget);
 void            Gadget_Deselect(Gadget* gadget);
 #ifdef DEBUG_MODE
-    void        Gadget_Print(Gadget* gadget);
+    void        Gadget_Print(const Gadget* gadget);
 #endif
 
 // ---------------------------------------------------------------------------- Page Functions
@@ -93,15 +93,15 @@ bool            Page_AddGadget(Page* page, Gadget* gadget);
 void            Page_Resize(Page* page);
 void            Page_ReactToEvent(Page* page, Event event, EventQueue* queue);
 void            Page_Update(Page* page, EventQueue* queue);
-void            Page_Draw(Page* page);
-void            Page_SelectNextGadget(Page* page);
-void            Page_DeselectAllGadgets(Page* page);
+void            Page_Draw(const Page* page);
+void            Page_SelectNextGadget(const Page* page);
+void            Page_DeselectAllGadgets(const Page* page);
 void            Page_Show(Page* page, bool withAnim);
 void            Page_Hide(Page* page, bool withAnim);
-bool            Page_IsAnimating(Page* page);
+bool            Page_IsAnimating(const Page* page);
 void            Page_FinishTransitionAnim(Page* page);
 #ifdef DEBUG_MODE
-    void        Page_Print(Page* page);
+    void        Page_Print(const Page* page);
 #endif
 
 // ---------------------------------------------------------------------------- Router Functions
@@ -109,12 +109,12 @@ void            Page_FinishTransitionAnim(Page* page);
 Router*         Router_Make(void);
 Router*         Router_Free(Router* router);
 void            Router_AddPage(Router* router, Page* page);
-Page*           Router_GetPage(Router* router, E_PageID pageID);
-void            Router_ShowPage(Router* router, E_PageID pageID, bool withAnim);
-void            Router_HidePage(Router* router, E_PageID pageID, bool withAnim);
-void            Router_Loop(Router* router);
+Page*           Router_GetPage(const Router* router, E_PageID pageID);
+void            Router_ShowPage(const Router* router, E_PageID pageID, bool withAnim);
+void            Router_HidePage(const Router* router, E_PageID pageID, bool withAnim);
+void            Router_Loop(const Router* router);
 #ifdef DEBUG_MODE
-    void        Router_Print(Router* router);
+    void        Router_Print(const Router* router);
 #endif
 
 

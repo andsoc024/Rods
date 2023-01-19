@@ -120,7 +120,7 @@ void Gadget_Update(Gadget* gadget, EventQueue* queue){
 // **************************************************************************** Gadget_Draw
 
 // Draw the gadget
-void Gadget_Draw(Gadget* gadget, Vector2 shift){
+void Gadget_Draw(const Gadget* gadget, Vector2 shift){
     if (gadget->Draw != NULL){
         gadget->Draw(gadget, shift);
     }
@@ -182,7 +182,7 @@ void Gadget_Deselect(Gadget* gadget){
 #ifdef DEBUG_MODE
 
     // Multiline print of the gadget's parameters
-    void Gadget_Print(Gadget* gadget){
+    void Gadget_Print(const Gadget* gadget){
         CHECK_NULL(gadget, WITH_NEW_LINE)
 
         printf("ID:         %s\n", GadgetID_ToString(gadget->id));

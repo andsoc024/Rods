@@ -114,6 +114,10 @@ void Page_Resize(Page* page){
 // React to the event, if the page is shown. Optionally add events to the event 
 // queue
 void Page_ReactToEvent(Page* page, Event event, EventQueue* queue){
+    if (event.id == EVENT_KEY_PRESSED && event.data.key == WKEY_TAB){
+        Page_SelectNextGadget(page);
+    }
+
     if (page->ReactToEvent != NULL){
         page->ReactToEvent(page, event, queue);
     }
@@ -149,7 +153,7 @@ void Page_Update(Page* page, EventQueue* queue){
 // **************************************************************************** Page_Draw
 
 // Draw the page, if shown
-void Page_Draw(Page* page){
+void Page_Draw(const Page* page){
     if (page == NULL || !page->isShown) {return;}
 
     if (page->Draw != NULL){
@@ -165,7 +169,7 @@ void Page_Draw(Page* page){
 // **************************************************************************** Page_SelectNextGadget
 
 // Select the next selectable gadget in the page
-void Page_SelectNextGadget(Page* page){
+void Page_SelectNextGadget(const Page* page){
     int selIndex = 0;
     for (int i = 0; i < page->nGadgets; i++){
         if (page->gadgets[i]->isSelected){
@@ -185,7 +189,7 @@ void Page_SelectNextGadget(Page* page){
 // **************************************************************************** Page_DeselectAllGadgets
 
 // Deselect all gadgets in the page
-void Page_DeselectAllGadgets(Page* page){
+void Page_DeselectAllGadgets(const Page* page){
     for (int i = 0; i < page->nGadgets; i++){
         Gadget_Deselect(page->gadgets[i]);
     }
@@ -233,7 +237,7 @@ void Page_Hide(Page* page, bool withAnim){
 // **************************************************************************** Page_IsAnimating
 
 // Return true if the page is the page is during transition animation
-bool Page_IsAnimating(Page* page){
+bool Page_IsAnimating(const Page* page){
     return page== NULL || page->shiftIncr != 0.0f;
 }
 
@@ -252,7 +256,7 @@ void Page_FinishTransitionAnim(Page* page){
 // **************************************************************************** Page_Print
 
     // Multiline print of the page parameters
-    void Page_Print(Page* page){
+    void Page_Print(const Page* page){
         CHECK_NULL(page, WITH_NEW_LINE)
 
         printf("ID:         %s\n", PageID_ToString(page->id));
