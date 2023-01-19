@@ -104,6 +104,20 @@ void            Page_FinishTransitionAnim(Page* page);
     void        Page_Print(Page* page);
 #endif
 
+// ---------------------------------------------------------------------------- Router Functions
+
+Router*         Router_Make(void);
+Router*         Router_Free(Router* router);
+void            Router_AddPage(Router* router, Page* page);
+Page*           Router_GetPage(Router* router, E_PageID pageID);
+void            Router_ShowPage(Router* router, E_PageID pageID, bool withAnim);
+void            Router_HidePage(Router* router, E_PageID pageID, bool withAnim);
+void            Router_Loop(Router* router);
+#ifdef DEBUG_MODE
+    void        Router_Print(Router* router);
+#endif
+
+
 
 
 #endif // GUI_GUARD

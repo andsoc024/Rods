@@ -41,71 +41,21 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    Page** pages = Memory_Allocate(NULL, sizeof(Page) * PAGES_N, ZEROVAL_ALL);
-    pages[PAGE_GENERIC_1] = TestPage1_Make();
-    pages[PAGE_GENERIC_2] = TestPage2_Make();
+    Router* router = Router_Make();
+    Router_AddPage(router, TestPage1_Make());
+    Router_AddPage(router, TestPage2_Make());
+    Router_ShowPage(router, PAGE_GENERIC_1, WITH_ANIM);
 
     PRINT_LINE3
-    Page_Print(pages[PAGE_GENERIC_1]);
-    PRINT_LINE3
-    Gadget_Print(pages[PAGE_GENERIC_1]->gadgets[0]);
+    Router_Print(router);
     PRINT_LINE3
 
-    EventQueue* queue = Queue_Make();
+    Router_Loop(router);
 
-    Page_Show(pages[PAGE_GENERIC_1], WITH_ANIM);
+    router = Router_Free(router);
 
-    while (!WindowShouldClose()){
-        if (IsWindowResized()){
-            Window_UpdateWinSize();
-            for (int i = 0; i < PAGES_N; i++){
-                Page_Resize(pages[i]);
-            }
-        }
-
-        Event event;
-        Queue_SetUserInput(queue, Event_GetUserInput());
-        while ((event = Queue_GetNext(queue)).id != EVENT_NONE){
-            switch (event.id){
-                case EVENT_SHOW_PAGE:{
-                    Page_Show(pages[event.data.page.id], event.data.page.withAnim);
-                    break;
-                }
-
-                case EVENT_HIDE_PAGE:{
-                    Page_Hide(pages[event.data.page.id], event.data.page.withAnim);
-                    break;
-                }
-
-                default: {break;}
-            }
-
-            for (int i = PAGES_N; i >= 0; i--){
-                if (pages[i] != NULL && pages[i]->isShown){
-                    Page_ReactToEvent(pages[i], event, queue);
-                    break;
-                }
-            }
-        }
-
-        for (int i = 0; i < PAGES_N; i++){
-            Page_Update(pages[i], queue);
-        }
-
-        BeginDrawing();
-        ClearBackground(COL_BG);
-        for (int i = 0; i < PAGES_N; i++){
-            Page_Draw(pages[i]);
-        }
-        EndDrawing();
-    }
-
-    for (int i = 0; i < PAGES_N; i++){
-        pages[i] = Page_Free(pages[i]);
-    }
-    queue = Queue_Free(queue);
-    pages = Memory_Free(pages);
-
+    Window_Close();
+    
     return 0;
 }
 
@@ -217,8 +167,8 @@ void TestPage2_Resize(Page* page){
 
 void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue){
     if (event.id == EVENT_BUTTON_RELEASED && event.source == GDG_GENERIC_4){
-        Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_GENERIC_1, WITHOUT_ANIM));
-        Queue_AddEvent(queue, Event_SetAsHidePage(page->id, PAGE_GENERIC_2, WITHOUT_ANIM));
+        Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_GENERIC_1, WITH_ANIM));
+        Queue_AddEvent(queue, Event_SetAsHidePage(page->id, PAGE_GENERIC_2, WITH_ANIM));
     }
 }
 

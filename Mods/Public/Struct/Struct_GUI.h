@@ -144,6 +144,19 @@ typedef struct Page{
 }Page;
 
 
+// **************************************************************************** Router
+
+// The router is the top unit of the GUI. It controls pages and events and it 
+// also manages the magic color and the flying rectangles
+typedef struct Router{
+    EventQueue* queue;
+
+    Page* pages[PAGES_N];
+
+    FRects* fRects;
+}Router;
+
+
 
 #endif // STRUCT_GUI_GUARD
 

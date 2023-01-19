@@ -37,7 +37,11 @@
 int main(UNUSED int argc, UNUSED char** argv){
     
     #ifdef DEBUG_MODE
-        return Test(argc, argv);
+        int res = Test(argc, argv);
+        #ifdef MEMORY_TRACK
+            Memory_Print();
+        #endif
+        return res;
     #endif
 
     printf("Main\n");

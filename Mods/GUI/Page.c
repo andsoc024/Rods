@@ -308,7 +308,7 @@ void Page_UpdateTransAnim(Page* page){
 
     // Hide animation that moves the page to the right
     if (page->shiftIncr > 0.0f){
-        if (page->shiftIncr > Glo_WinSize.width){
+        if (page->shift.x> Glo_WinSize.width){
             Page_FinishTransitionAnim(page);
         }
     }
