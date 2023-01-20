@@ -189,7 +189,8 @@ bool            PageID_IsValid(int id);
 
 // **************************************************************************** E_GadgetID
 
-// Unique ID for each Gadget
+// Unique ID for each Gadget. OBS! A subgadget can have the same ID as its 
+// mother gadget
 typedef enum E_GadgetID{
     GDG_NONE = PAGES_N,
     GDG_BOARD,              GDG_TOOLBAR,              GDG_SCROLLBAR_HOR,

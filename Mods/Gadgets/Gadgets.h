@@ -56,6 +56,20 @@ float           IconLabel_GetScaleF(const Gadget* iconLabel);
 float           IconLabel_GetSize(const Gadget* iconLabel);
 int             IconLabel_GetAlignment(const Gadget* iconLabel);
 
+// ---------------------------------------------------------------------------- Button Functions
+
+Gadget*         Button_MakeAsText(E_GadgetID id, const char* txt);
+Gadget*         Button_MakeAsIcon(E_GadgetID id, E_IconID icon);
+void            Button_SetText(Gadget* button, const char* txt);
+void            Button_SetIcon(Gadget* button, E_IconID icon);
+void            Button_SetColors(Gadget* button, Color colBG, Color colFG, Color colEmph);
+void            Button_SetRoundness(Gadget* button, float roundness);
+void            Button_SetOutlineThickness(Gadget* button, float thickness);
+bool            Button_HasText(const Gadget* button);
+bool            Button_HasIcon(const Gadget* button);
+float           Button_GetRoundness(const Gadget* button);
+float           Button_GetOutlineThickness(const Gadget* button);
+Gadget*         Button_GetContent(const Gadget* button);
 
 
 
