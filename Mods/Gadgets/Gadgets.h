@@ -71,6 +71,19 @@ float           Button_GetRoundness(const Gadget* button);
 float           Button_GetOutlineThickness(const Gadget* button);
 Gadget*         Button_GetContent(const Gadget* button);
 
+// ---------------------------------------------------------------------------- Number Box Functions
+
+Gadget*         NumBox_Make(E_GadgetID id, E_GadgetID upButtonID, E_GadgetID downButtonID);
+void            NumBox_SetValue(Gadget* numbox, int value);
+void            NumBox_SetLimits(Gadget* numbox, int minValue, int maxValue);
+void            NumBox_SetAlignment(Gadget* numbox, E_RectPointType alignment);
+void            NumBox_SetOutlineThickness(Gadget* numbox, float thickness);
+int             NumBox_GetValue(const Gadget* numbox);
+int             NumBox_GetMinValue(const Gadget* numbox);
+int             NumBox_GetMaxValue(const Gadget* numbox);
+int             NumBox_GetAlignment(const Gadget* numbox);
+Gadget*         NumBox_GetUpButton(const Gadget* numbox);
+Gadget*         NumBox_GetDownButton(const Gadget* numbox);
 
 
 

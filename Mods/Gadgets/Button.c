@@ -51,6 +51,8 @@
 #define BTN_DEF_THICKNESS                   3.0f
 #define BTN_DEF_MARGIN_RATIO                ((1.0f - MATH_PHI_INVERSE) * 0.5f)
 
+#define BTN_TURBO_COUNT                     TURBO_COUNT
+
 #define COL_BTN_BG                          COL_UI_BG_PRIMARY
 #define COL_BTN_FG                          COL_UI_FG_PRIMARY
 #define COL_BTN_EMPH                        COL_UI_FG_EMPH
@@ -62,6 +64,7 @@ typedef struct ButtonData{
     float roundness;
     float thickness;
     float marginRatio;
+    int turboCount;
     Color colBG;
     Color colFG;
     Color colEmph;
@@ -72,6 +75,7 @@ typedef struct ButtonData{
 
 void            Button_Resize(Gadget* button);
 void            Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue);
+void            Button_Update(Gadget* button, EventQueue* queue);
 void            Button_Draw(const Gadget* button, Vector2 shift);
 #ifdef DEBUG_MODE
     void        Button_PrintData(const Gadget* button);
@@ -97,6 +101,7 @@ Gadget* Button_MakeAsText(E_GadgetID id, const char* txt){
 
     button->Resize        = Button_Resize;
     button->ReactToEvent  = Button_ReactToEvent;
+    button->Update        = Button_Update;
     button->Draw          = Button_Draw;
     #ifdef DEBUG_MODE
         button->PrintData = Button_PrintData;
@@ -299,6 +304,7 @@ void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
         case EVENT_KEY_RELEASED:{
             if (button->isPressed){
                 button->isPressed = false;
+                BDATA->turboCount = 0;
                 Queue_AddEvent(queue, Event_SetAsButtonReleased(button->id));
             }
             break;
@@ -309,6 +315,17 @@ void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
 }
 
 
+// **************************************************************************** Button_Update
+
+// For turbo button functionality
+void Button_Update(Gadget* button, EventQueue* queue){
+    if (button->isPressed){
+        BDATA->turboCount++;
+        if (BDATA->turboCount > BTN_TURBO_COUNT){
+            Queue_AddEvent(queue, Event_SetAsButtonPressed(button->id));
+        }
+    }
+}
 // **************************************************************************** Button_Draw
 
 // Draw the background of the button

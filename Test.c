@@ -125,6 +125,8 @@ void TestPage1_ReactToEvent(Page* page, Event event, EventQueue* queue){
 
                 default: {break;}
             }
+
+            break;
         }
 
         default: {break;}
@@ -136,7 +138,14 @@ void TestPage1_ReactToEvent(Page* page, Event event, EventQueue* queue){
 Page* TestPage2_Make(void){
     Page* page = Page_Make(PAGE_GENERIC_2);
 
-    Gadget* butt = Button_MakeAsIcon(GDG_GENERIC_4, ICON_BACK);
+    Gadget* numbox = NumBox_Make(GDG_NUMBOX_COLS, GDG_NUMBOX_COLS_BTN_UP, GDG_NUMBOX_COLS_BTN_DOWN);
+    Page_AddGadget(page, numbox);
+
+    PRINT_LINE3
+    Gadget_Print(numbox);
+    PRINT_LINE3
+
+    Gadget* butt = Button_MakeAsIcon(GDG_GENERIC_5, ICON_BACK);
     Page_AddGadget(page, butt);
 
     page->Resize       = TestPage2_Resize;
@@ -148,20 +157,26 @@ Page* TestPage2_Make(void){
 }
 
 void TestPage2_Resize(Page* page){
-    const Size vScreen = SIZE(100, 100);
-    const Rect buttRect = RECT(20, 20, 60, 60);
+    const Size vScreen = SIZE(1000, 1000);
+    const Rect nbRect = RECT(300, 75, 400, 400);
+    const Rect buttRect = RECT(300, 650, 400, 100);
 
     VGraph* vg = VGraph_Make(vScreen, TO_RECT(Glo_WinSize), 10.0f);
 
-    page->gadgets[0]->cRect = VGraph_ProjectRect(buttRect, vg);
+    page->gadgets[0]->cRect = VGraph_ProjectRect(nbRect, vg);
+    page->gadgets[1]->cRect = VGraph_ProjectRect(buttRect, vg);
 
     vg = VGraph_Free(vg);
 }
 
 void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue){
-    if (event.id == EVENT_BUTTON_RELEASED && event.source == GDG_GENERIC_4){
+    if (event.id == EVENT_BUTTON_RELEASED && event.source == GDG_GENERIC_5){
         Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_GENERIC_1, WITH_ANIM));
         Queue_AddEvent(queue, Event_SetAsHidePage(page->id, PAGE_GENERIC_2, WITH_ANIM));
+    }
+
+    if (event.id == EVENT_NUMBOX_CHANGED && event.source == (int) page->gadgets[0]->id){
+        printf("%d\n", NumBox_GetValue(page->gadgets[0]));
     }
 }
 
