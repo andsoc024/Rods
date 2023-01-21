@@ -85,6 +85,17 @@ int             NumBox_GetAlignment(const Gadget* numbox);
 Gadget*         NumBox_GetUpButton(const Gadget* numbox);
 Gadget*         NumBox_GetDownButton(const Gadget* numbox);
 
+// ---------------------------------------------------------------------------- Switch Functions
+
+Gadget*         Switch_Make(E_GadgetID id, bool value);
+void            Switch_SetValue(Gadget* sw, bool value, bool withAnim);
+void            Switch_ToggleValue(Gadget* sw, bool withAnim);
+void            Switch_FinishAnim(Gadget* sw);
+void            Switch_SetAlignment(Gadget* sw, E_RectPointType alignment);
+bool            Switch_GetValue(const Gadget* sw);
+bool            Switch_IsAnimating(const Gadget* sw);
+int             Switch_GetAlignment(const Gadget* sw);
+
 
 
 

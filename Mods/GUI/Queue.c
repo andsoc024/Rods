@@ -143,11 +143,18 @@ void Queue_AddEvent(EventQueue* queue, Event event){
 
 // **************************************************************************** Queue_RemoveForTarget
 
-// Remove the first event with the given target from the next list of the queue
+// Remove the first event with the given target from the next and current list 
+// of the queue
 void Queue_RemoveForTarget(EventQueue* queue, E_GuiID target){
     int index = Queue_FindEventIndexForTarget(queue, target, NEXT_LIST);
-    if (index < 0) {return;}
-    Queue_RemoveEventAtIndex(queue, index, NEXT_LIST);
+    if (index >= 0){
+        Queue_RemoveEventAtIndex(queue, index, NEXT_LIST);
+    }
+
+    index = Queue_FindEventIndexForTarget(queue, target, CURRENT_LIST);
+    if (index >= 0){
+        Queue_RemoveEventAtIndex(queue, index, CURRENT_LIST);
+    }
 }
 
 

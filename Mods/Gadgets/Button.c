@@ -286,6 +286,7 @@ void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
         case EVENT_MOUSE_RELEASED:{
             if (button->isPressed){
                 button->isPressed = false;
+                BDATA->turboCount = 0;
                 Queue_AddEvent(queue, Event_SetAsButtonReleased(button->id));
             }
             break;
@@ -302,7 +303,7 @@ void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
         }
 
         case EVENT_KEY_RELEASED:{
-            if (button->isPressed){
+            if (button->isPressed && event.data.key == WKEY_ENTER){
                 button->isPressed = false;
                 BDATA->turboCount = 0;
                 Queue_AddEvent(queue, Event_SetAsButtonReleased(button->id));

@@ -218,7 +218,8 @@ bool EventID_IsValid(int id){
             "Button Released",           "Scrollbar Changed",          "Update Scrollbar",
             "Switch Changed",            "Update Switch",              "Numberbox Changed",
             "Gadget Expanded",           "Gadget Collapsed",           "Show Page",
-            "Hide Page",                 "Victory",                    "Make New Grid"
+            "Hide Page",                 "Victory",                    "Make New Grid",
+            "Initialize Page",           "Generic Event"
         }; 
 
         CHECK_INVALID(EventID_IsValid(id), LONG_FORM)
