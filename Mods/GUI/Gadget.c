@@ -195,7 +195,7 @@ void Gadget_Deselect(Gadget* gadget){
         printf("Selectable: %s\n", Bool_ToString(gadget->isSelectable, LONG_FORM));
         printf("Selected:   %s\n", Bool_ToString(gadget->isSelected, LONG_FORM));
         printf("Pressed:    %s\n", Bool_ToString(gadget->isPressed, LONG_FORM));
-        printf("Collapsed:  %s\n", Bool_ToString(gadget->isCollapsed, LONG_FORM));
+        printf("Expanded:   %s\n", Bool_ToString(gadget->isExpanded, LONG_FORM));
         printf("\n");
 
         printf("SUBGGADGETS (%d):\n", gadget->nSubGadgets);

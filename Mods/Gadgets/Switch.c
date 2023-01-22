@@ -48,7 +48,7 @@
 #define SW_HANDLE_RATIO                     MATH_PHI
 // Ratio to the handle radius
 #define SW_LENGTH_RATIO                     MATH_PHI
-#define SW_ANIM_FRAMES_N                    ((FPS * 1) / 3)
+#define SW_ANIM_FRAMES_N                    ((FPS * 1) / 5)
 
 #define COL_SW_BG                           COL_UI_BG_PRIMARY
 #define COL_SW_FG                           COL_UI_FG_PRIMARY

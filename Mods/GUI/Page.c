@@ -213,6 +213,10 @@ void Page_Show(Page* page, bool withAnim){
         page->shift = VECTOR_NULL;
         page->shiftIncr = 0.0f;
     }
+
+    if (page->PrepareToShow != NULL){
+        page->PrepareToShow(page);
+    }
 }
 
 
@@ -279,6 +283,7 @@ void Page_FinishTransitionAnim(Page* page){
 
         printf("FUNCTIONS:\n");
         printf("   PrepareToFree:      %p\n", (void*) page->PrepareToFree);
+        printf("   PrepareToShow:      %p\n", (void*) page->PrepareToShow);
         printf("   Resize:             %p\n", (void*) page->Resize);
         printf("   ResizeAfterGadgets: %p\n", (void*) page->ResizeAfterGadgets);
         printf("   ReactToEvent:       %p\n", (void*) page->ReactToEvent);

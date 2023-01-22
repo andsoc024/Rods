@@ -96,7 +96,7 @@ typedef struct Gadget{
     bool isSelected;
     bool isSelectable;
     bool isPressed;
-    bool isCollapsed;
+    bool isExpanded;
 
     struct Gadget** subGadgets;
     int nSubGadgets;
@@ -131,6 +131,7 @@ typedef struct Page{
     int nGadgets;
 
     void (*PrepareToFree)(struct Page* page);
+    void (*PrepareToShow)(struct Page* page);
     void (*Resize)(struct Page* page);
     void (*ResizeAfterGadgets)(struct Page* page);
     void (*ReactToEvent)(struct Page* page, Event event, EventQueue* queue);

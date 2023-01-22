@@ -219,7 +219,7 @@ bool EventID_IsValid(int id){
             "Switch Changed",            "Update Switch",              "Numberbox Changed",
             "Gadget Expanded",           "Gadget Collapsed",           "Show Page",
             "Hide Page",                 "Victory",                    "Make New Grid",
-            "Initialize Page",           "Generic Event"
+            "Generic Event"
         }; 
 
         CHECK_INVALID(EventID_IsValid(id), LONG_FORM)

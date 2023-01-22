@@ -96,7 +96,16 @@ bool            Switch_GetValue(const Gadget* sw);
 bool            Switch_IsAnimating(const Gadget* sw);
 int             Switch_GetAlignment(const Gadget* sw);
 
+// ---------------------------------------------------------------------------- Scrollbar Functions
 
+Gadget*         Scrollbar_Make(E_GadgetID id, E_Orientation orientation);
+void            Scrollbar_SetPosFromRatio(Gadget* sbar, float posRatio);
+void            Scrollbar_SetSizeFromRatio(Gadget* sbar, float sizeRatio);
+float           Scrollbar_GetPosRatio(const Gadget* sbar);
+float           Scrollbar_GetSizeRatio(const Gadget* sbar);
+Rect            Scrollbar_GetBarRect(const Gadget* sbar);
+Rect            Scrollbar_GetExpandedRect(const Gadget* sbar);
+Rect            Scrollbar_GetCollapsedRect(const Gadget* sbar);
 
 
 

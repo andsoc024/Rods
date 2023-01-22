@@ -199,6 +199,8 @@
 
 #define EVENT_NULL                          ((Event) {.id = EVENT_NONE, .source = GDG_NONE, .target = GDG_NONE, .data = {0}})
 
+#define GDG_DEF_RECT                        RECT(0, 0, 100, 100)
+
 
 // ============================================================================ GLOBALS
 
