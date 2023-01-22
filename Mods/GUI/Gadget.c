@@ -94,7 +94,7 @@ void Gadget_ReactToEvent(Gadget* gadget, Event event, EventQueue* queue){
     }
 
     if (event.target == (int) gadget->id){
-        Queue_RemoveForTarget(queue, gadget->id);
+        Queue_MarkLastEventAsProcessed(queue);
     }
 
     for (int i = 0; i < gadget->nSubGadgets; i++){

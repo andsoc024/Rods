@@ -123,7 +123,7 @@ void Page_ReactToEvent(Page* page, Event event, EventQueue* queue){
     }
 
     if (event.target == (int) page->id){
-        Queue_RemoveForTarget(queue, page->id);
+        Queue_MarkLastEventAsProcessed(queue);
     }
 
     for (int i = 0; i < page->nGadgets; i++){

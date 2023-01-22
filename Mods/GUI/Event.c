@@ -29,7 +29,7 @@
 
 // Set a mouse move event
 Event Event_SetAsMouseMove(Point pos, Vector2 delta){
-    return ((Event) {.id = EVENT_MOUSE_MOVE, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_MOUSE_MOVE, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.mouse.pos = pos, .data.mouse.delta = delta});
 }
 
@@ -38,7 +38,7 @@ Event Event_SetAsMouseMove(Point pos, Vector2 delta){
 
 // Set a mouse drag event
 Event Event_SetAsMouseDrag(Point pos, Vector2 delta){
-    return ((Event) {.id = EVENT_MOUSE_DRAG, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_MOUSE_DRAG, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.mouse.pos = pos, .data.mouse.delta = delta});
 }
 
@@ -47,7 +47,7 @@ Event Event_SetAsMouseDrag(Point pos, Vector2 delta){
 
 // Set a left mouse button pressed event
 Event Event_SetAsMousePressed(Point pos){
-    return ((Event) {.id = EVENT_MOUSE_PRESSED, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_MOUSE_PRESSED, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.mouse.pos = pos, .data.mouse.delta = VECTOR_NULL});
 }
 
@@ -56,7 +56,7 @@ Event Event_SetAsMousePressed(Point pos){
 
 // Set a left mouse button released event
 Event Event_SetAsMouseReleased(Point pos){
-    return ((Event) {.id = EVENT_MOUSE_RELEASED, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_MOUSE_RELEASED, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.mouse.pos = pos, .data.mouse.delta = VECTOR_NULL});
 }
 
@@ -65,7 +65,7 @@ Event Event_SetAsMouseReleased(Point pos){
 
 // Set a mouse wheel moved event
 Event Event_SetAsMouseWheel(float move, Point pos){
-    return ((Event) {.id = EVENT_MOUSE_WHEEL, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_MOUSE_WHEEL, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.wheel.move = move, .data.wheel.pos = pos});
 }
 
@@ -74,7 +74,7 @@ Event Event_SetAsMouseWheel(float move, Point pos){
 
 // Set a keyboard key pressed event
 Event Event_SetAsKeyPressed(KeyboardKey key){
-    return ((Event) {.id = EVENT_KEY_PRESSED, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_KEY_PRESSED, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.key = key});
 }
 
@@ -83,7 +83,7 @@ Event Event_SetAsKeyPressed(KeyboardKey key){
 
 // Set a keyboard key released event
 Event Event_SetAsKeyReleased(KeyboardKey key){
-    return ((Event) {.id = EVENT_KEY_RELEASED, .source = GDG_NONE, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_KEY_RELEASED, .source = GDG_NONE, .target = GDG_NONE, .isProcessed = false,
                      .data.key = key});
 }
 
@@ -92,7 +92,7 @@ Event Event_SetAsKeyReleased(KeyboardKey key){
 
 // Set a button pressed event
 Event Event_SetAsButtonPressed(E_GadgetID source){
-    return ((Event) {.id = EVENT_BUTTON_PRESSED, .source = source, .target = GDG_NONE});
+    return ((Event) {.id = EVENT_BUTTON_PRESSED, .source = source, .target = GDG_NONE, .isProcessed = false});
 }
 
 
@@ -100,7 +100,7 @@ Event Event_SetAsButtonPressed(E_GadgetID source){
 
 // set a button released event
 Event Event_SetAsButtonReleased(E_GadgetID source){
-    return ((Event) {.id = EVENT_BUTTON_RELEASED, .source = source, .target = GDG_NONE});
+    return ((Event) {.id = EVENT_BUTTON_RELEASED, .source = source, .target = GDG_NONE, .isProcessed = false});
 }
 
 
@@ -108,7 +108,7 @@ Event Event_SetAsButtonReleased(E_GadgetID source){
 
 // Set a scrollbar changed event
 Event Event_SetAsScrollbarChanged(E_GadgetID source, float posRatio, float sizeRatio){
-    return ((Event) {.id = EVENT_SCROLLBAR_CHANGED, .source = source, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_SCROLLBAR_CHANGED, .source = source, .target = GDG_NONE, .isProcessed = false,
                      .data.scrollbar.posRatio = posRatio, .data.scrollbar.sizeRatio = sizeRatio});
 }
 
@@ -118,7 +118,7 @@ Event Event_SetAsScrollbarChanged(E_GadgetID source, float posRatio, float sizeR
 // Set an update scrollbar event, which causes a scrollbar to change to the 
 // given values
 Event Event_SetAsUpdateScrollbar(E_GuiID source, E_GadgetID target, float posRatio, float sizeRatio){
-    return ((Event) {.id = EVENT_UPDATE_SCROLLBAR, .source = source, .target = target,
+    return ((Event) {.id = EVENT_UPDATE_SCROLLBAR, .source = source, .target = target, .isProcessed = false,
                      .data.scrollbar.posRatio = posRatio, .data.scrollbar.sizeRatio = sizeRatio});
 }
 
@@ -127,7 +127,7 @@ Event Event_SetAsUpdateScrollbar(E_GuiID source, E_GadgetID target, float posRat
 
 // Set a switch changed event
 Event Event_SetAsSwitchChanged(E_GadgetID source, bool value){
-    return ((Event) {.id = EVENT_SWITCH_CHANGED, .source = source, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_SWITCH_CHANGED, .source = source, .target = GDG_NONE, .isProcessed = false,
                      .data.switchValue = value});
 }
 
@@ -137,7 +137,7 @@ Event Event_SetAsSwitchChanged(E_GadgetID source, bool value){
 // Set an update switch event, which causes a switch to change to the given 
 // boolean value
 Event Event_SetAsUpdateSwitch(E_GuiID source, E_GadgetID target, bool value){
-    return ((Event) {.id = EVENT_UPDATE_SWITCH, .source = source, .target = target,
+    return ((Event) {.id = EVENT_UPDATE_SWITCH, .source = source, .target = target, .isProcessed = false,
                      .data.switchValue = value});
 }
 
@@ -146,7 +146,7 @@ Event Event_SetAsUpdateSwitch(E_GuiID source, E_GadgetID target, bool value){
 
 // Set a number box changed event
 Event Event_SetAsNumBoxChanged(E_GadgetID source, int value){
-    return ((Event) {.id = EVENT_NUMBOX_CHANGED, .source = source, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_NUMBOX_CHANGED, .source = source, .target = GDG_NONE, .isProcessed = false,
                      .data.numboxValue = value});
 }
 
@@ -155,7 +155,7 @@ Event Event_SetAsNumBoxChanged(E_GadgetID source, int value){
 
 // Set a show page event
 Event Event_SetAsShowPage(E_GuiID source, E_PageID page, bool withAnim){
-    return ((Event) {.id = EVENT_SHOW_PAGE, .source = source, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_SHOW_PAGE, .source = source, .target = GDG_NONE, .isProcessed = false,
                      .data.page.id = page, .data.page.withAnim = withAnim});
 }
 
@@ -164,7 +164,7 @@ Event Event_SetAsShowPage(E_GuiID source, E_PageID page, bool withAnim){
 
 // Set a hide page event
 Event Event_SetAsHidePage(E_GuiID source, E_PageID page, bool withAnim){
-    return ((Event) {.id = EVENT_HIDE_PAGE, .source = source, .target = GDG_NONE,
+    return ((Event) {.id = EVENT_HIDE_PAGE, .source = source, .target = GDG_NONE, .isProcessed = false,
                      .data.page.id = page, .data.page.withAnim = withAnim});
 }
 
@@ -182,7 +182,7 @@ void Event_AddPageData(Event* event, bool victory, Time time, int nCols, int nRo
 
 // Set a gadget expanded event
 Event Event_SetAsGadgetExpanded(E_GadgetID source){
-    return ((Event) {.id = EVENT_GADGET_EXPANDED, .source = source, .target = GDG_NONE});
+    return ((Event) {.id = EVENT_GADGET_EXPANDED, .source = source, .target = GDG_NONE, .isProcessed = false});
 }
 
 
@@ -190,7 +190,7 @@ Event Event_SetAsGadgetExpanded(E_GadgetID source){
 
 // Set a gadget collapsed event
 Event Event_SetAsGadgetCollapsed(E_GadgetID source){
-    return ((Event) {.id = EVENT_GADGET_COLLAPSED, .source = source, .target = GDG_NONE});
+    return ((Event) {.id = EVENT_GADGET_COLLAPSED, .source = source, .target = GDG_NONE, .isProcessed = false});
 }
 
 
@@ -198,7 +198,7 @@ Event Event_SetAsGadgetCollapsed(E_GadgetID source){
 
 // Set a make new grid event, that causes the creation of a new rod grid
 Event Event_SetAsMakeNewGrid(E_GuiID source, E_GuiID target, int nCols, int nRows){
-    return ((Event) {.id = EVENT_MAKE_NEW_GRID, .source = source, .target = target,
+    return ((Event) {.id = EVENT_MAKE_NEW_GRID, .source = source, .target = target, .isProcessed = false,
                      .data.newGrid.nCols = nCols, .data.newGrid.nRows = nRows});
 }
 
@@ -207,7 +207,7 @@ Event Event_SetAsMakeNewGrid(E_GuiID source, E_GuiID target, int nCols, int nRow
 
 // Set a victory event, meant to be emitted when the grid is completed
 Event Event_SetAsVictory(E_GuiID source){
-    return ((Event) {.id = EVENT_VICTORY, .source = source, .target = GDG_NONE});
+    return ((Event) {.id = EVENT_VICTORY, .source = source, .target = GDG_NONE, .isProcessed = false});
 }
 
 

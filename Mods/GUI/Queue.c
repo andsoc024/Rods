@@ -42,6 +42,7 @@ struct EventQueue{
 
     Event lists[2][QUEUE_EVENTS_N];
     int n[2];
+    int nTotal;
     int current;
     int next;
 };
@@ -49,8 +50,6 @@ struct EventQueue{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-int             Queue_FindEventIndexForTarget(EventQueue* queue, E_GuiID target, int listKind);
-void            Queue_RemoveEventAtIndex(EventQueue* queue, int index, int listKind);
 void            Queue_SwapLists(EventQueue* queue);
 
 
@@ -88,6 +87,7 @@ void Queue_Clear(EventQueue* queue){
 
     queue->n[0] = 0;
     queue->n[1] = 0;
+    queue->nTotal = 0;
 
     queue->current = 0;
     queue->next    = 1;
@@ -111,9 +111,6 @@ Event Queue_GetNext(EventQueue* queue){
 
     if (queue->n[ind] > 0){
         res = queue->lists[ind][queue->n[ind] - 1];
-        if (res.target != GDG_NONE){
-            Queue_AddEvent(queue, res);
-        }
 
         queue->n[ind]--;
 
@@ -141,20 +138,13 @@ void Queue_AddEvent(EventQueue* queue, Event event){
 }
 
 
-// **************************************************************************** Queue_RemoveForTarget
+// **************************************************************************** Queue_MarkLastEventAsProcessed
 
-// Remove the first event with the given target from the next and current list 
-// of the queue
-void Queue_RemoveForTarget(EventQueue* queue, E_GuiID target){
-    int index = Queue_FindEventIndexForTarget(queue, target, NEXT_LIST);
-    if (index >= 0){
-        Queue_RemoveEventAtIndex(queue, index, NEXT_LIST);
-    }
-
-    index = Queue_FindEventIndexForTarget(queue, target, CURRENT_LIST);
-    if (index >= 0){
-        Queue_RemoveEventAtIndex(queue, index, CURRENT_LIST);
-    }
+// Mark the last event as processed, so that it is not copied to the next list
+void Queue_MarkLastEventAsProcessed(EventQueue* queue){
+    int index = queue->current;
+    int i = queue->n[index];
+    queue->lists[index][i].isProcessed = true;
 }
 
 
@@ -189,6 +179,7 @@ void Queue_SetUserInput(EventQueue* queue, Event event){
             }
             printf("\n");
         }
+        printf("N Total: %d\n", queue->nTotal);
         printf("Current: %d\n", queue->current);
         printf("Next:    %d\n", queue->next);
     }
@@ -201,46 +192,22 @@ void Queue_SetUserInput(EventQueue* queue, Event event){
 
 // ============================================================================ PRIVATE FUNC DEF
 
-// **************************************************************************** Queue_FindEventIndexForTarget
-
-// The index of the first event with the given target in the given list. If no 
-// event is found, return INVALID
-int Queue_FindEventIndexForTarget(EventQueue* queue, E_GuiID target, int listKind){
-    int listInd = (listKind == CURRENT_LIST) ? queue->current : queue->next;
-
-    for (int i = 0; i < queue->n[listInd]; i++){
-        if (queue->lists[listInd][i].target == target){
-            return i;
-        }
-    }
-
-    return INVALID;
-}
-
-
-// **************************************************************************** Queue_RemoveEventAtIndex
-
-// Remove the event at the given index in the given list
-void Queue_RemoveEventAtIndex(EventQueue* queue, int index, int listKind){
-    int listInd = (listKind == CURRENT_LIST) ? queue->current : queue->next;
-
-    for (int i = index; i < queue->n[listInd] - 1; i++){
-        queue->lists[listInd][i] = queue->lists[listInd][i + 1];
-    }
-
-    if (IS_IN_RANGE(index, 0, queue->n[listInd] - 1)){
-        queue->n[listInd]--;
-    }
-}
-
 
 // **************************************************************************** Queue_SwapLists
 
 // Swap the current and the next list
 void Queue_SwapLists(EventQueue* queue){
+    for (int i = 0; i < queue->nTotal; i++){
+        const Event event = queue->lists[queue->current][i];
+        if (event.target != GDG_NONE && !event.isProcessed){
+            Queue_AddEvent(queue, event);
+        }
+    }
+
     queue->n[queue->current] = 0;
-    queue->current = (queue->current == 0) ? 1 : 0;
-    queue->next    = (queue->next    == 0) ? 1 : 0; 
+    TOGGLE(queue->current)
+    TOGGLE(queue->next);
+    queue->nTotal = queue->n[queue->current];
 }
 
 

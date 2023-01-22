@@ -33,6 +33,8 @@ typedef struct Event{
     E_EventID id;
     E_GuiID source;
     E_GuiID target;
+
+    bool isProcessed;
     
     union{
         struct{

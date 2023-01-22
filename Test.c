@@ -46,9 +46,9 @@ int Test(UNUSED int argc, UNUSED char** argv){
     Font_LoadDefault();
 
     Router* router = Router_Make();
-    Router_AddPage(router, TestPage2_Make(PAGE_GENERIC_2));
+    Router_AddPage(router, TestPage1_Make(PAGE_GENERIC_1));
 
-    Router_ShowPage(router, PAGE_GENERIC_2, WITH_ANIM);
+    Router_ShowPage(router, PAGE_GENERIC_1, WITH_ANIM);
 
     Router_Loop(router);
 
