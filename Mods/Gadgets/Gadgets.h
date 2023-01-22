@@ -107,6 +107,23 @@ Rect            Scrollbar_GetBarRect(const Gadget* sbar);
 Rect            Scrollbar_GetExpandedRect(const Gadget* sbar);
 Rect            Scrollbar_GetCollapsedRect(const Gadget* sbar);
 
+// ---------------------------------------------------------------------------- Timer Functions
+
+Gadget*         Timer_Make(E_GadgetID id, Time currentTime, Time recordTime);
+void            Timer_Pause(Gadget* timer);
+void            Timer_Resume(Gadget* timer);
+bool            Timer_Toggle(Gadget* timer);
+void            Timer_SetTime(Gadget* timer, Time time);
+void            Timer_SetRecordTime(Gadget* timer, Time recordTime);
+void            Timer_Expand(Gadget* timer);
+void            Timer_Collapse(Gadget* timer);
+void            Timer_SetColors(Gadget* timer, Color currentColor, Color recordColor, Color iconColor);
+bool            Timer_IsPaused(const Gadget* timer);
+Time            Timer_GetTime(const Gadget* timer);
+Time            Timer_GetRecordTime(const Gadget* timer);
+
+
+
 
 
 #endif // GADGETS_GUARD

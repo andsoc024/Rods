@@ -121,6 +121,10 @@ void Gadget_Update(Gadget* gadget, EventQueue* queue){
 
 // Draw the gadget
 void Gadget_Draw(const Gadget* gadget, Vector2 shift){
+    if (gadget->ChangeShift != NULL){
+        shift = gadget->ChangeShift(gadget, shift);
+    }
+
     if (gadget->Draw != NULL){
         gadget->Draw(gadget, shift);
     }
@@ -218,6 +222,7 @@ void Gadget_Deselect(Gadget* gadget){
         printf("   ResizeAfterSubGadgets: %p\n", (void*) gadget->ResizeAfterSubgadgets);
         printf("   ReactToEvent:          %p\n", (void*) gadget->ReactToEvent);
         printf("   Update:                %p\n", (void*) gadget->Update);
+        printf("   ChangeShift:           %p\n", (void*) gadget->ChangeShift);
         printf("   Draw:                  %p\n", (void*) gadget->Draw);
         printf("   PrintData:             %p\n", (void*) gadget->PrintData);
         printf("\n");

@@ -25,7 +25,7 @@
 
 // ============================================================================ PRIVATE CONSTANTS
 
-#define QUEUE_EVENTS_N                      10
+#define QUEUE_EVENTS_N                      15
 
 #define CURRENT_LIST                        0
 #define NEXT_LIST                           1

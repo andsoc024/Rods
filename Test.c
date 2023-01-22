@@ -35,20 +35,26 @@
 // ============================================================================ TEST
 
 Page* TestPage1_Make(E_PageID id);
+Page* TestPage2_Make(E_PageID id);
 
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
     Window_Init();
 
-    Router* router = Router_Make();
-    Router_AddPage(router, TestPage1_Make(PAGE_GENERIC_1));
+    Texture_LoadAll();
+    Font_LoadDefault();
 
-    Router_ShowPage(router, PAGE_GENERIC_1, WITH_ANIM);
+    Router* router = Router_Make();
+    Router_AddPage(router, TestPage2_Make(PAGE_GENERIC_2));
+
+    Router_ShowPage(router, PAGE_GENERIC_2, WITH_ANIM);
 
     Router_Loop(router);
 
     router = Router_Free(router);
+    Texture_UnloadAll();
+    Font_UnloadDefault();
     Window_Close();
     
     return 0;
@@ -138,6 +144,7 @@ void TestPage1_Resize(Page* page){
     page->gadgets[1]->cRect = RECT(Glo_WinSize.width - 30, 100, 30, Glo_WinSize.height - 200);
 
     SGraph_SetView(TP1DATA->sg, TO_RECT(Glo_WinSize));
+    VGraph_Resize(TP1DATA->vg, TO_RECT(SGraph_GetVScreen(TP1DATA->sg)));
     Scrollbar_SetSizeFromRatio(page->gadgets[0], SGraph_CalcViewportSizeRatio(TP1DATA->sg, OR_HORISONTAL));
     Scrollbar_SetPosFromRatio(page->gadgets[0], SGraph_CalcViewportPosRatio(TP1DATA->sg, OR_HORISONTAL));
     Scrollbar_SetSizeFromRatio(page->gadgets[1], SGraph_CalcViewportSizeRatio(TP1DATA->sg, OR_VERTICAL));
@@ -209,6 +216,61 @@ void TestPage1_Draw(const Page* page){
 }
 
 
+
+
+
+
+void TestPage2_Resize(Page* page);
+void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue);
+
+
+Page* TestPage2_Make(E_PageID id){
+    Page* page = Page_Make(id);
+
+    Gadget* timer = Timer_Make(GDG_GENERIC_7, TIME(0, 59, 40), TIME(1,20,30));
+    Page_AddGadget(page, timer);
+
+    PRINT_LINE3
+    Gadget_Print(timer);
+    PRINT_LINE3
+
+    page->Resize = TestPage2_Resize;
+    page->ReactToEvent = TestPage2_ReactToEvent;
+
+    Page_Resize(page);
+
+    return page;
+}
+
+void TestPage2_Resize(Page* page){
+    page->gadgets[0]->cRect = Geo_AlignRect(TO_RECT(SIZE_SQR(500)), TO_RECT(Glo_WinSize), RP_CENTER);
+}
+
+void TestPage2_ReactToEvent(Page* page, Event event, UNUSED EventQueue* queue){
+    switch (event.id){
+        case EVENT_KEY_PRESSED:{
+            if (event.data.key == WKEY_W){
+                Timer_Toggle(page->gadgets[0]);
+            }
+
+            if (event.data.key == WKEY_ENTER){
+                if (Time_IsValid(Timer_GetTime(page->gadgets[0]))){
+                    Timer_SetTime(page->gadgets[0], TIME_INVALID);
+                }else{
+                    Timer_SetTime(page->gadgets[0], TIME_NULL);
+                }
+            }
+
+            if (event.data.key == WKEY_SPACE){
+                TOGGLE(page->gadgets[0]->isExpanded);
+            }
+
+            break;
+        }
+
+        default: {break;}
+    }
+}
 
 
 

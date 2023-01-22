@@ -101,12 +101,13 @@ typedef struct Gadget{
     struct Gadget** subGadgets;
     int nSubGadgets;
 
-    void (*PrepareToFree)(struct Gadget* gadget);
-    void (*Resize)(struct Gadget* gadget);
-    void (*ResizeAfterSubgadgets)(struct Gadget* gadget);
-    void (*ReactToEvent)(struct Gadget* gadget, Event event, EventQueue* queue);
-    void (*Update)(struct Gadget* gadget, EventQueue* queue);
-    void (*Draw)(const struct Gadget* gadget, Vector2 shift);
+    void     (*PrepareToFree)(struct Gadget* gadget);
+    void     (*Resize)(struct Gadget* gadget);
+    void     (*ResizeAfterSubgadgets)(struct Gadget* gadget);
+    void     (*ReactToEvent)(struct Gadget* gadget, Event event, EventQueue* queue);
+    void     (*Update)(struct Gadget* gadget, EventQueue* queue);
+    Vector2  (*ChangeShift)(const struct Gadget* gadget, Vector2 shift);
+    void     (*Draw)(const struct Gadget* gadget, Vector2 shift);
     #ifdef DEBUG_MODE
         void (*PrintData)(const struct Gadget* gadget);
     #endif
