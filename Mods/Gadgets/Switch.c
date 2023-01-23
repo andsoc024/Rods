@@ -252,7 +252,7 @@ void Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue){
         }
 
         case EVENT_KEY_PRESSED:{
-            if (event.data.key == WKEY_ENTER){
+            if (event.data.key == WKEY_ENTER && sw->isSelected){
                 Switch_ToggleValue(sw, WITH_ANIM);
                 Queue_AddEvent(queue, Event_SetAsSwitchChanged(sw->id, SWDATA->value));
             }

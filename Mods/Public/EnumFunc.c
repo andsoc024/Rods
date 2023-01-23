@@ -326,7 +326,7 @@ bool GadgetType_IsValid(int type){
             "Generic",    "Board",     "Label",
             "Button",     "Scrollbar", "Switch",
             "Number Box", "Timer",     "Icon",
-            "Table"
+            "Table",      "Toolbar"
         };
 
         CHECK_INVALID(GadgetType_IsValid(type), LONG_FORM)

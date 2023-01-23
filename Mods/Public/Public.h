@@ -176,6 +176,18 @@
 #define IS_SELECTABLE                       true
 #define IS_NOT_SELECTABLE                   false
 
+// Indices of the toolbar gadgets
+#define TB_TIMER                            0
+#define TB_LBL_RODS_LEFT                    1
+#define TB_BTN_BACK                         2
+#define TB_BTN_RESTART                      3
+#define TB_BTN_ZOOM_IN                      4
+#define TB_BTN_ZOOM_OUT                     5
+#define TB_BTN_HELP                         6
+#define TB_BTN_INFO                         7
+#define TB_ICON_SOUND                       8
+#define TB_SWITCH_SOUND                     9
+
 
 // ============================================================================ DEF STRUCTURES
 

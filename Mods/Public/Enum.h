@@ -245,9 +245,9 @@ typedef enum E_GadgetType{
     GT_GENERIC, GT_BOARD,     GT_LABEL,
     GT_BUTTON,  GT_SCROLLBAR, GT_SWITCH,
     GT_NUMBOX,  GT_TIMER,     GT_ICON,
-    GT_TABLE
+    GT_TABLE,   GT_TOOLBAR
 }E_GadgetType;
-#define GADGET_TYPES_N                      (GT_TABLE + 1)
+#define GADGET_TYPES_N                      (GT_TOOLBAR + 1)
 
 bool            GadgetType_IsValid(int type);
 #ifdef DEBUG_MODE

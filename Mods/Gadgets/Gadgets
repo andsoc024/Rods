@@ -4,4 +4,5 @@ Mods/Gadgets/Button.c
 Mods/Gadgets/NumBox.c
 Mods/Gadgets/Switch.c
 Mods/Gadgets/Scrollbar.c
-Mods/Gadgets/Timer.c 
+Mods/Gadgets/Timer.c
+Mods/Gadgets/Toolbar.c 

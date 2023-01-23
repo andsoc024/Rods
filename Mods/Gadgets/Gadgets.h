@@ -122,8 +122,21 @@ bool            Timer_IsPaused(const Gadget* timer);
 Time            Timer_GetTime(const Gadget* timer);
 Time            Timer_GetRecordTime(const Gadget* timer);
 
+// ---------------------------------------------------------------------------- Toolbar Functions
 
-
+Gadget*         Toolbar_Make(void);
+void            Toolbar_Expand(Gadget* toolbar, bool withAnim);
+void            Toolbar_Collapse(Gadget* toolbar, bool withAnim);
+void            Toolbar_FinishAnim(Gadget* toolbar);
+void            Toolbar_SetTime(Gadget* toolbar, Time time);
+void            Toolbar_SetRecordTime(Gadget* toolbar, Time time);
+void            Toolbar_SetRodsLeft(Gadget* toolbar, int rodsLeft);
+void            Toolbar_SetSoundSwitch(Gadget* toolbar, bool switchState);
+bool            Toolbar_IsAnimating(const Gadget* toolbar);
+Time            Toolbar_GetTime(const Gadget* toolbar);
+Time            Toolbar_GetRecordTime(const Gadget* toolbar);
+bool            Toolbar_GetSoundSwitchState(const Gadget* toolbar);
+Gadget*         Toolbar_GetGadget(const Gadget* toolbar, int index);
 
 
 #endif // GADGETS_GUARD
