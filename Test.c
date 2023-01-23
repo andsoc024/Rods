@@ -36,6 +36,7 @@
 
 Page* TestPage2_Make(E_PageID id);
 
+
 // Function for testing and debugging
 int Test(UNUSED int argc, UNUSED char** argv){
 
@@ -65,23 +66,24 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
 
 void TestPage2_Resize(Page* page);
+void TestPage2_ResizeAfterGadgets(Page* page);
 void TestPage2_ReactToEvent(Page* page, Event event, EventQueue* queue);
 
 
 Page* TestPage2_Make(E_PageID id){
     Page* page = Page_Make(id);
 
-    Gadget* timer = Timer_Make(GDG_GENERIC_7, TIME(0, 59, 40), TIME(1,20,30));
-    Page_AddGadget(page, timer);
+    const char* strings[] = {"1", "One", "2", "Two", "3", "Three"};
+
+    Gadget* table = Table_Make(GDG_GENERIC_1, 2, 3, strings);
+    Table_SetAlignment(table, RP_MIDDLE_LEFT, TABLE_COLUMN, 1);
+    Page_AddGadget(page, table);
 
     Gadget* toolbar = Toolbar_Make();
     Page_AddGadget(page, toolbar);
 
-    PRINT_LINE3
-    Gadget_Print(toolbar);
-    PRINT_LINE3
-
     page->Resize = TestPage2_Resize;
+    page->ResizeAfterGadgets = TestPage2_ResizeAfterGadgets;
     page->ReactToEvent = TestPage2_ReactToEvent;
 
     Page_Resize(page);
@@ -93,27 +95,20 @@ void TestPage2_Resize(Page* page){
     page->gadgets[0]->cRect = Geo_AlignRect(TO_RECT(SIZE_SQR(500)), TO_RECT(Glo_WinSize), RP_CENTER);
 }
 
+void TestPage2_ResizeAfterGadgets(Page* page){
+    Gadget* table = page->gadgets[0];
+    Table_SetFontSize(table, Table_GetFontSize(table, 1, 0) * MATH_PHI_INVERSE, TABLE_COLUMN, 1);
+    PRINT_LINE3
+    Gadget_Print(page->gadgets[0]);
+    PRINT_LINE3
+}
+
 void TestPage2_ReactToEvent(Page* page, Event event, UNUSED EventQueue* queue){
     switch (event.id){
-        case EVENT_KEY_PRESSED:{
-            if (event.data.key == WKEY_W){
-                Timer_Toggle(page->gadgets[0]);
-            }
-
-            if (event.data.key == WKEY_ENTER){
-                Timer_SetRecordTime(page->gadgets[0], Toolbar_GetTime(page->gadgets[1]));
-            }
-
-            if (event.data.key == WKEY_SPACE){
-                TOGGLE(page->gadgets[0]->isExpanded);
-            }
-
-            break;
-        }
 
         case EVENT_BUTTON_PRESSED:{
             if (event.source == GDG_BTN_BACK){
-                Switch_ToggleValue(page->gadgets[1]->subGadgets[TB_SWITCH_SOUND], WITH_ANIM);
+                Queue_AddEvent(queue, Event_SetAsUpdateSwitch(page->id, GDG_SWITCH_SOUND, !Switch_GetValue(page->gadgets[1]->subGadgets[TB_SWITCH_SOUND])));
             }
             break;
         }

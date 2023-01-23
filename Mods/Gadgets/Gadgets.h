@@ -138,6 +138,18 @@ Time            Toolbar_GetRecordTime(const Gadget* toolbar);
 bool            Toolbar_GetSoundSwitchState(const Gadget* toolbar);
 Gadget*         Toolbar_GetGadget(const Gadget* toolbar, int index);
 
+// ---------------------------------------------------------------------------- Table Functions
+
+Gadget*         Table_Make(E_GadgetID id, int nCols, int nRows, const char** strings);
+void            Table_SetText(Gadget* table, int nCols, int nRows, const char* txt);
+void            Table_SetFontSize(Gadget* table, float fontSize, int indicator, ...);
+void            Table_SetColor(Gadget* table, Color color, int indicator, ...);
+void            Table_SetAlignment(Gadget* table, E_RectPointType alignment, int indicator, ...);
+const char*     Table_GetText(const Gadget* table, int nCols, int nRows);
+float           Table_GetFontSize(const Gadget* table, int nCols, int nRows);
+Color           Table_GetColor(const Gadget* table, int nCols, int nRows);
+int             Table_GetAlignment(const Gadget* table, int nCols, int nRows);
+
 
 #endif // GADGETS_GUARD
 

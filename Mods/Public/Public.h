@@ -188,6 +188,12 @@
 #define TB_ICON_SOUND                       8
 #define TB_SWITCH_SOUND                     9
 
+// Indices for which table cells to affect
+#define TABLE_CELL                          0
+#define TABLE_ROW                           1
+#define TABLE_COLUMN                        2
+#define TABLE_ALL                           3
+
 
 // ============================================================================ DEF STRUCTURES
 
