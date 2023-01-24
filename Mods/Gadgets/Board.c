@@ -132,6 +132,10 @@ Gadget* Board_Make(E_GadgetID id, const PData* pData){
 
     if (pData != NULL && pData->rGrid != NULL){
         data->rGrid = RGrid_Copy(NULL, pData->rGrid);
+        if (RGrid_IsCompleted(data->rGrid)){
+            RGrid_CreateRandom(data->rGrid);
+            RGrid_Shuffle(data->rGrid);
+        }
     }else{
         data->rGrid = RGrid_MakeEmpty(RGRID_DEF_SIZE, RGRID_DEF_SIZE);
         RGrid_CreateRandom(data->rGrid);

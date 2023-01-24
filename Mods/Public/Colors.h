@@ -50,7 +50,7 @@
 #define COL_UI_BG_QUATENARY                 COLOR(0x0B, 0x0B, 0x0B, 0xFF) // ex Textbox Background
 #define COL_UI_BG_ACTIVE                    COLOR(0x00, 0xA4, 0x30, 0xFF) // ex Active Background in Switch
 
-#define COL_PLAY_BTN                        COLOR(0x00, 0x79, 0xF1, 0xFF) // Play Button Background
+#define COL_PLAY_BTN                        COLOR(0x00, 0x59, 0x99, 0xFF) // Play Button Background
 
 
 

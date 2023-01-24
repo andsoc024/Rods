@@ -27,6 +27,7 @@
 #include "Mods/Store/Store.h"
 #include "Mods/GUI/GUI.h"
 #include "Mods/Gadgets/Gadgets.h"
+#include "Mods/Pages/Pages.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"
