@@ -52,6 +52,8 @@
 #define WKEY_Z_MAC                          KEY_Z
 #define WKEY_X_MAC                          KEY_X
 
+#define MOUSE_WHEEL_SENITIVITY_MAC          0.05f
+
 // Paths
 #define PATH_SUPPORT_DIR_NAME_MAC           "Library/Application Support"
 #define PATH_APP_DIR_NAME_MAC               "ZRods"

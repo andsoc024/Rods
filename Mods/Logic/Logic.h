@@ -66,6 +66,7 @@ bool            RGrid_IsAnimating(const RGrid* rGrid);
 int             RGrid_GetTotal(const RGrid* rGrid);
 int             RGrid_GetNumElectrified(const RGrid* rGrid);
 int             RGrid_GetNumUnelectrified(const RGrid* rGrid);
+bool            RGrid_IsCompleted(const RGrid* rGrid);
 #ifdef DEBUG_MODE
     void        RGrid_Print(const RGrid* rGrid);
 #endif

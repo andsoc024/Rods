@@ -52,6 +52,7 @@
 #define WKEY_Z_WIN                          KEY_Z
 #define WKEY_X_WIN                          KEY_X
 
+#define MOUSE_WHEEL_SENITIVITY_WIN          0.05f
 
 #endif // WINDOWS_GUARD
 

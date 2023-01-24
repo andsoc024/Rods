@@ -125,6 +125,7 @@
 // GUI Constants
 #define TURBO_COUNT                         ((FPS * 1) / 1)
 #define PAGE_GADGETS_N                      10
+#define MOUSE_WHEEL_SENITIVITY              ARCH_DEF(MOUSE_WHEEL_SENITIVITY)
 
 
 // ============================================================================ COLORS

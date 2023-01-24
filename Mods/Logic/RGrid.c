@@ -436,6 +436,14 @@ int RGrid_GetNumUnelectrified(const RGrid* rGrid){
 }
 
 
+// **************************************************************************** RGrid_IsCompleted
+
+// return true if the rod grid is completed
+bool RGrid_IsCompleted(const RGrid* rGrid){
+    return rGrid->nElectrified == rGrid->nTotal;
+}
+
+
 #ifdef DEBUG_MODE
 // **************************************************************************** RGrid_Print
 

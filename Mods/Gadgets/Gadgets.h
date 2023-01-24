@@ -150,6 +150,22 @@ float           Table_GetFontSize(const Gadget* table, int nCols, int nRows);
 Color           Table_GetColor(const Gadget* table, int nCols, int nRows);
 int             Table_GetAlignment(const Gadget* table, int nCols, int nRows);
 
+// ---------------------------------------------------------------------------- Board Functions
+
+Gadget*         Board_Make(E_GadgetID id, const PData* pData);
+void            Board_CreateNewRodGrid(Gadget* board, int nCols, int nRows);
+void            Board_SetAsReactive(Gadget* board);
+void            Board_SetAsNotReactive(Gadget* board);
+int             Board_GetNumElectrifiedRods(const Gadget* board);
+int             Board_GetNumUnelectrifiedRodsLeft(const Gadget* board);
+int             Board_GetTotalNumRods(const Gadget* board);
+Grid            Board_GetGridSize(const Gadget* board);
+GNode           Board_GetSelBox(const Gadget* board);
+RGrid*          Board_GetRGrid(const Gadget* board);
+SGraph*         Board_GetSGraph(const Gadget* board);
+RodModel*       Board_GetRodModel(const Gadget* board);
+bool            Board_IsReactive(const Gadget* board);
+
 
 #endif // GADGETS_GUARD
 

@@ -52,6 +52,8 @@
 #define WKEY_Z_LIN                          KEY_Z
 #define WKEY_X_LIN                          KEY_X
 
+#define MOUSE_WHEEL_SENITIVITY_LIN          0.05f
+
 
 #endif // LINUX_GUARD
 

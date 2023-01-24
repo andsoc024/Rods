@@ -26,7 +26,7 @@
 // ============================================================================ PRIVATE CONSTANTS
 
 #define TURBO_KEY_COUNT                     TURBO_COUNT
-#define MOUSE_DRAG_THRESHOLD                15.0f
+#define MOUSE_DRAG_THRESHOLD                7.0f
 
 
 
