@@ -44,9 +44,13 @@ int Test(UNUSED int argc, UNUSED char** argv){
     Font_LoadDefault();
     Texture_LoadAll();
 
+    Records_MakeDefault();
+    Records_Set(Glo_Records, TIME(0, 1, 12), 10, 10);
+
     Router* router = Router_Make();
 
     Router_AddPage(router, MainPage_Make());
+    Router_AddPage(router, GamePage_Make(NULL));
 
     Router_ShowPage(router, PAGE_MAIN, WITH_ANIM);
 
@@ -55,6 +59,7 @@ int Test(UNUSED int argc, UNUSED char** argv){
     router = Router_Free(router);
     Font_UnloadDefault();
     Texture_UnloadAll();
+    Records_FreeDefault();
 
     Window_Close();
     

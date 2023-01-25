@@ -29,9 +29,15 @@
 
 // ---------------------------------------------------------------------------- Main Page
 
-Page* MainPage_Make(void);
+Page*           MainPage_Make(void);
 
+// ---------------------------------------------------------------------------- Game Page
 
+Page*           GamePage_Make(PData* pData);
+RGrid*          GamePage_GetRGrid(const Page* page);
+SGraph*         GamePage_GetSGraph(const Page* page);
+Time            GamePage_GetCurrentTime(const Page* page);
+Grid            GamePage_GetGridSize(const Page* page);
 
 
 

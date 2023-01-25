@@ -45,8 +45,8 @@
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void MainPage_Resize(Page* page);
-void MainPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
+void            MainPage_Resize(Page* page);
+void            MainPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
 
 
 

@@ -92,12 +92,13 @@ void            Board_Draw(const Gadget* board, Vector2 shift);
 Grid            Board_CalcVisiblePart(const Gadget* board);
 GNode           Board_FirstVisibleRod(const Gadget* board);
 float           Board_CalcTileSize(const Gadget* board);
-void            Board_MoveSelBox(Gadget* board, E_Direction dir);
+void            Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue);
 void            Board_FocusOnSource(Gadget* board);
 void            Board_Zoom(Gadget* board, float zoom);
 void            Board_MoveViewportToDir(Gadget* board, E_Direction dir);
 void            Board_TranslateViewport(Gadget* board, Vector2 vector);
 GNode           Board_RodAtMousePos(const Gadget* board, Point mousePos);
+void            Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue);
 #ifdef DEBUG_MODE
     void        Board_PrintData(const Gadget* board);
 #endif
@@ -310,6 +311,7 @@ void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_PRESSED:{
             if (!BDATA->isReactive) {break;}
+            BDATA->selBox = GNODE_INVALID;
             if (!Geo_PointIsInRect(event.data.mouse.pos, board->cRect)) {break;}
             BDATA->pressedRod = Board_RodAtMousePos(board, event.data.mouse.pos);
             break;
@@ -337,29 +339,34 @@ void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
             if (!Geo_PointIsInRect(event.data.mouse.pos, board->cRect)) {break;}
             BDATA->pressedRod = GNODE_INVALID;
             Board_TranslateViewport(board, Geo_OppositePoint(event.data.mouse.delta));
+            Board_AddUpdateScrollbarEvents(board, queue);
             break;
         }
 
         case EVENT_MOUSE_WHEEL:{
             if (!BDATA->isReactive) {break;}
+            BDATA->selBox = GNODE_INVALID;
             if (!Geo_PointIsInRect(event.data.wheel.pos, board->cRect)) {break;}
             float zoom = 1.0f + event.data.wheel.move * MOUSE_WHEEL_SENITIVITY;
 
             Board_Zoom(board, zoom);
+            Board_AddUpdateScrollbarEvents(board, queue);
             break;
         }
 
         case EVENT_KEY_PRESSED:{
             switch (event.data.key){
                 case WKEY_RIGHT: case WKEY_DOWN: case WKEY_LEFT: case WKEY_UP:{
+                    BDATA->selBox = GNODE_INVALID;
                     E_Direction dir = Direction_FromKey(event.data.key);
                     Board_MoveViewportToDir(board, dir);
+                    Board_AddUpdateScrollbarEvents(board, queue);
                     break;
                 }
 
                 case WKEY_D: case WKEY_S: case WKEY_A: case WKEY_W:{
                     E_Direction dir = Direction_FromKey(event.data.key);
-                    Board_MoveSelBox(board, dir);
+                    Board_MoveSelBox(board, dir, queue);
                     break;
                 }
 
@@ -372,16 +379,20 @@ void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
                 }
 
                 case WKEY_PLUS: case WKEY_MINUS: case WKEY_Z: case WKEY_X:{
+                    BDATA->selBox = GNODE_INVALID;
                     float zoom = BOARD_ZOOM;
                     if (event.data.key == WKEY_MINUS || event.data.key == WKEY_X){
                         zoom = 1.0f / zoom;
                     }
                     Board_Zoom(board, zoom);
+                    Board_AddUpdateScrollbarEvents(board, queue);
                     break;
                 }
 
                 case WKEY_R:{
+                    BDATA->selBox = GNODE_INVALID;
                     Board_FocusOnSource(board);
+                    Board_AddUpdateScrollbarEvents(board, queue);
                     break;
                 }
 
@@ -393,6 +404,7 @@ void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
 
         case EVENT_MAKE_NEW_GRID:{
             Board_CreateNewRodGrid(board, event.data.newGrid.nCols, event.data.newGrid.nRows);
+            Board_AddUpdateScrollbarEvents(board, queue);
             break;
         }
 
@@ -467,11 +479,12 @@ float Board_CalcTileSize(const Gadget* board){
 // **************************************************************************** Board_MoveSelBox
 
 // Move the selection box to the given direction
-void Board_MoveSelBox(Gadget* board, E_Direction dir){
+void Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue){
     Grid grid = RGrid_GetSize(RGRID);
 
     if (!Grid_NodeIsInGrid(BDATA->selBox, grid)){
         BDATA->selBox = Board_FirstVisibleRod(board);
+        BDATA->selBox = Grid_MoveNode(BDATA->selBox, 1, 1);
         return;
     }
 
@@ -479,6 +492,11 @@ void Board_MoveSelBox(Gadget* board, E_Direction dir){
 
     if (Grid_NodeIsInGrid(newPos, grid)){
         BDATA->selBox = newPos;
+        Grid visible = Board_CalcVisiblePart(board);
+        if (!Grid_NodeIsInGrid(BDATA->selBox, visible)){
+            SGraph_MoveViewportToDir(SGRAPH, dir, 2.0f * RGraph_GetTileSize(RODMODEL));
+            Board_AddUpdateScrollbarEvents(board, queue);
+        }
     }
 }
 
@@ -543,8 +561,24 @@ GNode Board_RodAtMousePos(const Gadget* board, Point mousePos){
 }
 
 
-#ifdef DEBUG_MODE
+// **************************************************************************** Board_AddUpdateScrollbarEvents
 
+// Add the uppdate scrollbar event for both the horisontal and vertical 
+// scrollbar to the event queue
+void Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue){
+    float posRatio, sizeRatio;
+
+    posRatio = SGraph_CalcViewportPosRatio(SGRAPH, OR_HORISONTAL);
+    sizeRatio = SGraph_CalcViewportSizeRatio(SGRAPH, OR_HORISONTAL);
+    Queue_AddEvent(queue, Event_SetAsUpdateScrollbar(board->id, GDG_SCROLLBAR_HOR, posRatio, sizeRatio));
+
+    posRatio = SGraph_CalcViewportPosRatio(SGRAPH, OR_VERTICAL);
+    sizeRatio = SGraph_CalcViewportSizeRatio(SGRAPH, OR_VERTICAL);
+    Queue_AddEvent(queue, Event_SetAsUpdateScrollbar(board->id, GDG_SCROLLBAR_VER, posRatio, sizeRatio));
+}
+
+
+#ifdef DEBUG_MODE
 // **************************************************************************** Board_PrintData
 
     // Multiline print of the parameters of the data object of the board
