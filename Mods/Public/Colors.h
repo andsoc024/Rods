@@ -46,7 +46,7 @@
 
 #define COL_UI_BG_PRIMARY                   COLOR(0x3C, 0x3C, 0x3C, 0xFF) // ex Button Background
 #define COL_UI_BG_SECONDARY                 COLOR(0x2A, 0x2A, 0x2A, 0xFF) // ex Scrollbar Background
-#define COL_UI_BG_TERTIARY                  COLOR(0x58, 0x58, 0x58, 0xDD) // ex Toolbar
+#define COL_UI_BG_TERTIARY                  COLOR(0x58, 0x58, 0x58, 0xF3) // ex Toolbar
 #define COL_UI_BG_QUATENARY                 COLOR(0x0B, 0x0B, 0x0B, 0xFF) // ex Textbox Background
 #define COL_UI_BG_ACTIVE                    COLOR(0x00, 0xA4, 0x30, 0xFF) // ex Active Background in Switch
 

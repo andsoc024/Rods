@@ -235,6 +235,13 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                     break;
                 }
 
+                case GDG_BTN_HELP:{
+                    Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_HELP, WITH_ANIM));
+                    Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITH_ANIM);
+                    Board_SetAsReactive(page->gadgets[GP_BOARD]);
+                    break;
+                }
+
                 default: {break;}
             }
             break;

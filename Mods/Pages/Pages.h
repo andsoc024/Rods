@@ -49,6 +49,10 @@ void            SetupPage_SetRecordTime(Page* page, Time record);
 
 Page*           InfoPage_Make(void);
 
+// ---------------------------------------------------------------------------- Help Page
+
+Page*           HelpPage_Make(void);
+
 
 #endif // PAGES_GUARD
 
