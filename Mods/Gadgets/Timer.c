@@ -80,12 +80,12 @@ typedef struct TimerData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Timer_PrepareToFree(Gadget* timer);
-void            Timer_Resize(Gadget* timer);
-void            Timer_Update(Gadget* timer, EventQueue* queue);
-void            Timer_Draw(const Gadget* timer, Vector2 shift);
+static void     Timer_PrepareToFree(Gadget* timer);
+static void     Timer_Resize(Gadget* timer);
+static void     Timer_Update(Gadget* timer, EventQueue* queue);
+static void     Timer_Draw(const Gadget* timer, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Timer_PrintData(const Gadget* timer);
+    static void Timer_PrintData(const Gadget* timer);
 #endif
 
 
@@ -236,8 +236,10 @@ Time Timer_GetRecordTime(const Gadget* timer){
 
 // ============================================================================ PRIVATE FUNC DEF
 
+// **************************************************************************** Timer_PrepareToFree
+
 // Free the memory of the timer displays
-void Timer_PrepareToFree(Gadget* timer){
+static void Timer_PrepareToFree(Gadget* timer){
     TIMDATA->currentTimDisp[LONG_FORM]  = TimDisp_Free(TIMDATA->currentTimDisp[LONG_FORM]);
     TIMDATA->currentTimDisp[SHORT_FORM] = TimDisp_Free(TIMDATA->currentTimDisp[SHORT_FORM]);
     TIMDATA->recordTimDisp              = TimDisp_Free(TIMDATA->recordTimDisp);
@@ -248,7 +250,7 @@ void Timer_PrepareToFree(Gadget* timer){
 
 // Resize the timer and precalculate the values both for the expanded and 
 // collapsed forms
-void Timer_Resize(Gadget* timer){
+static void Timer_Resize(Gadget* timer){
     // Current Time - Collapsed form
     Rect collapsedRect_Outer = timer->cRect;
     
@@ -301,7 +303,7 @@ void Timer_Resize(Gadget* timer){
 // **************************************************************************** Timer_Update
 
 // Increment the current time once per second
-void Timer_Update(Gadget* timer, UNUSED EventQueue* queue){
+static void Timer_Update(Gadget* timer, UNUSED EventQueue* queue){
     double t = GetTime();
     TIMDATA->dt = t - TIMDATA->t;
 
@@ -316,7 +318,7 @@ void Timer_Update(Gadget* timer, UNUSED EventQueue* queue){
 // **************************************************************************** Timer_Draw
 
 // Draw the timer in collpased or expanded form
-void Timer_Draw(const Gadget* timer, Vector2 shift){
+static void Timer_Draw(const Gadget* timer, Vector2 shift){
     if (timer->isExpanded){
         DrawTextureEx(Glo_Textures.icons[TIM_ICON_ID], Geo_TranslatePoint(TIMDATA->iconOrigin, shift), 
                       0.0f, TIMDATA->iconScaleF, TIMDATA->colorIcon);
@@ -335,7 +337,7 @@ void Timer_Draw(const Gadget* timer, Vector2 shift){
 // **************************************************************************** Timer_PrintData
 
     // Multiline print of the parameters of the timer's data object
-    void Timer_PrintData(const Gadget* timer){
+    static void Timer_PrintData(const Gadget* timer){
         CHECK_NULL(timer, WITH_NEW_LINE)
         CHECK_NULL(timer->data, WITH_NEW_LINE)
 

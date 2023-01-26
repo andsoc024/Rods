@@ -59,12 +59,12 @@ typedef struct LabelData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Label_PrepareToFree(Gadget* label);
-void            Label_Resize(Gadget* label);
-void            Label_Draw(const Gadget* label, Vector2 shift);
-void            Label_DrawMagic(const Gadget* label, Vector2 shift);
+static void     Label_PrepareToFree(Gadget* label);
+static void     Label_Resize(Gadget* label);
+static void     Label_Draw(const Gadget* label, Vector2 shift);
+static void     Label_DrawMagic(const Gadget* label, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Label_PrintData(const Gadget* label);
+    static void Label_PrintData(const Gadget* label);
 #endif
 
 
@@ -215,7 +215,7 @@ Point Label_GetTextPos(const Gadget* label){
 // **************************************************************************** Label_PrepareToFree
 
 // Free the text in the data object
-void Label_PrepareToFree(Gadget* label){
+static void Label_PrepareToFree(Gadget* label){
     LDATA->txt = Memory_Free(LDATA->txt);
 }
 
@@ -224,7 +224,7 @@ void Label_PrepareToFree(Gadget* label){
 
 // Determine the font size and position of the label, inside its containing 
 // rectangle
-void Label_Resize(Gadget* label){
+static void Label_Resize(Gadget* label){
     LDATA->fontSize = Font_FitTextInSize(LDATA->txt, RSIZE(label->cRect));
     Point p = Geo_RectPoint(label->cRect, LDATA->alignment);
     LDATA->pos = Font_CalcTextPos(LDATA->txt, LDATA->fontSize, p, LDATA->alignment);
@@ -234,7 +234,7 @@ void Label_Resize(Gadget* label){
 // **************************************************************************** Label_Draw
 
 // Draw the label text
-void Label_Draw(const Gadget* label, Vector2 shift){
+static void Label_Draw(const Gadget* label, Vector2 shift){
     Font_DrawText(LDATA->txt, LDATA->fontSize, Geo_TranslatePoint(LDATA->pos, shift), 
                   LDATA->color);
 }
@@ -244,7 +244,7 @@ void Label_Draw(const Gadget* label, Vector2 shift){
 
 // Draw the label text with the current color of the default magic color at 
 // Glo_MCol
-void Label_DrawMagic(const Gadget* label, Vector2 shift){
+static void Label_DrawMagic(const Gadget* label, Vector2 shift){
     Font_DrawText(LDATA->txt, LDATA->fontSize, Geo_TranslatePoint(LDATA->pos, shift), 
                   MCol(Glo_MCol));
 }
@@ -254,7 +254,7 @@ void Label_DrawMagic(const Gadget* label, Vector2 shift){
 // **************************************************************************** Label_PrintData
 
     // Multiline print of the parameter's of the label's data object
-    void Label_PrintData(const Gadget* label){
+    static void Label_PrintData(const Gadget* label){
         CHECK_NULL(label, WITH_NEW_LINE)
         CHECK_NULL(label->data, WITH_NEW_LINE)
 

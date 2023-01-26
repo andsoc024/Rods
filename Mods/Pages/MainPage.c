@@ -45,8 +45,8 @@
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            MainPage_Resize(Page* page);
-void            MainPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
+static void     MainPage_Resize(Page* page);
+static void     MainPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
 
 
 
@@ -86,7 +86,7 @@ Page* MainPage_Make(void){
 // **************************************************************************** MainPage_Resize
 
 // Resize the main page
-void MainPage_Resize(Page* page){
+static void MainPage_Resize(Page* page){
     VGraph* vg = VGraph_Make(VSCREEN, TO_RECT(Glo_WinSize), 0.0f);
 
     page->gadgets[MP_TITLE]->cRect = VGraph_ProjectRect(TITLE_RECT, vg);
@@ -99,7 +99,7 @@ void MainPage_Resize(Page* page){
 // **************************************************************************** MainPage_Resize
 
 // If the play button is pressed, show the game page
-void MainPage_ReactToEvent(UNUSED Page* page, Event event, EventQueue* queue){
+static void MainPage_ReactToEvent(UNUSED Page* page, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_BUTTON_RELEASED:{
             if (event.source == GDG_BTN_PLAY){

@@ -42,7 +42,6 @@ Grid            GamePage_GetGridSize(const Page* page);
 // ---------------------------------------------------------------------------- Setup Page
 
 Page*           SetupPage_Make(void);
-void            SetupPage_PrepareToShow(Page* page, Event event);
 void            SetupPage_SetCurrentTime(Page* page, Time current);
 void            SetupPage_SetRecordTime(Page* page, Time record);
 

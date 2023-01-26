@@ -94,13 +94,13 @@ typedef struct NumBoxData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            NumBox_PrepareToFree(Gadget* numbox);
-void            NumBox_Resize(Gadget* numbox);
-void            NumBox_ReactToEvent(Gadget* numbox, Event event, EventQueue* queue);
-void            NumBox_Draw(const Gadget* numbox, Vector2 shift);
-void            NumBox_RecalcTextForValue(Gadget* numbox, bool recalcFontSize);
+static void     NumBox_PrepareToFree(Gadget* numbox);
+static void     NumBox_Resize(Gadget* numbox);
+static void     NumBox_ReactToEvent(Gadget* numbox, Event event, EventQueue* queue);
+static void     NumBox_Draw(const Gadget* numbox, Vector2 shift);
+static void     NumBox_RecalcTextForValue(Gadget* numbox, bool recalcFontSize);
 #ifdef DEBUG_MODE
-    void        NumBox_PrintData(const Gadget* numbox);
+    static void NumBox_PrintData(const Gadget* numbox);
 #endif
 
 
@@ -124,6 +124,7 @@ Gadget* NumBox_Make(E_GadgetID id, E_GadgetID upButtonID, E_GadgetID downButtonI
     Button_SetRoundness(btnDown, NB_BTN_ROUNDNESS);
     numbox->subGadgets[1] = btnDown;
 
+    numbox->PrepareToFree = NumBox_PrepareToFree;
     numbox->Resize        = NumBox_Resize;
     numbox->ReactToEvent  = NumBox_ReactToEvent;
     numbox->Draw          = NumBox_Draw;
@@ -245,7 +246,7 @@ Gadget* NumBox_GetDownButton(const Gadget* numbox){
 // **************************************************************************** NumBox_PrepareToFree
 
 // Free the text in the data object
-void NumBox_PrepareToFree(Gadget* numbox){
+static void NumBox_PrepareToFree(Gadget* numbox){
     NBDATA->txt = Memory_Free(NBDATA->txt);
 }
 
@@ -253,7 +254,7 @@ void NumBox_PrepareToFree(Gadget* numbox){
 // **************************************************************************** NumBox_Resize
 
 // Resize the number box, within its containing rectangle
-void NumBox_Resize(Gadget* numbox){
+static void NumBox_Resize(Gadget* numbox){
     Size totalSize = SIZE(NB_ASPECT_RATIO, 1.0f);
     totalSize = Geo_FitSizeInSize(totalSize, RSIZE(numbox->cRect), 0.0f);
     Rect totalRect = Geo_AlignRect(TO_RECT(totalSize), numbox->cRect, NBDATA->alignment);
@@ -272,7 +273,7 @@ void NumBox_Resize(Gadget* numbox){
 
 // The number box reacts to its buttons being pressed and emits 
 // EVENT_NUMBOX_CHANGED
-void NumBox_ReactToEvent(Gadget* numbox, Event event, EventQueue* queue){
+static void NumBox_ReactToEvent(Gadget* numbox, Event event, EventQueue* queue){
     if (event.id == EVENT_BUTTON_PRESSED && (event.source == (int) NB_BTN_UP->id || 
                                              event.source == (int) NB_BTN_DOWN->id)){
         int previous = NBDATA->value;
@@ -288,7 +289,7 @@ void NumBox_ReactToEvent(Gadget* numbox, Event event, EventQueue* queue){
 // **************************************************************************** NumBox_Draw
 
 // Draw the box, with the text, of the number box
-void NumBox_Draw(const Gadget* numbox, Vector2 shift){
+static void NumBox_Draw(const Gadget* numbox, Vector2 shift){
     Shape_DrawOutlinedRoundedRect(Geo_TranslateRect(NBDATA->boxRect, shift), 
                                   NB_BOX_ROUNDNESS, 
                                   NBDATA->thickness, 
@@ -305,7 +306,7 @@ void NumBox_Draw(const Gadget* numbox, Vector2 shift){
 // **************************************************************************** NumBox_RecalcTextForValue
 
 // Calculate the position of the numeric text in the box
-void NumBox_RecalcTextForValue(Gadget* numbox, bool recalcFontSize){
+static void NumBox_RecalcTextForValue(Gadget* numbox, bool recalcFontSize){
     if (NBDATA->txtFontSize == 0.0f || recalcFontSize){
         char* widestString = Memory_Allocate(NULL, NB_DIGITS_MAX_N + 1, ZEROVAL_LAST);
         Memory_Set(widestString, NB_DIGITS_MAX_N, NB_WIDEST_CHAR);
@@ -323,7 +324,7 @@ void NumBox_RecalcTextForValue(Gadget* numbox, bool recalcFontSize){
 // **************************************************************************** NumBox_Print
 
     // Multiline print of the parameters of the data object of the number box
-    void NumBox_PrintData(const Gadget* numbox){
+    static void NumBox_PrintData(const Gadget* numbox){
         CHECK_NULL(numbox, WITH_NEW_LINE)
         CHECK_NULL(numbox->data, WITH_NEW_LINE)
 

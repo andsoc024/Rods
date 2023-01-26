@@ -84,23 +84,23 @@ typedef struct BoardData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Board_PrepareToFree(Gadget* board);
-void            Board_Resize(Gadget* board);
-void            Board_ReactToEvent(Gadget* board, Event event, EventQueue* queue);
-void            Board_Update(Gadget* board, EventQueue* queue);
-void            Board_Draw(const Gadget* board, Vector2 shift);
-Grid            Board_CalcVisiblePart(const Gadget* board);
-GNode           Board_FirstVisibleRod(const Gadget* board);
-float           Board_CalcTileSize(const Gadget* board);
-void            Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue);
-void            Board_FocusOnSource(Gadget* board);
-void            Board_Zoom(Gadget* board, float zoom);
-void            Board_MoveViewportToDir(Gadget* board, E_Direction dir);
-void            Board_TranslateViewport(Gadget* board, Vector2 vector);
-GNode           Board_RodAtMousePos(const Gadget* board, Point mousePos);
-void            Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue);
+static void     Board_PrepareToFree(Gadget* board);
+static void     Board_Resize(Gadget* board);
+static void     Board_ReactToEvent(Gadget* board, Event event, EventQueue* queue);
+static void     Board_Update(Gadget* board, EventQueue* queue);
+static void     Board_Draw(const Gadget* board, Vector2 shift);
+static Grid     Board_CalcVisiblePart(const Gadget* board);
+static GNode    Board_FirstVisibleRod(const Gadget* board);
+static float    Board_CalcTileSize(const Gadget* board);
+static void     Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue);
+static void     Board_FocusOnSource(Gadget* board);
+static void     Board_Zoom(Gadget* board, float zoom);
+static void     Board_MoveViewportToDir(Gadget* board, E_Direction dir);
+static void     Board_TranslateViewport(Gadget* board, Vector2 vector);
+static GNode    Board_RodAtMousePos(const Gadget* board, Point mousePos);
+static void     Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue);
 #ifdef DEBUG_MODE
-    void        Board_PrintData(const Gadget* board);
+    static void Board_PrintData(const Gadget* board);
 #endif
 
 
@@ -282,7 +282,7 @@ bool Board_IsReactive(const Gadget* board){
 // **************************************************************************** Board_PrepareToFree
 
 // Free the rod grid, scroll graphics and rod model
-void Board_PrepareToFree(Gadget* board){
+static void Board_PrepareToFree(Gadget* board){
     RGRID    = RGrid_Free(RGRID);
     SGRAPH   = SGraph_Free(SGRAPH);
     RODMODEL = RGraph_FreeRodModel(RODMODEL);
@@ -292,7 +292,7 @@ void Board_PrepareToFree(Gadget* board){
 // **************************************************************************** Board_Resize
 
 // Resize the board
-void Board_Resize(Gadget* board){
+static void Board_Resize(Gadget* board){
     BDATA->selBox = GNODE_INVALID;
     BDATA->pressedRod = GNODE_INVALID;
 
@@ -307,7 +307,7 @@ void Board_Resize(Gadget* board){
 // **************************************************************************** Board_ReactToEvent
 
 // The board reacts to mouse, keyboard and other GUI events
-void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
+static void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_PRESSED:{
             if (!BDATA->isReactive) {break;}
@@ -417,7 +417,7 @@ void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* queue){
 
 // Update the rod grid animations and emit the victory event when the grid is 
 // completed
-void Board_Update(Gadget* board, EventQueue* queue){
+static void Board_Update(Gadget* board, EventQueue* queue){
     RGrid_Update(RGRID);
 
     if (!BDATA->victory && RGrid_IsCompleted(RGRID)){
@@ -430,7 +430,7 @@ void Board_Update(Gadget* board, EventQueue* queue){
 // **************************************************************************** Board_Draw
 
 // Draw the rod grid and the selction box
-void Board_Draw(const Gadget* board, Vector2 shift){
+static void Board_Draw(const Gadget* board, Vector2 shift){
     float tileSize = RGraph_GetTileSize(RODMODEL);
     Grid visible = Board_CalcVisiblePart(board);
     Point origin = SGraph_ProjectPoint(Grid_NodeToPoint(visible.origin, tileSize), SGRAPH);
@@ -449,7 +449,7 @@ void Board_Draw(const Gadget* board, Vector2 shift){
 // **************************************************************************** Board_CalcVisiblePart
 
 // The visible part of the rod grid
-Grid Board_CalcVisiblePart(const Gadget* board){
+static Grid Board_CalcVisiblePart(const Gadget* board){
     Rect viewport = SGraph_GetViewport(SGRAPH);
     Grid total = RGrid_GetSize(RGRID);
     float tileSize = RGraph_GetTileSize(RODMODEL);
@@ -461,7 +461,7 @@ Grid Board_CalcVisiblePart(const Gadget* board){
 // **************************************************************************** Board_FirstVisibleRod
 
 // The top left rod in the visiblke part of the grid
-GNode Board_FirstVisibleRod(const Gadget* board){
+static GNode Board_FirstVisibleRod(const Gadget* board){
     return Board_CalcVisiblePart(board).origin;
 }
 
@@ -469,7 +469,7 @@ GNode Board_FirstVisibleRod(const Gadget* board){
 // **************************************************************************** Board_CalcTileSize
 
 // Calculate the tile size in the virtual screen of the scroll graphics
-float Board_CalcTileSize(const Gadget* board){
+static float Board_CalcTileSize(const Gadget* board){
     Grid grid = RGrid_GetSize(RGRID);
     Size vScreen = SGraph_GetVScreen(SGRAPH);
     return Grid_CalcSqrCellSize(grid, vScreen);
@@ -479,7 +479,7 @@ float Board_CalcTileSize(const Gadget* board){
 // **************************************************************************** Board_MoveSelBox
 
 // Move the selection box to the given direction
-void Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue){
+static void Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue){
     Grid grid = RGrid_GetSize(RGRID);
 
     if (!Grid_NodeIsInGrid(BDATA->selBox, grid)){
@@ -505,7 +505,7 @@ void Board_MoveSelBox(Gadget* board, E_Direction dir, EventQueue* queue){
 
 // Set the scroll graphics in default position and center the viewport over the 
 // source
-void Board_FocusOnSource(Gadget* board){
+static void Board_FocusOnSource(Gadget* board){
     SGraph_SetDefault(SGRAPH);
     float tileSize = Board_CalcTileSize(board);
     RGraph_ResizeRodModel(RODMODEL, tileSize);
@@ -520,7 +520,7 @@ void Board_FocusOnSource(Gadget* board){
 // **************************************************************************** Board_Zoom
 
 // Zoom the scroll graphics in or out
-void Board_Zoom(Gadget* board, float zoom){
+static void Board_Zoom(Gadget* board, float zoom){
     SGraph_Zoom(SGRAPH, zoom);
     float tileSize = Board_CalcTileSize(board);
     RGraph_ResizeRodModel(RODMODEL, tileSize);
@@ -530,7 +530,7 @@ void Board_Zoom(Gadget* board, float zoom){
 // **************************************************************************** Board_MoveViewportToDir
 
 // Move the viewport of the scroll graphics object towards the given direction
-void Board_MoveViewportToDir(Gadget* board, E_Direction dir){
+static void Board_MoveViewportToDir(Gadget* board, E_Direction dir){
     float moveDistance = MIN_DIM(board->cRect) * BOARD_MOVE_DIST_RATIO;
     SGraph_MoveViewportToDir(SGRAPH, dir, moveDistance);
 }
@@ -539,7 +539,7 @@ void Board_MoveViewportToDir(Gadget* board, E_Direction dir){
 // **************************************************************************** Board_TranslateViewport
 
 // Move the viewport by the given vector
-void Board_TranslateViewport(Gadget* board, Vector2 vector){
+static void Board_TranslateViewport(Gadget* board, Vector2 vector){
     SGraph_TranslateViewport(SGRAPH, vector);
 }
 
@@ -547,7 +547,7 @@ void Board_TranslateViewport(Gadget* board, Vector2 vector){
 // **************************************************************************** Board_RodAtMousePos
 
 // The node corresponding to the rod under the mouse cursor
-GNode Board_RodAtMousePos(const Gadget* board, Point mousePos){
+static GNode Board_RodAtMousePos(const Gadget* board, Point mousePos){
     Point p = SGraph_UnprojectPoint(mousePos, SGRAPH);
     float tileSize = RGraph_GetTileSize(RODMODEL);
 
@@ -565,7 +565,7 @@ GNode Board_RodAtMousePos(const Gadget* board, Point mousePos){
 
 // Add the uppdate scrollbar event for both the horisontal and vertical 
 // scrollbar to the event queue
-void Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue){
+static void Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue){
     float posRatio, sizeRatio;
 
     posRatio = SGraph_CalcViewportPosRatio(SGRAPH, OR_HORISONTAL);
@@ -582,7 +582,7 @@ void Board_AddUpdateScrollbarEvents(const Gadget* board, EventQueue* queue){
 // **************************************************************************** Board_PrintData
 
     // Multiline print of the parameters of the data object of the board
-    void Board_PrintData(const Gadget* board){
+    static void Board_PrintData(const Gadget* board){
         CHECK_NULL(board, WITH_NEW_LINE)
         CHECK_NULL(board->data, WITH_NEW_LINE);
 

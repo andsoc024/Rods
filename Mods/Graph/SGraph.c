@@ -51,7 +51,7 @@ struct SGraph{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            SGraph_Recalc(SGraph* sg);
+static void     SGraph_Recalc(SGraph* sg);
 
 
 
@@ -447,7 +447,7 @@ Point SGraph_GetOrigin(const SGraph* sg){
 
 // Ensure that the viewport is inside the virtual screen and calculate the 
 // origin, for drawing graphics
-void SGraph_Recalc(SGraph* sg){
+static void SGraph_Recalc(SGraph* sg){
     sg->viewport = Geo_PutRectInRect(sg->viewport, TO_RECT(sg->vScreen), -sg->margin);
 
     sg->origin = Geo_TranslatePoint(sg->viewOrigin, Geo_OppositePoint(RORIGIN(sg->viewport)));

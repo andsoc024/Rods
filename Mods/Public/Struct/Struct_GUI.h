@@ -134,7 +134,7 @@ typedef struct Page{
     int nGadgets;
 
     void (*PrepareToFree)(struct Page* page);
-    void (*PrepareToShow)(struct Page* page);
+    void (*PrepareToShow)(struct Page* page, Event event);
     void (*Resize)(struct Page* page);
     void (*ResizeAfterGadgets)(struct Page* page);
     void (*ReactToEvent)(struct Page* page, Event event, EventQueue* queue);

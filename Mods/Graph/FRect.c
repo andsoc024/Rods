@@ -65,12 +65,12 @@ struct FRects{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            FRect_Init(FRect* fRect, float minY, float maxY);
-void            FRect_Reset(FRect* fRect);
-void            FRect_PlaceRandomX(FRect* fRect);
-void            FRect_Update(FRect* fRect);
+static void     FRect_Init(FRect* fRect, float minY, float maxY);
+static void     FRect_Reset(FRect* fRect);
+static void     FRect_PlaceRandomX(FRect* fRect);
+static void     FRect_Update(FRect* fRect);
 #ifdef DEBUG_MODE
-    void        FRect_Print(const FRect* fRect, bool withNewLine);
+    static void FRect_Print(const FRect* fRect, bool withNewLine);
 #endif
 
 
@@ -173,7 +173,7 @@ void FRects_Draw(const FRects* fRects){
 // Initialize the flying rectangle by setting its y-axis range and resetting 
 // it, with a random size, speed and alpha value. Place it with its right edge 
 // at the left edge of the window
-void FRect_Init(FRect* fRect, float minY, float maxY){
+static void FRect_Init(FRect* fRect, float minY, float maxY){
     fRect->minY = minY;
     fRect->maxY = maxY;
 
@@ -185,7 +185,7 @@ void FRect_Init(FRect* fRect, float minY, float maxY){
 
 // Give the flying rectangle a random size, speed and alpha value. Place it 
 // with its right edge at the left edge of the window
-void FRect_Reset(FRect* fRect){
+static void FRect_Reset(FRect* fRect){
     fRect->rect.width  = Math_RandomFloat(FRECT_MIN_SIZE.width,  FRECT_MAX_SIZE.width);
     fRect->rect.height = Math_RandomFloat(FRECT_MIN_SIZE.height, FRECT_MAX_SIZE.height);
 
@@ -202,7 +202,7 @@ void FRect_Reset(FRect* fRect){
 // **************************************************************************** FRect_PlaceRandomX
 
 // Place the flying rectangle at a random X position in the window
-void FRect_PlaceRandomX(FRect* fRect){
+static void FRect_PlaceRandomX(FRect* fRect){
     fRect->rect.x = Math_RandomFloat(-fRect->rect.width, Glo_WinSize.width);
 }
 
@@ -211,7 +211,7 @@ void FRect_PlaceRandomX(FRect* fRect){
 
 // Move the flying rectangle to the right, according to its speed. If it passes 
 // completely the right edge of the window, reset it
-void FRect_Update(FRect* fRect){
+static void FRect_Update(FRect* fRect){
     fRect->rect.x += fRect->speed;
 
     if (fRect->rect.x > Glo_WinSize.width){
@@ -225,7 +225,7 @@ void FRect_Update(FRect* fRect){
 
     // Single line print of the parameters of the flying rectangle. Optionally 
     // with new line
-    void FRect_Print(const FRect* fRect, bool withNewLine){
+    static void FRect_Print(const FRect* fRect, bool withNewLine){
         CHECK_NULL(fRect, withNewLine)
 
         Geo_PrintRect(fRect->rect, WITHOUT_NEW_LINE);

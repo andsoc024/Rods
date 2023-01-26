@@ -55,8 +55,8 @@ struct RGrid{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            RGrid_AddToUpdatable(RGrid* rGrid, GNode node);
-bool            RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node);
+static void     RGrid_AddToUpdatable(RGrid* rGrid, GNode node);
+static bool     RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node);
 
 
 
@@ -516,7 +516,7 @@ bool RGrid_IsCompleted(const RGrid* rGrid){
 
 // Add the node to the updatable list. If the position is already occupied, 
 // finish the current animation first
-void RGrid_AddToUpdatable(RGrid* rGrid, GNode node){
+static void RGrid_AddToUpdatable(RGrid* rGrid, GNode node){
     if (!Grid_NodeIsInGrid(node, rGrid->size)){
         return;
     }
@@ -544,7 +544,7 @@ void RGrid_AddToUpdatable(RGrid* rGrid, GNode node){
 // **************************************************************************** RGrid_RodCanBeElectrified
 
 // Return true if the rod can be electrified
-bool RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node){
+static bool RGrid_RodCanBeElectrified(const RGrid* rGrid, GNode node){
     if (!Grid_NodeIsInGrid(node, rGrid->size)){
         return false;
     }

@@ -73,12 +73,12 @@ typedef struct ButtonData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Button_Resize(Gadget* button);
-void            Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue);
-void            Button_Update(Gadget* button, EventQueue* queue);
-void            Button_Draw(const Gadget* button, Vector2 shift);
+static void     Button_Resize(Gadget* button);
+static void     Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue);
+static void     Button_Update(Gadget* button, EventQueue* queue);
+static void     Button_Draw(const Gadget* button, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Button_PrintData(const Gadget* button);
+    static void Button_PrintData(const Gadget* button);
 #endif
 
 
@@ -248,7 +248,7 @@ Gadget* Button_GetContent(const Gadget* button){
 // **************************************************************************** Button_Resize
 
 // Resize the button to its containing rectangle
-void Button_Resize(Gadget* button){
+static void Button_Resize(Gadget* button){
     float margin = MIN_DIM(button->cRect) * BDATA->marginRatio;
     CONTENT->cRect = Geo_ApplyRectMargins(button->cRect, margin);
 }
@@ -257,7 +257,7 @@ void Button_Resize(Gadget* button){
 // **************************************************************************** Button_ReactToEvent
 
 // React to a mouse or keyboard event
-void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
+static void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_MOVE:{
             if (Geo_PointIsInRect(event.data.mouse.pos, button->cRect)){
@@ -319,7 +319,7 @@ void Button_ReactToEvent(Gadget* button, Event event, EventQueue* queue){
 // **************************************************************************** Button_Update
 
 // For turbo button functionality
-void Button_Update(Gadget* button, EventQueue* queue){
+static void Button_Update(Gadget* button, EventQueue* queue){
     if (button->isPressed){
         BDATA->turboCount++;
         if (BDATA->turboCount > BTN_TURBO_COUNT){
@@ -330,7 +330,7 @@ void Button_Update(Gadget* button, EventQueue* queue){
 // **************************************************************************** Button_Draw
 
 // Draw the background of the button
-void Button_Draw(const Gadget* button, Vector2 shift){
+static void Button_Draw(const Gadget* button, Vector2 shift){
     Color color = button->isPressed  ? BDATA->colBG : 
                   button->isSelected ? BDATA->colEmph : BDATA->colFG;
     Shape_DrawOutlinedRoundedRect(Geo_TranslateRect(button->cRect, shift), 
@@ -343,7 +343,7 @@ void Button_Draw(const Gadget* button, Vector2 shift){
 // **************************************************************************** Button_PrintData
 
     // Multiline print of the parameters of the button's data object
-    void Button_PrintData(const Gadget* button){
+    static void Button_PrintData(const Gadget* button){
         CHECK_NULL(button, WITH_NEW_LINE)
         CHECK_NULL(button->data, WITH_NEW_LINE)
 

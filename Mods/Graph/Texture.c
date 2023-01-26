@@ -46,9 +46,9 @@ struct RodModel{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-Texture2D       Texture_LoadIcon(E_IconID id);
-Texture2D       Texture_LoadRod(int legs);
-Texture2D       Texture_LoadSelBox(void);
+static Texture2D Texture_LoadIcon(E_IconID id);
+static Texture2D Texture_LoadRod(int legs);
+static Texture2D Texture_LoadSelBox(void);
 
 
 
@@ -288,7 +288,7 @@ void RGraph_DrawSelBox(Point pos, const RodModel* rodModel){
 // **************************************************************************** Texture_LoadIcon
 
 // Load the icon from memory
-Texture2D Texture_LoadIcon(E_IconID id){
+static Texture2D Texture_LoadIcon(E_IconID id){
     const unsigned char* ptrs[ICONS_N] = {
         Asset_Icon_ArrowRight, Asset_Icon_ArrowDown, Asset_Icon_ArrowLeft,
         Asset_Icon_ArrowUp,    Asset_Icon_Back,      Asset_Icon_Help,
@@ -322,7 +322,7 @@ Texture2D Texture_LoadIcon(E_IconID id){
 // **************************************************************************** Texture_LoadRod
 
 // Make a rod texture
-Texture2D Texture_LoadRod(int legs){
+static Texture2D Texture_LoadRod(int legs){
     legs = PUT_IN_RANGE(legs, 0x0, 0xF);
 
     Image im = GenImageColor(ROD_DEF_TEXTURE_SIZE, ROD_DEF_TEXTURE_SIZE, COL_NULL);
@@ -344,7 +344,7 @@ Texture2D Texture_LoadRod(int legs){
 // **************************************************************************** Texture_LoadSelBox
 
 // Make a selection box texture
-Texture2D Texture_LoadSelBox(void){
+static Texture2D Texture_LoadSelBox(void){
     Image im = GenImageColor(ROD_DEF_TEXTURE_SIZE, ROD_DEF_TEXTURE_SIZE, COL_NULL);
     Err_Assert(FEQ(im.width, ROD_DEF_TEXTURE_SIZE) && FEQ(im.height, ROD_DEF_TEXTURE_SIZE), 
                "Failed to create selection box image");

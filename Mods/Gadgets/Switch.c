@@ -77,12 +77,12 @@ typedef struct SwitchData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Switch_Resize(Gadget* sw);
-void            Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue);
-void            Switch_Update(Gadget* sw, EventQueue* queue);
-void            Switch_Draw(const Gadget* sw, Vector2 shift);
+static void     Switch_Resize(Gadget* sw);
+static void     Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue);
+static void     Switch_Update(Gadget* sw, EventQueue* queue);
+static void     Switch_Draw(const Gadget* sw, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Switch_PrintData(const Gadget* sw);
+    static void Switch_PrintData(const Gadget* sw);
 #endif
 
 
@@ -193,7 +193,7 @@ int Switch_GetAlignment(const Gadget* sw){
 // **************************************************************************** Switch_Resize
 
 // Resize the switch gadget, within its containing rectangle
-void Switch_Resize(Gadget* sw){
+static void Switch_Resize(Gadget* sw){
     Size size = SIZE(SW_ASPECT_RATIO, 1.0f);
     size = Geo_FitSizeInSize(size, RSIZE(sw->cRect), 0.0f);
     Rect cRect = Geo_AlignRect(TO_RECT(size), sw->cRect, SWDATA->alignment);
@@ -221,7 +221,7 @@ void Switch_Resize(Gadget* sw){
 // **************************************************************************** Switch_ReactToEvent
 
 // The switch recats to mouse, keyboard and other GUI events
-void Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue){
+static void Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_MOVE:{
             sw->isSelected = Geo_PointIsInRect(event.data.mouse.pos, SWDATA->reactRect);
@@ -276,7 +276,7 @@ void Switch_ReactToEvent(Gadget* sw, Event event, EventQueue* queue){
 // **************************************************************************** Switch_Update
 
 // Update eventual animation
-void Switch_Update(Gadget* sw, UNUSED EventQueue* queue){
+static void Switch_Update(Gadget* sw, UNUSED EventQueue* queue){
     SWDATA->handlePos.x += SWDATA->handleIncr;
 
     if (SWDATA->handleIncr < 0.0f && 
@@ -296,7 +296,7 @@ void Switch_Update(Gadget* sw, UNUSED EventQueue* queue){
 // **************************************************************************** Switch_Draw
 
 // Draw the switch
-void Switch_Draw(const Gadget* sw, Vector2 shift){
+static void Switch_Draw(const Gadget* sw, Vector2 shift){
     Color outlineColor = sw->isPressed  ? COL_SW_BG   : 
                          sw->isSelected ? COL_SW_EMPH : COL_SW_FG;
 
@@ -315,7 +315,7 @@ void Switch_Draw(const Gadget* sw, Vector2 shift){
 
     // Multiline print of the parameters of the data object of the switch 
     // gadget
-    void Switch_PrintData(const Gadget* sw){
+    static void Switch_PrintData(const Gadget* sw){
         CHECK_NULL(sw, WITH_NEW_LINE)
         CHECK_NULL(sw->data, WITH_NEW_LINE)
 

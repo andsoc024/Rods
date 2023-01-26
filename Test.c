@@ -53,7 +53,7 @@ int Test(UNUSED int argc, UNUSED char** argv){
     Router_AddPage(router, GamePage_Make(NULL));
     Router_AddPage(router, SetupPage_Make());
 
-    Router_ShowPage(router, PAGE_MAIN, WITH_ANIM);
+    Router_ShowPage(router, EVENT_NULL, PAGE_MAIN, WITH_ANIM);
 
     Router_Loop(router);
     

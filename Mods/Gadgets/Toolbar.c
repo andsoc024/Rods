@@ -103,15 +103,15 @@ typedef struct ToolbarData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Toolbar_PrepareToFree(Gadget* toolbar);
-void            Toolbar_Resize(Gadget* toolbar);
-void            Toolbar_ResizeAfterSubgadgets(Gadget* toolbar);
-void            Toolbar_ReactToEvent(Gadget* toolbar, Event event, EventQueue* queue);
-void            Toolbar_Update(Gadget* toolbar, EventQueue* queue);
-Vector2         Toolbar_ChangeShift(const Gadget* toolbar, Vector2 shift);
-void            Toolbar_Draw(const Gadget* toolbar, Vector2 shift);
+static void     Toolbar_PrepareToFree(Gadget* toolbar);
+static void     Toolbar_Resize(Gadget* toolbar);
+static void     Toolbar_ResizeAfterSubgadgets(Gadget* toolbar);
+static void     Toolbar_ReactToEvent(Gadget* toolbar, Event event, EventQueue* queue);
+static void     Toolbar_Update(Gadget* toolbar, EventQueue* queue);
+static Vector2  Toolbar_ChangeShift(const Gadget* toolbar, Vector2 shift);
+static void     Toolbar_Draw(const Gadget* toolbar, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Toolbar_PrintData(const Gadget* toolbar);
+    static void Toolbar_PrintData(const Gadget* toolbar);
 #endif
 
 
@@ -310,7 +310,7 @@ Gadget* Toolbar_GetGadget(const Gadget* toolbar, int index){
 // **************************************************************************** Toolbar_PrepareToFree
 
 // Set the number of gadgets to max, so all are freed
-void Toolbar_PrepareToFree(Gadget* toolbar){
+static void Toolbar_PrepareToFree(Gadget* toolbar){
     toolbar->nSubGadgets = TB_SUBGADGETS_N;
 }
 
@@ -318,7 +318,7 @@ void Toolbar_PrepareToFree(Gadget* toolbar){
 // **************************************************************************** Toolbar_Resize
 
 // Resize the toolbar
-void Toolbar_Resize(Gadget* toolbar){
+static void Toolbar_Resize(Gadget* toolbar){
     Toolbar_Expand(toolbar, WITHOUT_ANIM);
 
     float totalWidth = Glo_WinSize.width - 2.0f * TB_WIN_MARGIN;
@@ -394,7 +394,7 @@ void Toolbar_Resize(Gadget* toolbar){
 // **************************************************************************** Toolbar_ResizeAfterSubgadgets
 
 // Set the tollbar in collapsed state, after resizing
-void Toolbar_ResizeAfterSubgadgets(Gadget* toolbar){
+static void Toolbar_ResizeAfterSubgadgets(Gadget* toolbar){
     Toolbar_Collapse(toolbar, WITHOUT_ANIM);
 }
 
@@ -402,7 +402,7 @@ void Toolbar_ResizeAfterSubgadgets(Gadget* toolbar){
 // **************************************************************************** Toolbar_ReactToEvent
 
 // Collapse or expand the toolbar, depending on the mouse movement
-void Toolbar_ReactToEvent(Gadget* toolbar, Event event, EventQueue* queue){
+static void Toolbar_ReactToEvent(Gadget* toolbar, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_MOVE:{
             if (!(toolbar->isExpanded)){
@@ -429,7 +429,7 @@ void Toolbar_ReactToEvent(Gadget* toolbar, Event event, EventQueue* queue){
 // **************************************************************************** Toolbar_Update
 
 // Update eventual collapse or expand animation of the toolbar
-void Toolbar_Update(Gadget* toolbar, UNUSED EventQueue* queue){
+static void Toolbar_Update(Gadget* toolbar, UNUSED EventQueue* queue){
     if (TBDATA->shiftIncr == 0.0f) {return;}
 
     TBDATA->shiftY += TBDATA->shiftIncr;
@@ -448,7 +448,7 @@ void Toolbar_Update(Gadget* toolbar, UNUSED EventQueue* queue){
 // **************************************************************************** Toolbar_ChangeShift
 
 // Add the shift to the Y axis, when the toolbar is collapsed
-Vector2 Toolbar_ChangeShift(const Gadget* toolbar, Vector2 shift){
+static Vector2 Toolbar_ChangeShift(const Gadget* toolbar, Vector2 shift){
     return Geo_MovePoint(shift, 0.0f, TBDATA->shiftY);
 }
 
@@ -456,7 +456,7 @@ Vector2 Toolbar_ChangeShift(const Gadget* toolbar, Vector2 shift){
 // **************************************************************************** Toolbar_Draw
 
 // Draw the toolbar background as a rounded rectangle
-void Toolbar_Draw(const Gadget* toolbar, Vector2 shift){
+static void Toolbar_Draw(const Gadget* toolbar, Vector2 shift){
     DrawRectangleRounded(Geo_TranslateRect(toolbar->cRect, shift), TB_ROUNDNESS, 10.0f, COL_TB_BG);
 }
 
@@ -465,7 +465,7 @@ void Toolbar_Draw(const Gadget* toolbar, Vector2 shift){
 // **************************************************************************** Toolbar_PrintData
 
     // Multiline print of the parameters of the data object of the toolbar
-    void Toolbar_PrintData(const Gadget* toolbar){
+    static void Toolbar_PrintData(const Gadget* toolbar){
         CHECK_NULL(toolbar, WITH_NEW_LINE)
         CHECK_NULL(toolbar->data, WITH_NEW_LINE)
 

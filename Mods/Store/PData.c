@@ -97,18 +97,18 @@
 
 // ============================================================================ PRIVATE FUNC DECL
 
-bool            PData_WriteHeader(FILE* file);
-bool            PData_ReadHeader(char** version, FILE* file);
-bool            PData_WriteRecords(const Records* records, FILE* file);
-bool            PData_ReadRecords(Records** records, FILE* file);
-bool            PData_WriteRGrid(const RGrid* rGrid, FILE* file);
-bool            PData_ReadRGrid(RGrid** rGrid, FILE* file);
-bool            PData_WriteSGraph(const SGraph* sg, FILE* file);
-bool            PData_ReadSGraph(SGraph** sg, Grid grid, FILE* file);
-bool            PData_WriteTime(Time time, FILE* file);
-bool            PData_ReadTime(Time* time, FILE* file);
-bool            PData_WriteSound(bool sound, FILE* file);
-bool            PData_ReadSound(bool* sound, FILE* file);
+static bool     PData_WriteHeader(FILE* file);
+static bool     PData_ReadHeader(char** version, FILE* file);
+static bool     PData_WriteRecords(const Records* records, FILE* file);
+static bool     PData_ReadRecords(Records** records, FILE* file);
+static bool     PData_WriteRGrid(const RGrid* rGrid, FILE* file);
+static bool     PData_ReadRGrid(RGrid** rGrid, FILE* file);
+static bool     PData_WriteSGraph(const SGraph* sg, FILE* file);
+static bool     PData_ReadSGraph(SGraph** sg, Grid grid, FILE* file);
+static bool     PData_WriteTime(Time time, FILE* file);
+static bool     PData_ReadTime(Time* time, FILE* file);
+static bool     PData_WriteSound(bool sound, FILE* file);
+static bool     PData_ReadSound(bool* sound, FILE* file);
 
 
 
@@ -279,7 +279,7 @@ PData* PData_ReadFromFile(void){
 // **************************************************************************** PData_WriteHeader
 
 // Write the header to the file. Return true if successful
-bool PData_WriteHeader(FILE* file){
+static bool PData_WriteHeader(FILE* file){
     if (!File_WriteString(FILE_IDENTIFIER, file)) {return false;}
     if (!File_WriteString(APP_VERSION, file)) {return false;}
     return File_WriteSep(file);
@@ -290,7 +290,7 @@ bool PData_WriteHeader(FILE* file){
 
 // Read the header and save the version at the given pointer, if not NULL. 
 // Return true if successful
-bool PData_ReadHeader(char** version, FILE* file){
+static bool PData_ReadHeader(char** version, FILE* file){
     #define TRY(gFunc) if (!gFunc) {str = Memory_Free(str); return false;}
 
     char* str = NULL;
@@ -316,7 +316,7 @@ bool PData_ReadHeader(char** version, FILE* file){
 // **************************************************************************** PData_WriteRecords
 
 // Write the records to the file. Return true if successful
-bool PData_WriteRecords(const Records* records, FILE* file){
+static bool PData_WriteRecords(const Records* records, FILE* file){
     if (records == NULL) {return false;}
 
     int n = Records_N(records);
@@ -344,7 +344,7 @@ bool PData_WriteRecords(const Records* records, FILE* file){
 
 // Read the records from the file and save them at the given pointer. Return 
 // true if successful
-bool PData_ReadRecords(Records** records, FILE* file){
+static bool PData_ReadRecords(Records** records, FILE* file){
     #define TRY(gFunc) if (!gFunc) {*records = Memory_Free(*records); return false;}
 
     if (records == NULL) {return false;}
@@ -373,7 +373,7 @@ bool PData_ReadRecords(Records** records, FILE* file){
 // **************************************************************************** PData_WriteRGrid
 
 // Write the rod grid to the file. Return true if successful
-bool PData_WriteRGrid(const RGrid* rGrid, FILE* file){
+static bool PData_WriteRGrid(const RGrid* rGrid, FILE* file){
     if (rGrid == NULL) {return false;}
 
     Grid size = RGrid_GetSize(rGrid);
@@ -408,7 +408,7 @@ bool PData_WriteRGrid(const RGrid* rGrid, FILE* file){
 // **************************************************************************** PData_ReadRGrid
 
 // Read the rod grid from the file. Save it in rGrid. Return true if successful
-bool PData_ReadRGrid(RGrid** rGrid, FILE* file){
+static bool PData_ReadRGrid(RGrid** rGrid, FILE* file){
     #define TRY(gFunc) if (!gFunc) {*rGrid = RGrid_Free(*rGrid); return false;}
 
     if (rGrid == NULL) {return false;}
@@ -465,7 +465,7 @@ bool PData_ReadRGrid(RGrid** rGrid, FILE* file){
 // **************************************************************************** PData_WriteSGraph
 
 // Write the scroll graphics object to the file. Return true, if successful
-bool PData_WriteSGraph(const SGraph* sg, FILE* file){
+static bool PData_WriteSGraph(const SGraph* sg, FILE* file){
     if (sg == NULL) {return false;}
 
     Size vScreen = SGraph_GetVScreen(sg);
@@ -488,7 +488,7 @@ bool PData_WriteSGraph(const SGraph* sg, FILE* file){
 
 // Read a scroll graphics object from the file and save it at the given 
 // pointer. Return true if successful
-bool PData_ReadSGraph(SGraph** sg, Grid grid, FILE* file){
+static bool PData_ReadSGraph(SGraph** sg, Grid grid, FILE* file){
     #define TRY(gFunc) if (!gFunc) {*sg = SGraph_Free(*sg); return false;}
 
     if (sg == NULL) {return false;}
@@ -530,7 +530,7 @@ bool PData_ReadSGraph(SGraph** sg, Grid grid, FILE* file){
 // **************************************************************************** PData_WriteTime
 
 // Write the time to the file. Return true if successful
-bool PData_WriteTime(Time time, FILE* file){
+static bool PData_WriteTime(Time time, FILE* file){
     if (!Time_IsValid(time)) {return false;}
     if (!File_WriteTime(time, file)) {return false;}
     return File_WriteSep(file);
@@ -541,7 +541,7 @@ bool PData_WriteTime(Time time, FILE* file){
 
 // Read the time from the file and save it at the given pointer. Return true if 
 // successful
-bool PData_ReadTime(Time* time, FILE* file){
+static bool PData_ReadTime(Time* time, FILE* file){
     if (!File_ReadTime(time, file)) {return false;}
     return File_ReadSep(file);
 }
@@ -550,7 +550,7 @@ bool PData_ReadTime(Time* time, FILE* file){
 // **************************************************************************** PData_WriteSound
 
 // Write the sound boolean (0 or 1) to the file. Return true if successful
-bool PData_WriteSound(bool sound, FILE* file){
+static bool PData_WriteSound(bool sound, FILE* file){
     if (!File_WriteByte(sound ? 1 : 0, file)) {return false;}
     return File_WriteSep(file);
 }
@@ -560,7 +560,7 @@ bool PData_WriteSound(bool sound, FILE* file){
 
 // Read the sound indicator from the file and save it at the given pointer. 
 // Return true if successful
-bool PData_ReadSound(bool* sound, FILE* file){
+static bool PData_ReadSound(bool* sound, FILE* file){
     unsigned char byte;
     File_ReadByte(&byte, file);
     if (byte == 0) {*sound = false; return true;}

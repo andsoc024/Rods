@@ -30,7 +30,7 @@
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Page_UpdateTransAnim(Page* page);
+static void     Page_UpdateTransAnim(Page* page);
 
 
 
@@ -199,7 +199,7 @@ void Page_DeselectAllGadgets(const Page* page){
 // **************************************************************************** Page_Show
 
 // Show the page, optionally with animation
-void Page_Show(Page* page, bool withAnim){
+void Page_Show(Page* page, Event event, bool withAnim){
     if (page == NULL) {return;}
 
     Page_DeselectAllGadgets(page);
@@ -215,7 +215,7 @@ void Page_Show(Page* page, bool withAnim){
     }
 
     if (page->PrepareToShow != NULL){
-        page->PrepareToShow(page);
+        page->PrepareToShow(page, event);
     }
 }
 
@@ -310,7 +310,7 @@ void Page_FinishTransitionAnim(Page* page){
 
 // **************************************************************************** Page_UpdateTransAnim
 
-void Page_UpdateTransAnim(Page* page){
+static void Page_UpdateTransAnim(Page* page){
     if (page->shiftIncr == 0.0f) {return;}
 
     page->shift.x += page->shiftIncr;

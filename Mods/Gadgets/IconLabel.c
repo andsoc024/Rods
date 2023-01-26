@@ -53,10 +53,10 @@ typedef struct IconLabelData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            IconLabel_Resize(Gadget* iconLabel);
-void            IconLabel_Draw(const Gadget* iconLabel, Vector2 shift);
+static void     IconLabel_Resize(Gadget* iconLabel);
+static void     IconLabel_Draw(const Gadget* iconLabel, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        IconLabel_PrintData(const Gadget* iconLabel);
+    static void IconLabel_PrintData(const Gadget* iconLabel);
 #endif
 
 
@@ -175,7 +175,7 @@ int IconLabel_GetAlignment(const Gadget* iconLabel){
 // **************************************************************************** IconLabel_Resize
 
 // Resize the icon label inside its containing rectangle
-void IconLabel_Resize(Gadget* iconLabel){
+static void IconLabel_Resize(Gadget* iconLabel){
     float size = MIN_DIM(iconLabel->cRect);
     ILDATA->pos = RORIGIN(Geo_AlignRect(TO_RECT(SIZE_SQR(size)), iconLabel->cRect, ILDATA->alignment));
     ILDATA->scaleF = size / ICON_DEF_TEXTURE_SIZE;
@@ -185,7 +185,7 @@ void IconLabel_Resize(Gadget* iconLabel){
 // **************************************************************************** IconLabel_Draw
 
 // Draw the icon
-void IconLabel_Draw(const Gadget* iconLabel, Vector2 shift){
+static void IconLabel_Draw(const Gadget* iconLabel, Vector2 shift){
     DrawTextureEx(Glo_Textures.icons[ILDATA->iconID], 
                   Geo_TranslatePoint(ILDATA->pos, shift), 
                   0.0f, 
@@ -198,7 +198,7 @@ void IconLabel_Draw(const Gadget* iconLabel, Vector2 shift){
 // **************************************************************************** IconLabel_PrintData
 
     // Multiline print of the parameters of the icon label's data object
-    void IconLabel_PrintData(const Gadget* iconLabel){
+    static void IconLabel_PrintData(const Gadget* iconLabel){
         CHECK_NULL(iconLabel, WITH_NEW_LINE)
         CHECK_NULL(iconLabel->data, WITH_NEW_LINE)
 

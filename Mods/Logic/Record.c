@@ -26,6 +26,8 @@
 // ============================================================================ PRIVATE CONSTANTS
 
 #define RECORDS_DIM_SIZE                    (RGRID_MAX_SIZE - RGRID_MIN_SIZE + 1)
+
+
 // ============================================================================ OPAQUE STRUCTURES
 
 // Structure for storing the minimum record time for various grid sizes

@@ -90,11 +90,11 @@ typedef struct ScrollbarData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Scrollbar_Resize(Gadget* sbar);
-void            Scrollbar_ReactToEvent(Gadget* sbar, Event event, EventQueue* queue);
-void            Scrollbar_Draw(const Gadget* sbar, Vector2 shift);
+static void     Scrollbar_Resize(Gadget* sbar);
+static void     Scrollbar_ReactToEvent(Gadget* sbar, Event event, EventQueue* queue);
+static void     Scrollbar_Draw(const Gadget* sbar, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Scrollbar_PrintData(const Gadget* sbar);
+    static void Scrollbar_PrintData(const Gadget* sbar);
 #endif
 
 
@@ -218,7 +218,7 @@ Rect Scrollbar_GetCollapsedRect(const Gadget* sbar){
 // **************************************************************************** Scrollbar_Resize
 
 // Resize the scrollbar within its containing rectangle. Set it as collapsed
-void Scrollbar_Resize(Gadget* sbar){
+static void Scrollbar_Resize(Gadget* sbar){
     sbar->isSelected = false;
     sbar->isPressed = false;
     sbar->isExpanded = false;
@@ -255,7 +255,7 @@ void Scrollbar_Resize(Gadget* sbar){
 // **************************************************************************** Scrollbar_ReactToEvent
 
 // The scrollbar reacts to mouse, keyboard or other GUI events
-void Scrollbar_ReactToEvent(Gadget* sbar, Event event, EventQueue* queue){
+static void Scrollbar_ReactToEvent(Gadget* sbar, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_MOVE:{
             if (!Geo_PointIsInRect(event.data.mouse.pos, SBDATA->barRect)){
@@ -342,7 +342,7 @@ void Scrollbar_ReactToEvent(Gadget* sbar, Event event, EventQueue* queue){
 // **************************************************************************** Scrollbar_Draw
 
 // Draw the scrollbar, if expanded
-void Scrollbar_Draw(const Gadget* sbar, Vector2 shift){
+static void Scrollbar_Draw(const Gadget* sbar, Vector2 shift){
     if (!sbar->isExpanded) {return;}
 
     Shape_DrawOutlinedRect(Geo_TranslateRect(SBDATA->barRect, shift), 
@@ -364,7 +364,7 @@ void Scrollbar_Draw(const Gadget* sbar, Vector2 shift){
 // **************************************************************************** Scrollbar_PrintData
 
     // Multiline print of the parameters of the data object of the scrollbar
-    void Scrollbar_PrintData(const Gadget* sbar){
+    static void Scrollbar_PrintData(const Gadget* sbar){
         CHECK_NULL(sbar, WITH_NEW_LINE)
         CHECK_NULL(sbar->data, WITH_NEW_LINE)
 

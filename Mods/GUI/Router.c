@@ -25,15 +25,13 @@
 #include "../Store/Store.h"
 #include "GUI.h"
 
-void SetupPage_PrepareToShow(Page* page, Event event);
-
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Router_Resize(const Router* router);
-void            Router_ReactToEvents(const Router* router);
-void            Router_Update(const Router* router);
-void            Router_Draw(const Router* router);
+static void     Router_Resize(const Router* router);
+static void     Router_ReactToEvents(const Router* router);
+static void     Router_Update(const Router* router);
+static void     Router_Draw(const Router* router);
 
 
 
@@ -107,8 +105,8 @@ Page* Router_GetPage(const Router* router, E_PageID pageID){
 // **************************************************************************** Router_ShowPage
 
 // Show the page with the given id, optionally with animation
-void Router_ShowPage(const Router* router, E_PageID pageID, bool withAnim){
-    Page_Show(router->pages[pageID], withAnim);
+void Router_ShowPage(const Router* router, Event event, E_PageID pageID, bool withAnim){
+    Page_Show(router->pages[pageID], event, withAnim);
 }
 
 
@@ -184,7 +182,7 @@ void Router_Loop(const Router* router){
 
 // Resize all the pages and the flying rectangles in the router to the current 
 // window size
-void Router_Resize(const Router* router){
+static void Router_Resize(const Router* router){
     FRects_Resize(router->fRects);
 
     for (int i = 0; i < PAGES_N; i++){
@@ -197,7 +195,7 @@ void Router_Resize(const Router* router){
 
 // Get mouse and keyboard events and let the last shown page to react to the 
 // events in the event queue
-void Router_ReactToEvents(const Router* router){
+static void Router_ReactToEvents(const Router* router){
     Queue_SetUserInput(router->queue, Event_GetUserInput());
 
     for (int i = PAGES_N - 1; i >= 0; i--){
@@ -205,10 +203,7 @@ void Router_ReactToEvents(const Router* router){
             Event event;
             while ((event = Queue_GetNext(router->queue)).id != EVENT_NONE){
                 if (event.id == EVENT_SHOW_PAGE){
-                    if (event.data.page.id == PAGE_SETUP){
-                        SetupPage_PrepareToShow(router->pages[PAGE_SETUP], event);
-                    }
-                    Page_Show(router->pages[event.data.page.id], event.data.page.withAnim);
+                    Page_Show(router->pages[event.data.page.id], event, event.data.page.withAnim);
                 }
                 if (event.id == EVENT_HIDE_PAGE){
                     Page_Hide(router->pages[event.data.page.id], event.data.page.withAnim);
@@ -224,7 +219,7 @@ void Router_ReactToEvents(const Router* router){
 // **************************************************************************** Router_Update
 
 // Update all the shown pages in the router
-void Router_Update(const Router* router){
+static void Router_Update(const Router* router){
     for (int i = 0; i < PAGES_N; i++){
         Page_Update(router->pages[i], router->queue);
     }
@@ -234,7 +229,7 @@ void Router_Update(const Router* router){
 // **************************************************************************** Router_Draw
 
 // Draw all the shown pages in the router
-void Router_Draw(const Router* router){
+static void Router_Draw(const Router* router){
     for (int i = 0; i < PAGES_N; i++){
         Page_Draw(router->pages[i]);
     }

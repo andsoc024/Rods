@@ -96,7 +96,7 @@ void            Page_Update(Page* page, EventQueue* queue);
 void            Page_Draw(const Page* page);
 void            Page_SelectNextGadget(const Page* page);
 void            Page_DeselectAllGadgets(const Page* page);
-void            Page_Show(Page* page, bool withAnim);
+void            Page_Show(Page* page, Event event, bool withAnim);
 void            Page_Hide(Page* page, bool withAnim);
 bool            Page_IsAnimating(const Page* page);
 void            Page_FinishTransitionAnim(Page* page);
@@ -110,7 +110,7 @@ Router*         Router_Make(void);
 Router*         Router_Free(Router* router);
 void            Router_AddPage(Router* router, Page* page);
 Page*           Router_GetPage(const Router* router, E_PageID pageID);
-void            Router_ShowPage(const Router* router, E_PageID pageID, bool withAnim);
+void            Router_ShowPage(const Router* router, Event event, E_PageID pageID, bool withAnim);
 void            Router_HidePage(const Router* router, E_PageID pageID, bool withAnim);
 void            Router_Loop(const Router* router);
 #ifdef DEBUG_MODE

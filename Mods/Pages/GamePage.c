@@ -62,12 +62,12 @@ typedef struct GamePageData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            GamePage_PrepareToShow(Page* page);
-void            GamePage_Resize(Page* page);
-void            GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue);
-void            GamePage_Update(Page* page, EventQueue* queue);
+static void     GamePage_PrepareToShow(Page* page, Event event);
+static void     GamePage_Resize(Page* page);
+static void     GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue);
+static void     GamePage_Update(Page* page, EventQueue* queue);
 #ifdef DEBUG_MODE
-    void        GamePage_PrintData(const Page* page);
+    static void GamePage_PrintData(const Page* page);
 #endif
 
 
@@ -161,7 +161,7 @@ Grid GamePage_GetGridSize(const Page* page){
 // **************************************************************************** GamePage_PrepareToShow
 
 // Prepare the game page to show
-void GamePage_PrepareToShow(Page* page){
+static void GamePage_PrepareToShow(Page* page, UNUSED Event event){
     Board_SetAsReactive(page->gadgets[GP_BOARD]);
 }
 
@@ -169,7 +169,7 @@ void GamePage_PrepareToShow(Page* page){
 // **************************************************************************** GamePage_Resize
 
 // Resize the game page to the current window size
-void GamePage_Resize(Page* page){
+static void GamePage_Resize(Page* page){
     
     Rect winRect = TO_RECT(Glo_WinSize);
 
@@ -190,7 +190,7 @@ void GamePage_Resize(Page* page){
 // **************************************************************************** GamePage_ReactToEvent
 
 // React to GUI events
-void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
+static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_GADGET_EXPANDED: case EVENT_GADGET_COLLAPSED:{
             switch (event.source){
@@ -299,7 +299,7 @@ void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
 // **************************************************************************** GamePage_Update
 
 // Update the rods left count
-void GamePage_Update(Page* page, UNUSED EventQueue* queue){
+static void GamePage_Update(Page* page, UNUSED EventQueue* queue){
     int nRodsLeft = Board_GetNumUnelectrifiedRodsLeft(page->gadgets[GP_BOARD]);
     if (GPDATA->nRodsLeft != nRodsLeft){
         GPDATA->nRodsLeft = nRodsLeft;
@@ -312,7 +312,7 @@ void GamePage_Update(Page* page, UNUSED EventQueue* queue){
 // **************************************************************************** GamePage_PrintData
 
     // Multiline print of the parameters of the data object of the Game page
-    void GamePage_PrintData(const Page* page){
+    static void GamePage_PrintData(const Page* page){
         CHECK_NULL(page, WITH_NEW_LINE)
         CHECK_NULL(page->data, WITH_NEW_LINE)
 

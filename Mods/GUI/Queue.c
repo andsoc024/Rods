@@ -50,7 +50,7 @@ struct EventQueue{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Queue_SwapLists(EventQueue* queue);
+static void     Queue_SwapLists(EventQueue* queue);
 
 
 
@@ -196,7 +196,7 @@ void Queue_SetUserInput(EventQueue* queue, Event event){
 // **************************************************************************** Queue_SwapLists
 
 // Swap the current and the next list
-void Queue_SwapLists(EventQueue* queue){
+static void Queue_SwapLists(EventQueue* queue){
     for (int i = 0; i < queue->nTotal; i++){
         const Event event = queue->lists[queue->current][i];
         if (event.target != GDG_NONE && !event.isProcessed){

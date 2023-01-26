@@ -86,12 +86,13 @@ typedef struct SetupPageData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            SetupPage_PrepareToFree(Page* page);
-void            SetupPage_Resize(Page* page);
-void            SetupPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
-void            SetupPage_Draw(const Page* page);
+static void     SetupPage_PrepareToFree(Page* page);
+static void     SetupPage_PrepareToShow(Page* page, Event event);
+static void     SetupPage_Resize(Page* page);
+static void     SetupPage_ReactToEvent(Page* page, Event event, EventQueue* queue);
+static void     SetupPage_Draw(const Page* page);
 #ifdef DEBUG_MODE
-    void        SetupPage_PrintData(const Page* page);
+    static void SetupPage_PrintData(const Page* page);
 #endif
 
 
@@ -125,6 +126,7 @@ Page* SetupPage_Make(void){
     Page_AddGadget(page, newRecordLabel);
 
     page->PrepareToFree = SetupPage_PrepareToFree;
+    page->PrepareToShow = SetupPage_PrepareToShow;
     page->Resize        = SetupPage_Resize;
     page->ReactToEvent  = SetupPage_ReactToEvent;
     page->Draw          = SetupPage_Draw;
@@ -141,40 +143,6 @@ Page* SetupPage_Make(void){
     Page_Resize(page);
 
     return page;
-}
-
-
-// **************************************************************************** SetupPage_PrepareToShow
-
-// Prepare the setup page to show. If a new record time is achieved, store it 
-// in the records
-void SetupPage_PrepareToShow(Page* page, Event event){
-    if (event.id != EVENT_SHOW_PAGE) {return;}
-
-    int nCols        = event.data.page.data.nCols;
-    int nRows        = event.data.page.data.nRows;
-    Time currentTime = event.data.page.data.time;
-    bool victory     = event.data.page.data.victory;
-
-    NumBox_SetValue(page->gadgets[SU_NUMBOX_COLS], event.data.page.data.nCols);
-    NumBox_SetValue(page->gadgets[SU_NUMBOX_ROWS], event.data.page.data.nRows);
-
-    SPDATA->type = victory ? SETUP_VICTORY : SETUP_NORMAL;
-
-    Time recordTime = Records_Get(Glo_Records, nCols, nRows);
-    if (SPDATA->type == SETUP_VICTORY && Time_IsSmaller(currentTime, recordTime)){
-        Records_Set(Glo_Records, currentTime, nCols, nRows);
-        SPDATA->type = SETUP_NEW_RECORD;
-    }
-
-    if (SPDATA->type != SETUP_NORMAL){
-        SetupPage_SetCurrentTime(page, currentTime);
-        SetupPage_SetRecordTime(page, recordTime);
-    }
-
-    page->nGadgets = SETUP_GADGETS_N[SPDATA->type];
-
-    Page_Resize(page);
 }
 
 
@@ -207,15 +175,49 @@ void SetupPage_SetRecordTime(Page* page, Time record){
 // **************************************************************************** SetupPage_PrepareToFree
 
 // Set the number of gadgets to the max, so that they are all freed
-void SetupPage_PrepareToFree(Page* page){
+static void SetupPage_PrepareToFree(Page* page){
     page->nGadgets = SETUP_GADGETS_N[SETUP_NEW_RECORD];
+}
+
+
+// **************************************************************************** SetupPage_PrepareToShow
+
+// Prepare the setup page to show. If a new record time is achieved, store it 
+// in the records
+static void SetupPage_PrepareToShow(Page* page, Event event){
+    if (event.id != EVENT_SHOW_PAGE) {return;}
+
+    int nCols        = event.data.page.data.nCols;
+    int nRows        = event.data.page.data.nRows;
+    Time currentTime = event.data.page.data.time;
+    bool victory     = event.data.page.data.victory;
+
+    NumBox_SetValue(page->gadgets[SU_NUMBOX_COLS], event.data.page.data.nCols);
+    NumBox_SetValue(page->gadgets[SU_NUMBOX_ROWS], event.data.page.data.nRows);
+
+    SPDATA->type = victory ? SETUP_VICTORY : SETUP_NORMAL;
+
+    Time recordTime = Records_Get(Glo_Records, nCols, nRows);
+    if (SPDATA->type == SETUP_VICTORY && Time_IsSmaller(currentTime, recordTime)){
+        Records_Set(Glo_Records, currentTime, nCols, nRows);
+        SPDATA->type = SETUP_NEW_RECORD;
+    }
+
+    if (SPDATA->type != SETUP_NORMAL){
+        SetupPage_SetCurrentTime(page, currentTime);
+        SetupPage_SetRecordTime(page, recordTime);
+    }
+
+    page->nGadgets = SETUP_GADGETS_N[SPDATA->type];
+
+    Page_Resize(page);
 }
 
 
 // **************************************************************************** SetupPage_Resize
 
 // Resize the setup page, according to its type
-void SetupPage_Resize(Page* page){
+static void SetupPage_Resize(Page* page){
     float bgHeight = VER_MARGIN * MATH_PHI;
 
     Rect numboxColsRect = Geo_SetRectPS(POINT(BG_WIDTH * 0.5f, VER_MARGIN), NUMBOX_SIZE, RP_TOP_RIGHT);
@@ -266,7 +268,7 @@ void SetupPage_Resize(Page* page){
 
 // When the OK button is pressed, emit EVENT_NEW_GRID. When the mouse clicks 
 // outside the background rectangle, hide the setup page
-void SetupPage_ReactToEvent(Page* page, Event event, EventQueue* queue){
+static void SetupPage_ReactToEvent(Page* page, Event event, EventQueue* queue){
     switch (event.id){
         case EVENT_MOUSE_RELEASED:{
             if (!Geo_PointIsInRect(event.data.mouse.pos, SPDATA->bgRect)){
@@ -293,7 +295,7 @@ void SetupPage_ReactToEvent(Page* page, Event event, EventQueue* queue){
 // **************************************************************************** SetupPage_Draw
 
 // Draw the background of the setup page
-void SetupPage_Draw(const Page* page){
+static void SetupPage_Draw(const Page* page){
     DrawRectangleRounded(Geo_TranslateRect(SPDATA->bgRect, page->shift), RRECT_DEF_ROUNDNESS, 10, SPDATA->bgColor);
 }
 
@@ -302,7 +304,7 @@ void SetupPage_Draw(const Page* page){
 // **************************************************************************** SetupPage_PrintData
 
     // Multiline print of the parameters of the data object of the setup page
-    void SetupPage_PrintData(const Page* page){
+    static void SetupPage_PrintData(const Page* page){
         CHECK_NULL(page, WITH_NEW_LINE)
         CHECK_NULL(page->data, WITH_NEW_LINE)
 

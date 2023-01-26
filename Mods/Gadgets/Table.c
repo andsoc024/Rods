@@ -111,14 +111,14 @@ typedef struct TableData{
 
 // ============================================================================ PRIVATE FUNC DECL
 
-void            Table_PrepareToFree(Gadget* table);
-void            Table_Resize(Gadget* table);
-void            Table_ResizeAfterSubgadgets(Gadget* table);
-float           Table_GetMinFontSize(const Gadget* table);
-void            Table_EqualizeFontSizes(Gadget* table);
-void            Table_Draw(const Gadget* table, Vector2 shift);
+static void     Table_PrepareToFree(Gadget* table);
+static void     Table_Resize(Gadget* table);
+static void     Table_ResizeAfterSubgadgets(Gadget* table);
+static float    Table_GetMinFontSize(const Gadget* table);
+static void     Table_EqualizeFontSizes(Gadget* table);
+static void     Table_Draw(const Gadget* table, Vector2 shift);
 #ifdef DEBUG_MODE
-    void        Table_PrintData(const Gadget* table);
+    static void Table_PrintData(const Gadget* table);
 #endif
 
 
@@ -267,7 +267,7 @@ int Table_GetAlignment(const Gadget* table, int nCols, int nRows){
 // **************************************************************************** Table_PrepareToFree
 
 // Free all the cell labels in the table
-void Table_PrepareToFree(Gadget* table){
+static void Table_PrepareToFree(Gadget* table){
     for (int y = 0; y < TDATA->size.nRows; y++){
         for (int x = 0; x < TDATA->size.nCols; x++){
             TDATA->cells[x][y] = Gadget_Free(TDATA->cells[x][y]);
@@ -281,7 +281,7 @@ void Table_PrepareToFree(Gadget* table){
 // **************************************************************************** Table_Resize
 
 // Resize the table. All cells have the same size and internal margin
-void Table_Resize(Gadget* table){
+static void Table_Resize(Gadget* table){
     float cellWidth  = table->cRect.width  / (float) TDATA->size.nCols;
     float cellHeight = table->cRect.height / (float) TDATA->size.nRows;
     Size cellSize = SIZE(cellWidth, cellHeight);
@@ -309,7 +309,7 @@ void Table_Resize(Gadget* table){
 // **************************************************************************** Table_ResizeAfterSubgadgets
 
 // Equalize the font size of all the labels
-void Table_ResizeAfterSubgadgets(Gadget* table){
+static void Table_ResizeAfterSubgadgets(Gadget* table){
     Table_EqualizeFontSizes(table);
 }
 
@@ -317,7 +317,7 @@ void Table_ResizeAfterSubgadgets(Gadget* table){
 // **************************************************************************** Table_GetMinFontSize
 
 // Get the minimum label font size in the table
-float Table_GetMinFontSize(const Gadget* table){
+static float Table_GetMinFontSize(const Gadget* table){
     float minFontSize = INVALID;
 
     for (int y = 0; y < TDATA->size.nRows; y++){
@@ -336,7 +336,7 @@ float Table_GetMinFontSize(const Gadget* table){
 // **************************************************************************** Table_EqualizeFontSizes
 
 // Set the same font size in all labels in the table
-void Table_EqualizeFontSizes(Gadget* table){
+static void Table_EqualizeFontSizes(Gadget* table){
     float fontSize = Table_GetMinFontSize(table);
 
     Table_SetFontSize(table, fontSize, TABLE_ALL);
@@ -346,7 +346,7 @@ void Table_EqualizeFontSizes(Gadget* table){
 // **************************************************************************** Table_Draw
 
 // Draw all the cell labels in the table
-void Table_Draw(const Gadget* table, Vector2 shift){
+static void Table_Draw(const Gadget* table, Vector2 shift){
     for (int y = 0; y < TDATA->size.nRows; y++){
         for (int x = 0; x < TDATA->size.nCols; x++){
             Gadget_Draw(TDATA->cells[x][y], shift);
@@ -359,7 +359,7 @@ void Table_Draw(const Gadget* table, Vector2 shift){
 // **************************************************************************** Table_PrintData
 
     // Multiline print of the parameters of the table's data object
-    void Table_PrintData(const Gadget* table){
+    static void Table_PrintData(const Gadget* table){
         CHECK_NULL(table, WITH_NEW_LINE)
         CHECK_NULL(table->data, WITH_NEW_LINE)
 
