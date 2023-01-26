@@ -213,6 +213,8 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                 case GDG_BTN_BACK:{
                     Queue_AddEvent(queue, Event_SetAsShowPage(PAGE_GAME, PAGE_MAIN, WITH_ANIM));
                     Queue_AddEvent(queue, Event_SetAsHidePage(PAGE_GAME, PAGE_GAME, WITH_ANIM));
+                    Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITHOUT_ANIM);
+                    Board_SetAsReactive(page->gadgets[GP_BOARD]);
                     break;
                 }
 
@@ -221,6 +223,13 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                     Grid tempGridSize = GamePage_GetGridSize(page);
                     Event_AddPageData(&tempEvent, false, TIME_NULL, tempGridSize.nCols, tempGridSize.nRows);
                     Queue_AddEvent(queue, tempEvent);
+                    Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITH_ANIM);
+                    Board_SetAsReactive(page->gadgets[GP_BOARD]);
+                    break;
+                }
+
+                case GDG_BTN_INFO:{
+                    Queue_AddEvent(queue, Event_SetAsShowPage(page->id, PAGE_INFO, WITH_ANIM));
                     Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITH_ANIM);
                     Board_SetAsReactive(page->gadgets[GP_BOARD]);
                     break;

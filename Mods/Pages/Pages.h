@@ -45,6 +45,9 @@ Page*           SetupPage_Make(void);
 void            SetupPage_SetCurrentTime(Page* page, Time current);
 void            SetupPage_SetRecordTime(Page* page, Time record);
 
+// ---------------------------------------------------------------------------- Info Page
+
+Page*           InfoPage_Make(void);
 
 
 #endif // PAGES_GUARD
