@@ -39,6 +39,13 @@ SGraph*         GamePage_GetSGraph(const Page* page);
 Time            GamePage_GetCurrentTime(const Page* page);
 Grid            GamePage_GetGridSize(const Page* page);
 
+// ---------------------------------------------------------------------------- Setup Page
+
+Page*           SetupPage_Make(void);
+void            SetupPage_PrepareToShow(Page* page, Event event);
+void            SetupPage_SetCurrentTime(Page* page, Time current);
+void            SetupPage_SetRecordTime(Page* page, Time record);
+
 
 
 #endif // PAGES_GUARD

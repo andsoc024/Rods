@@ -134,7 +134,7 @@ void            Table_Draw(const Gadget* table, Vector2 shift);
 Gadget* Table_Make(E_GadgetID id, int nCols, int nRows, const char** strings){
     Gadget* table = Gadget_Make(id, GT_TABLE, IS_NOT_SELECTABLE, 0);
 
-
+    table->PrepareToFree         = Table_PrepareToFree;
     table->Resize                = Table_Resize;
     table->ResizeAfterSubgadgets = Table_ResizeAfterSubgadgets;
     table->Draw                  = Table_Draw;

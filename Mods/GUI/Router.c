@@ -25,6 +25,8 @@
 #include "../Store/Store.h"
 #include "GUI.h"
 
+void SetupPage_PrepareToShow(Page* page, Event event);
+
 
 // ============================================================================ PRIVATE FUNC DECL
 
@@ -203,6 +205,9 @@ void Router_ReactToEvents(const Router* router){
             Event event;
             while ((event = Queue_GetNext(router->queue)).id != EVENT_NONE){
                 if (event.id == EVENT_SHOW_PAGE){
+                    if (event.data.page.id == PAGE_SETUP){
+                        SetupPage_PrepareToShow(router->pages[PAGE_SETUP], event);
+                    }
                     Page_Show(router->pages[event.data.page.id], event.data.page.withAnim);
                 }
                 if (event.id == EVENT_HIDE_PAGE){

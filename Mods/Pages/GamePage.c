@@ -216,6 +216,16 @@ void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                     break;
                 }
 
+                case GDG_BTN_RESTART:{
+                    Event tempEvent = Event_SetAsShowPage(page->id, PAGE_SETUP, WITH_ANIM);
+                    Grid tempGridSize = GamePage_GetGridSize(page);
+                    Event_AddPageData(&tempEvent, false, TIME_NULL, tempGridSize.nCols, tempGridSize.nRows);
+                    Queue_AddEvent(queue, tempEvent);
+                    Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITH_ANIM);
+                    Board_SetAsReactive(page->gadgets[GP_BOARD]);
+                    break;
+                }
+
                 default: {break;}
             }
             break;
@@ -260,6 +270,24 @@ void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                     Queue_AddEvent(queue, Event_SetAsGadgetExpanded(GDG_TOOLBAR));
                 }
             }
+            break;
+        }
+
+        case EVENT_MAKE_NEW_GRID:{
+            Grid tempGridSize = GamePage_GetGridSize(page);
+            Toolbar_SetRecordTime(page->gadgets[GP_TOOLBAR], Records_Get(Glo_Records, tempGridSize.nCols, tempGridSize.nRows));
+            Toolbar_SetTime(page->gadgets[GP_TOOLBAR], TIME_NULL);
+            Timer_Resume(page->gadgets[GP_TOOLBAR]->subGadgets[TB_TIMER]);
+            break;
+        }
+
+        case EVENT_VICTORY:{
+            Timer_Pause(page->gadgets[GP_TOOLBAR]->subGadgets[TB_TIMER]);
+            Time tempTime = Toolbar_GetTime(page->gadgets[GP_TOOLBAR]);
+            Grid tempGridSize = GamePage_GetGridSize(page);
+            Event tempEvent = Event_SetAsShowPage(page->id, PAGE_SETUP, WITH_ANIM);
+            Event_AddPageData(&tempEvent, true, tempTime, tempGridSize.nCols, tempGridSize.nRows);
+            Queue_AddEvent(queue, tempEvent);
             break;
         }
 
