@@ -40,12 +40,12 @@
 
 // ============================================================================ PRIVATE CONSTANTS
 
-#define MIN_SIZE                            SIZE(400, 150)
-#define MAX_SIZE                            SIZE(800, 300)
+#define MIN_SIZE                            SIZE(200, 75)
+#define MAX_SIZE                            SIZE(400, 150)
 #define MIN_MARGIN                          50.0f
 
-#define MARGIN_TO_EDGE                      40.0f
-#define MARGIN_BETWEEN_LABELS               30.0f
+#define MARGIN_TO_EDGE                      20.0f
+#define MARGIN_BETWEEN_LABELS               10.0f
 
 #define ROW1_TEXT                           APP_TITLE " v" APP_VERSION
 #define ROW2_TEXT                           "by " APP_AUTHOR
@@ -124,7 +124,7 @@ static void InfoPage_Resize(Page* page){
 
     Size rowSize;
     rowSize.width = cRect.width - 2.0f * MARGIN_TO_EDGE;
-    rowSize.height = (cRect.height - 2.0f * MARGIN_TO_EDGE + MARGIN_BETWEEN_LABELS) * 0.5f;
+    rowSize.height = (cRect.height - 2.0f * MARGIN_TO_EDGE - MARGIN_BETWEEN_LABELS) * 0.5f;
 
     Rect innerRect = Geo_ApplyRectMargins(cRect, MARGIN_TO_EDGE);
 
