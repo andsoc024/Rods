@@ -25,6 +25,7 @@
 #include "../Graph/Graph.h"
 #include "../GUI/GUI.h"
 #include "../Gadgets/Gadgets.h"
+#include "../Sound/Sound.h"
 #include "Pages.h"
 
 
@@ -304,6 +305,7 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
             Event tempEvent = Event_SetAsShowPage(page->id, PAGE_SETUP, WITH_ANIM);
             Event_AddPageData(&tempEvent, true, tempTime, tempGridSize.nCols, tempGridSize.nRows);
             Queue_AddEvent(queue, tempEvent);
+            Sound_PlaySoundFX(SFX_VICTORY);
             break;
         }
 
@@ -318,6 +320,9 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
 static void GamePage_Update(Page* page, UNUSED EventQueue* queue){
     int nRodsLeft = Board_GetNumUnelectrifiedRodsLeft(page->gadgets[GP_BOARD]);
     if (GPDATA->nRodsLeft != nRodsLeft){
+        if (GPDATA->nRodsLeft > 0){
+            Sound_PlaySoundFX(SFX_ELECTRIC);
+        }
         GPDATA->nRodsLeft = nRodsLeft;
         Toolbar_SetRodsLeft(page->gadgets[GP_TOOLBAR], nRodsLeft);
     }

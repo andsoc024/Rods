@@ -62,6 +62,19 @@ extern const int Asset_Icon_ZoomIn_Size;
 extern const unsigned char* Asset_Icon_ZoomOut;
 extern const int Asset_Icon_ZoomOut_Size;
 
+// ---------------------------------------------------------------------------- Sound Assets
+
+extern const unsigned char* Asset_Music_Barroom;
+extern const int Asset_Music_Barroom_Size;
+
+extern const unsigned char* Asset_Sound_Electricity;
+extern const int Asset_Sound_Electricity_Size;
+
+extern const unsigned char* Asset_Sound_Victory;
+extern const int Asset_Sound_Victory_Size;
+
+extern const unsigned char* Asset_Sound_Press;
+extern const int Asset_Sound_Press_Size;
 
 
 #endif // ASSET_GUARD

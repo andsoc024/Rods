@@ -31,6 +31,7 @@
 #include "Mods/GUI/GUI.h"
 #include "Mods/Gadgets/Gadgets.h"
 #include "Mods/Pages/Pages.h"
+#include "Mods/Sound/Sound.h"
 
 
 // ============================================================================ TEST
@@ -43,6 +44,11 @@ int Test(UNUSED int argc, UNUSED char** argv){
 
     Font_LoadDefault();
     Texture_LoadAll();
+    Sound_LoadAll();
+
+    PRINT_LINE3
+    Sound_Print();
+    PRINT_LINE3
 
     Records_MakeDefault();
     Records_Set(Glo_Records, TIME(0, 1, 12), 10, 10);
@@ -62,6 +68,7 @@ int Test(UNUSED int argc, UNUSED char** argv){
     router = Router_Free(router);
     Font_UnloadDefault();
     Texture_UnloadAll();
+    Sound_UnloadAll();
     Records_FreeDefault();
 
     Window_Close();

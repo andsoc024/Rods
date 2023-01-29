@@ -335,4 +335,24 @@ bool GadgetType_IsValid(int type){
 #endif
 
 
+// **************************************************************************** E_SoundFX
+
+// Return true if the value is a valid sound effect
+bool SoundFX_IsValid(int sfx){
+    return IS_IN_RANGE(sfx, 0, SOUND_FX_N - 1);
+}
+
+#ifdef DEBUG_MODE
+    // Return a string describing the sound effect
+    const char* SoundFX_ToString(int sfx){
+        const char* names[] = {
+            "Press Sound", "Electric Sound", "Victory Sound"
+        };
+
+        CHECK_INVALID(SoundFX_IsValid(sfx), LONG_FORM)
+
+        return names[sfx];
+    }
+#endif
+
 

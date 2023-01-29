@@ -211,6 +211,22 @@ typedef struct PData{
 }PData;
 
 
+// ---------------------------------------------------------------------------- Sound Structures
+
+// **************************************************************************** SoundData
+
+// Structure for storing music and sound data
+typedef struct SoundData{
+    Music music;
+    Sound soundFX[SOUND_FX_N];
+
+    bool soundOn;
+
+    float musicVolume;
+    float musicDVol;
+}SoundData;
+
+
 
 #endif // STRUCT_FUND_GUARD
 

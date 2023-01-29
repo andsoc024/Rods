@@ -241,6 +241,9 @@ extern Textures Glo_Textures;
 // The data file path
 extern char* Glo_FilePath;
 
+// Sound and music assets
+extern SoundData* Glo_SoundData;
+
 // Counters for memory tracking
 #ifdef MEMORY_TRACK
     extern int Glo_AllocCount;

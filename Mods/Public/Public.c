@@ -60,6 +60,8 @@ Textures Glo_Textures = {0};
 // The data File Path
 char* Glo_FilePath = 0;
 
+// Sound and music data
+SoundData* Glo_SoundData = 0;
 
 // Counters for memory tracking
 #ifdef MEMORY_TRACK

@@ -27,6 +27,7 @@
 #include "../Logic/Logic.h"
 #include "../Graph/Graph.h"
 #include "../GUI/GUI.h"
+#include "../Sound/Sound.h"
 #include "Gadgets.h"
 
 
@@ -323,6 +324,7 @@ static void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* qu
                 GNode rod = Board_RodAtMousePos(board, event.data.mouse.pos);
                 if (Grid_NodesAreEqual(rod, BDATA->pressedRod) && Grid_NodeIsInGrid(rod, RGrid_GetSize(RGRID))){
                     RGrid_RotateRod(RGRID, rod);
+                    Sound_PlaySoundFX(SFX_PRESS);
                 }
             }
             BDATA->pressedRod = GNODE_INVALID;
@@ -374,6 +376,7 @@ static void Board_ReactToEvent(Gadget* board, Event event, UNUSED EventQueue* qu
                     if (BDATA->victory) {break;}
                     if (Grid_NodeIsInGrid(BDATA->selBox, RGrid_GetSize(RGRID))){
                         RGrid_RotateRod(RGRID, BDATA->selBox);
+                        Sound_PlaySoundFX(SFX_PRESS);
                     }
                     break;
                 }

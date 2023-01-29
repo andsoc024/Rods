@@ -254,5 +254,23 @@ bool            GadgetType_IsValid(int type);
 #endif
 
 
+// **************************************************************************** E_SoundFX
+
+// Indices of sound effects in Glo_SoundData
+typedef enum E_SoundFX{
+    SFX_PRESS, 
+    SFX_ELECTRIC,
+    SFX_VICTORY
+}E_SoundFX;
+#define SOUND_FX_N                          (SFX_VICTORY + 1)
+
+bool            SoundFX_IsValid(int sfx);
+#ifdef DEBUG_MODE
+    const char* SoundFX_ToString(int sfx);
+#endif
+
+
+
+
 #endif // ENUM_GUARD
 

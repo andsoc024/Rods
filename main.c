@@ -28,6 +28,7 @@
 #include "Mods/GUI/GUI.h"
 #include "Mods/Gadgets/Gadgets.h"
 #include "Mods/Pages/Pages.h"
+#include "Mods/Sound/Sound.h"
 
 #ifdef DEBUG_MODE
     #include "Test.c"
