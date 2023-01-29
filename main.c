@@ -64,7 +64,7 @@ int main(UNUSED int argc, UNUSED char** argv){
         if (pData->sound){
             Sound_TurnOn();
         }else{
-            Sound_TurnOn();
+            Sound_TurnOff();
         }
     }
 
