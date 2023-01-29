@@ -23,6 +23,7 @@
 #include "../Logic/Logic.h"
 #include "../Graph/Graph.h"
 #include "../Store/Store.h"
+#include "../Sound/Sound.h"
 #include "GUI.h"
 
 
@@ -122,6 +123,8 @@ void Router_HidePage(const Router* router, E_PageID pageID, bool withAnim){
 
 // The main loop of the program
 void Router_Loop(const Router* router){
+    Music_Start();
+    
     while (!WindowShouldClose()){
         if (IsWindowResized()){
             Window_UpdateWinSize();
@@ -130,6 +133,8 @@ void Router_Loop(const Router* router){
 
         MCol_Update(Glo_MCol);
         FRects_Update(router->fRects);
+
+        Music_Update();
 
         Router_ReactToEvents(router);
 
@@ -204,10 +209,29 @@ static void Router_ReactToEvents(const Router* router){
             while ((event = Queue_GetNext(router->queue)).id != EVENT_NONE){
                 if (event.id == EVENT_SHOW_PAGE){
                     Page_Show(router->pages[event.data.page.id], event, event.data.page.withAnim);
+                    if (event.data.page.id == PAGE_GAME){
+                        Music_FadeOut();
+                    }else if (event.data.page.id == PAGE_MAIN){
+                        Music_Start();
+                    }
                 }
                 if (event.id == EVENT_HIDE_PAGE){
                     Page_Hide(router->pages[event.data.page.id], event.data.page.withAnim);
                 }
+
+                if (event.id == EVENT_KEY_PRESSED && event.data.key == WKEY_M){
+                    Sound_Toggle();
+                    Queue_AddEvent(router->queue, Event_SetAsUpdateSwitch(PAGE_GAME, GDG_SWITCH_SOUND, 
+                                                                          Glo_SoundData->soundOn));
+                }
+                if (event.id == EVENT_SWITCH_CHANGED && event.source == GDG_SWITCH_SOUND){
+                    if (event.data.switchValue == true){
+                        Sound_TurnOn();
+                    }else{
+                        Sound_TurnOff();
+                    }
+                }
+
                 Page_ReactToEvent(router->pages[i], event, router->queue);
             }
             break;

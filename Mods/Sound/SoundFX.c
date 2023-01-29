@@ -90,6 +90,7 @@ void Sound_UnloadAll(void){
 // Turn the sound index on
 void Sound_TurnOn(void){
     Glo_SoundData->soundOn = true;
+    Music_SetVolume(1.0f);
 }
 
 
@@ -98,6 +99,7 @@ void Sound_TurnOn(void){
 // Turn the sound index off
 void Sound_TurnOff(void){
     Glo_SoundData->soundOn = false;
+    Music_SetVolume(0.0f);
 }
 
 
@@ -105,7 +107,11 @@ void Sound_TurnOff(void){
 
 // Invert the sound index
 void Sound_Toggle(void){
-    TOGGLE(Glo_SoundData->soundOn)
+    if (Sound_IsOn()){
+        Sound_TurnOff();
+    }else{
+        Sound_TurnOn();
+    }
 }
 
 

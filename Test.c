@@ -46,10 +46,6 @@ int Test(UNUSED int argc, UNUSED char** argv){
     Texture_LoadAll();
     Sound_LoadAll();
 
-    PRINT_LINE3
-    Sound_Print();
-    PRINT_LINE3
-
     Records_MakeDefault();
     Records_Set(Glo_Records, TIME(0, 1, 12), 10, 10);
 

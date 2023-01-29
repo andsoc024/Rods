@@ -36,4 +36,12 @@ void            Sound_PlaySoundFX(E_SoundFX sfx);
     void        Sound_Print(void);
 #endif
 
+// ---------------------------------------------------------------------------- Music Functions
 
+void            Music_Start(void);
+void            Music_Stop(void);
+void            Music_Restart(void);
+void            Music_FadeOut(void);
+void            Music_SetVolume(float volume);
+void            Music_Update(void);
+bool            Music_IsPlaying(void);

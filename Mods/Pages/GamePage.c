@@ -216,6 +216,12 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
                     Queue_AddEvent(queue, Event_SetAsHidePage(PAGE_GAME, PAGE_GAME, WITH_ANIM));
                     Toolbar_Collapse(page->gadgets[GP_TOOLBAR], WITHOUT_ANIM);
                     Board_SetAsReactive(page->gadgets[GP_BOARD]);
+
+                    if (Board_GetNumUnelectrifiedRodsLeft(page->gadgets[GP_BOARD]) == 0){
+                        Grid gridSize = Board_GetGridSize(page->gadgets[GP_BOARD]);
+                        Queue_AddEvent(queue, Event_SetAsMakeNewGrid(PAGE_GAME, GDG_BOARD, gridSize.nCols, 
+                                                                                           gridSize.nRows));
+                    }
                     break;
                 }
 
@@ -295,6 +301,7 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
             Toolbar_SetRecordTime(page->gadgets[GP_TOOLBAR], Records_Get(Glo_Records, tempGridSize.nCols, tempGridSize.nRows));
             Toolbar_SetTime(page->gadgets[GP_TOOLBAR], TIME_NULL);
             Timer_Resume(page->gadgets[GP_TOOLBAR]->subGadgets[TB_TIMER]);
+            Music_FadeOut();
             break;
         }
 
@@ -306,6 +313,7 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
             Event_AddPageData(&tempEvent, true, tempTime, tempGridSize.nCols, tempGridSize.nRows);
             Queue_AddEvent(queue, tempEvent);
             Sound_PlaySoundFX(SFX_VICTORY);
+            Music_Start();
             break;
         }
 
