@@ -301,8 +301,8 @@ static void GamePage_ReactToEvent(Page* page, Event event, EventQueue* queue){
         }
 
         case EVENT_MAKE_NEW_GRID:{
-            Grid tempGridSize = GamePage_GetGridSize(page);
-            Toolbar_SetRecordTime(page->gadgets[GP_TOOLBAR], Records_Get(Glo_Records, tempGridSize.nCols, tempGridSize.nRows));
+            Toolbar_SetRecordTime(page->gadgets[GP_TOOLBAR], Records_Get(Glo_Records, event.data.newGrid.nCols, 
+                                                                                      event.data.newGrid.nRows));
             Toolbar_SetTime(page->gadgets[GP_TOOLBAR], TIME_NULL);
             Timer_Resume(page->gadgets[GP_TOOLBAR]->subGadgets[TB_TIMER]);
             Music_FadeOut();
