@@ -109,6 +109,10 @@ Page* GamePage_Make(PData* pData){
     page->data = data;
     
     Page_Resize(page);
+
+    if (pData != NULL && Time_IsValid(pData->time)){
+        Toolbar_SetTime(toolbar, pData->time);
+    }
     
     data->nRodsLeft = Board_GetNumUnelectrifiedRodsLeft(board);
     Toolbar_SetRodsLeft(toolbar, data->nRodsLeft);
