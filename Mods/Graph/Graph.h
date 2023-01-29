@@ -180,6 +180,12 @@ void            TimDisp_DrawTime(Time t, Point pos, TimDisp* td, Color color);
     void        TimDisp_Print(TimDisp* td);
 #endif
 
+// ---------------------------------------------------------------------------- AppIcon Functions
+
+#ifdef DEBUG_MODE
+    void        AppIcon_Create(void);
+#endif
+
 
 #endif // GRAPH_GUARD
 

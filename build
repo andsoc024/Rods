@@ -9,6 +9,9 @@
 # WINDOWS, MACOS, LINUX
 PLATFORM="MACOS"
 
+# YES, NO
+PACK="YES"
+
 
 # ============================================================================= MACOS PARAMS
 
@@ -38,4 +41,17 @@ if [ $PLATFORM = "MACOS" ] || [ $PLATFORM = "LINUX" ]; then
     $FLAGS
 fi
 
+
+# ============================================================================= MACOS PACK
+
+if [ $PACK = "YES" ] && [ $PLATFORM = "MACOS" ]; then
+    rm -r "Rods.app"
+    mkdir "Rods_app"
+    mkdir "Rods_app/Contents" "Rods_app/Contents/MacOS" "Rods_app/Contents/Resources"
+    cp "rods" "Rods_app/Contents/MacOS/"
+    cp "Resources/AppIcon/AppIcon.icns" "Rods_app/Contents/Resources/"
+    cp "Resources/Pack/MacOS/info.plist" "Rods_app/Contents/"
+    mv "Rods_app" "Rods.app"
+    codesign -s --f --entitlements "Resources/Pack/MacOS/entitlements.plist" "Rods.app"
+fi 
 

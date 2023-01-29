@@ -58,10 +58,12 @@ void Sound_LoadAll(void){
         Wave temp = LoadWaveFromMemory(".wav", ptrs[sfx], dataSizes[sfx]);
         Glo_SoundData->soundFX[sfx] = LoadSoundFromWave(temp);
         UnloadWave(temp);
+        Err_Assert(Glo_SoundData->soundFX[sfx].frameCount > 0, "Failed to load sound");
     }
 
     Glo_SoundData->music = LoadMusicStreamFromMemory(".mp3", Asset_Music_Barroom, 
                                                      Asset_Music_Barroom_Size);
+    Err_Assert(Glo_SoundData->music.frameCount > 0, "Failed to load music");
 }
 
 

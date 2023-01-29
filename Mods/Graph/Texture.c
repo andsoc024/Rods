@@ -279,6 +279,25 @@ void RGraph_DrawSelBox(Point pos, const RodModel* rodModel){
 #endif
 
 
+#ifdef DEBUG_MODE
+// **************************************************************************** AppIcon_Create
+
+    // Create the app icon as a png image
+    void AppIcon_Create(void){
+        const char* outputPath = "AppIcon.png";
+        const float iconSize = 500.0f;
+
+        Image im = GenImageColor(iconSize, iconSize, COL_BG);
+        Shape_DrawRodInImage(&im, LEGDIR_RIGHT | LEGDIR_UP, COL_ROD);
+        
+        if (!ExportImage(im, outputPath)){
+            Err_FatalError("Failed to export the app icon as image");
+        }
+        
+        UnloadImage(im);
+    }
+#endif
+
 
 
 
@@ -359,4 +378,3 @@ static Texture2D Texture_LoadSelBox(void){
 
     return res;
 }
-
